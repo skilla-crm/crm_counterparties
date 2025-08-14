@@ -1,0 +1,94 @@
+.root {
+    position: relative;
+}
+
+.filter {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-radius: 4px;
+    background-color: #FFF;
+    padding: 0 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #71869D;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &_active {
+        color: #002CFB;
+    }
+
+    &:hover {
+        background-color: #F8FAFD;
+    }
+}
+
+.icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.block {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 0;
+    overflow: hidden;
+    transition: all 0.25s ease-in-out;
+
+    svg {
+        flex-shrink: 0;
+    }
+
+    &_active {
+        width: 12px;
+    }
+}
+
+.loader {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #FFF;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.15s ease-in-out;
+
+    &_vis {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.count {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 44, 251, 0.10);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 14px;
+    color: #002CFB;
+}
+
+.close {
+    margin-bottom: -1px;
+
+    &:hover {
+        svg path {
+            fill: #0024CB;
+        }
+    }
+}

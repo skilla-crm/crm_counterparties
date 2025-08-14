@@ -1,0 +1,143 @@
+.container {
+    width: 100%;
+    max-width: 270px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+
+    &_data {
+        position: relative;
+        width: 140px;
+    }
+}
+
+.sub {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    color: #71869D;
+    user-select: none;
+    transition: all 0.1s;
+
+    &_err {
+        color: #E10D0D;
+    }
+}
+
+.input {
+    min-width: 100px;
+    width: 100%;
+    height: 40px;
+    padding: 12px;
+    border-radius: 4px;
+    outline: 1px solid rgba(216, 228, 251, 0.55);
+    transition: all 0.1s;
+
+    &::placeholder {
+        opacity: 0.4;
+        color: #71869D;
+    }
+
+    &:focus {
+        outline: 1px solid #002CFB !important;
+    }
+
+    &_disabled {
+        background-color: var(--color-bg-switch-off) !important;
+    }
+
+    &:disabled {
+        background-color: rgba(212, 223, 243, 0.17);
+        color: #71869D;
+
+    }
+
+    &_err {
+        outline-color: #E10D0D;
+    }
+
+}
+
+//инпут пойск компании
+
+.field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    min-width: 100px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    outline: 1px solid rgba(216, 228, 251, 0.55);
+    transition: all 0.15s;
+
+    svg {
+        flex-shrink: 0;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    &_data {
+        padding: 0px 12px;
+        cursor: pointer;
+
+        input {
+            height: 100%;
+            cursor: pointer;
+        }
+
+        svg path {
+            transition: all 0.2s;
+        }
+
+        &:hover {
+            svg path {
+                fill: #002CFB;
+            }
+        }
+    }
+
+    &_focus {
+        outline: 1px solid #002CFB;
+    }
+
+
+    &_disabled {
+        background-color: rgba(212, 223, 243, 0.17);
+        pointer-events: none;
+
+        input {
+            background: none;
+            &::placeholder {
+                opacity: 0;
+            }
+        }
+
+        svg {
+            opacity: 0.6;
+        }
+    }
+
+
+    &_error {
+        outline-color: #E10D0D;
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+

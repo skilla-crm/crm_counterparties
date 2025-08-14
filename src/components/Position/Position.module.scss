@@ -1,0 +1,90 @@
+.root {
+    height: 52px;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    max-height: 0;
+    opacity: 0;
+    transition: none;
+    transition: all 0.2s ease-in-out;
+
+
+    &_anim {        
+        opacity: 1;
+        max-height: 52px;
+    }
+
+    
+}
+
+.position {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    height: 40px;
+}
+
+
+.name {
+    width: 100%;
+    @media(max-width: 2000px) {
+        min-width: 460px;
+    }
+}
+
+.number {
+    width: 24px;
+    flex-shrink: 0;
+}
+
+.count {
+    width: 60px;
+    flex-shrink: 0;
+}
+
+.units {
+    width: 80px;
+    flex-shrink: 0;
+}
+
+.code {
+    width: 60px;
+    flex-shrink: 0;
+}
+
+.price {
+    width: 150px;
+    flex-shrink: 0;
+
+     @media(max-width: 2000px) {
+        width: 145px;
+    }
+}
+
+.total {
+    width: 150px;
+    flex-shrink: 0;
+
+     @media(max-width: 2000px) {
+        width: 145px;
+    }
+}
+
+.button {
+    width: 16px;
+    flex-shrink: 0;
+    opacity: 1;
+    visibility: visible;
+    transition: all 0.15s;
+    cursor: pointer;
+
+    &:hover {
+        opacity: 0.8;
+    }
+
+    &_hidden {
+        opacity: 0;
+        visibility: hidden;
+    }
+}

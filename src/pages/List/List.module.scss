@@ -1,0 +1,18 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 40px;
+    opacity: 0;
+    transition: all 0.15s;
+
+    &_anim {
+        opacity: 1;
+    }
+}
+
+.container {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+}

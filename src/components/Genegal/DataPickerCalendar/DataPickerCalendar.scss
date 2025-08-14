@@ -1,0 +1,109 @@
+.calendar {
+    position: absolute !important;
+    bottom: -301px !important;
+    width: 270px !important;
+    height: fit-content !important;
+    left: 0 !important;
+    background-color: #FFFFFF !important;
+    z-index: 7 !important;
+    border-radius: 4px !important;
+    box-shadow: 0px 0px 10px 0px #0020331A !important;
+    transform: scale(0.7) !important;
+    opacity: 0 !important;
+    transition: all 0.15s ease-in-out!important;
+    user-select: none !important;
+
+    &_nosub {
+        bottom: -322px !important;
+    }
+
+    button {
+        font-size: 16px !important;
+        height: 32px !important;
+        width: 32px !important;
+        margin: 0 1px !important;
+        box-sizing: border-box !important;
+        flex-shrink: 0 !important;
+    }
+
+    &_anim {
+        transform: scale(1) !important;
+        opacity: 1 !important;
+    }
+}
+
+.MuiDateCalendar-root {
+    width: 100% !important;
+    padding: 0 12px 12px !important;
+    height: fit-content !important;
+}
+
+
+
+.Mui-selected {
+    background-color: #002CFB !important;
+}
+
+.MuiPickersCalendarHeader-root {
+    padding: 0 !important;
+}
+
+.MuiPickersSlideTransition-root {
+    min-height: 220px !important;
+}
+
+
+
+.MuiPickersDay-root:not(.Mui-selected) {
+    border: none !important;
+    color: #121922 !important;
+}
+
+.Mui-disabled:not(.Mui-selected) {
+    pointer-events: none;
+    color: #71869D !important;
+}
+
+
+
+
+
+.MuiPickersDay-root.Mui-selected {
+    background-color: #002CFB !important;
+}
+
+.MuiDayCalendar-slideTransition {
+    height: fit-content !important;
+    max-height: 240px !important;
+    min-height: 206px !important;
+}
+
+
+
+
+.MuiPickersCalendarHeader-root {
+    padding-right: 0 !important;
+    padding-left: 12px !important;
+}
+
+.MuiPickersArrowSwitcher-button {
+    svg {
+        width: 24px !important;
+        height: 24px !important;
+
+        path {
+            fill: #ADBFDF !important;
+        }
+    }
+}
+
+
+.MuiPickersArrowSwitcher-button:hover {
+    background-color: #adbfdf38 !important;
+}
+
+
+
+.MuiMultiSectionDigitalClockSection-root:not(:first-of-type) {
+    border: none !important;
+}

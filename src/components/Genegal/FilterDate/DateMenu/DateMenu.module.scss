@@ -1,0 +1,80 @@
+.menu {
+  cursor: default;
+  width: 428px;
+  position: absolute;
+  right: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  top: 44px;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  background: #FFF;
+  box-shadow: 0px 0px 10px 0px rgba(0, 32, 51, 0.10);
+  transition: all 0.2s ease-in-out;
+  transform: scale(0.7);
+  opacity: 0;
+  visibility: hidden;
+
+  &_open {
+    visibility: visible;
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.list {
+  width: 156px;
+  border-right: 1px solid #ECF2FC;
+  padding: 10px 0;
+}
+
+.item {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #71869D;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: all 0.15s;
+
+  &:hover {
+    background-color: rgba(212, 223, 243, 0.17);
+    color: #121922;
+  }
+
+  &_month {
+    text-transform: capitalize;
+  }
+}
+
+.date {
+  width: 272px;
+}
+
+.range {
+  white-space: nowrap;
+  font-size: 14px;
+  opacity: 1;
+  visibility: visible;
+  overflow: hidden;
+  max-width: 180px;
+  width: fit-content;
+  border-radius: 4px;
+  height: 20px;
+  flex-shrink: 0;
+  background-color: #FFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  transition: all 0.35s ease-in-out;
+
+  &_hidden {
+    height: 0;
+    margin-bottom: -4px;
+    max-width: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
+}

@@ -1,0 +1,16 @@
+.root {
+    padding: 40px;
+    font-family: Inter;
+    height: 100vh;
+    min-width: 1000px;
+    overflow: auto;
+     overflow-x: hidden;
+     scrollbar-gutter: stable;
+     min-width: 1450px;
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
+}

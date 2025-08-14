@@ -1,0 +1,9 @@
+.root {
+    opacity: 0;
+    padding-bottom: 40px;
+    transition: all 0.15s;
+
+    &_anim {
+        opacity: 1;
+    }
+}

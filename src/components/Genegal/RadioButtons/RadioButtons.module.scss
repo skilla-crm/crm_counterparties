@@ -1,0 +1,54 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    span {
+        color: #71869D;
+    }
+
+    p {
+        line-height: 16px;
+    }
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+
+    p {
+        font-size: 16px;
+        font-weight: 400;
+    }
+}
+
+.radio {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ADBFDF;
+    border-radius: 50%;
+    background-color: rgba(212, 223, 243, 0.17);
+    transition: all 0.15s;
+
+    div {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #002CFB;
+        opacity: 0;
+        transition: all 0.15s;
+    }
+
+    &_active {
+        border-color: #002CFB;
+
+        div {
+            opacity: 1;
+        }
+    }
+}

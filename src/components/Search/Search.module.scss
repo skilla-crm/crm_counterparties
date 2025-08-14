@@ -1,0 +1,104 @@
+.root {
+    height: 40px;
+    width: 320px;
+    padding: 0 0 0 6px;
+    background-color: #FFF;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    transition: all 0.25s ease-in-out;
+    outline: 1px solid #002efb00;
+    position: relative;
+
+    input {
+        outline: none;
+        border: none;
+        width: 100%;
+        caret-color: #002CFB;
+    }
+
+    &_active {
+        outline: 1px solid #002CFB;
+    }
+
+}
+
+.icons {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-right: 4px;
+    transform: translateX(0);
+    transition: all 0.25s ease-in-out;
+
+    &_hidden {
+        width: 0;
+        opacity: 0;
+         margin-right: 0;
+        transform: translateX(-20px);
+    }
+}
+
+.icon {
+  /*   width: 28px;
+    margin-right: 4px;
+
+
+    &_hidden {
+        width: 0;
+        opacity: 0;
+        transform: translateX(-20px);
+    } */
+}
+
+.button {
+    flex-shrink: 0;
+    height: 100%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 6px;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #002CFB;
+    cursor: pointer;
+    overflow: hidden;
+    transform: translateX(40px);
+    opacity: 0;
+    transition: background-color 0.15s, transform 0.25s ease-in-out, opacity 0.25s ease-in-out, width 0.25s ease-in-out;
+
+    &_vis {
+        width: 88px;
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    &:hover {
+        background-color: rgba(212, 223, 243, 0.17);
+    }
+}
+
+.clear {
+    opacity: 0;
+    margin: 0 6px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+
+
+
+    &_vis {
+        opacity: 1;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+}

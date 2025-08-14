@@ -1,0 +1,149 @@
+.root {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 140px;
+    position: relative;
+}
+
+
+.sub {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    color: #71869D;
+    user-select: none;
+    transition: all 0.1s;
+
+    &_error {
+        color: #E10D0D;
+    }
+}
+
+
+//инпут пойск компании
+
+.field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    min-width: 100px;
+    width: 100%;
+    padding: 0 0 0 12px;
+    border-radius: 4px;
+    outline: 1px solid rgba(216, 228, 251, 0.55);
+    transition: all 0.15s ease-in-out;
+
+    svg {
+        flex-shrink: 0;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    &_data {
+        padding: 0px 12px;
+        cursor: pointer;
+
+        input {
+            height: 100%;
+            cursor: pointer;
+        }
+
+        svg path {
+            transition: all 0.2s;
+        }
+
+        &:hover {
+            svg path {
+                fill: #002CFB;
+            }
+        }
+    }
+
+    &_focus {
+        outline: 1px solid #002CFB;
+    }
+
+    &_error {
+        outline-color: #E10D0D;
+    }
+
+    &_disabled {
+        pointer-events: none;
+        background-color: rgba(212, 223, 243, 0.17);
+
+        input {
+            background: none;
+
+        }
+    }
+
+}
+
+.input {
+    width: 100%;
+    transition: all 0.15s;
+
+    &_hidden {
+        opacity: 0;
+    }
+}
+
+.update {
+    height: 100%;
+    width: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    svg {
+        transition: all 0.5s;
+
+    }
+
+    svg path {
+        transition: all 0.15s;
+    }
+
+    &:hover {
+        background-color: rgba(212, 223, 243, 0.17);
+
+        svg path {
+            fill: #002CFB;
+        }
+    }
+}
+
+.text {
+    margin-top: -6px;
+    height: 0;
+    opacity: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 14px;
+    text-wrap: nowrap;
+    transition: all 0.15s ease-in-out;
+
+
+    &_blue {
+        margin-top: 0;
+        height: 14px;
+        opacity: 1;
+        color: #002CFB;
+    }
+
+    &_red {
+        margin-top: 0;
+        height: 14px;
+        opacity: 1;
+        color: #E10D0D;
+    }
+}

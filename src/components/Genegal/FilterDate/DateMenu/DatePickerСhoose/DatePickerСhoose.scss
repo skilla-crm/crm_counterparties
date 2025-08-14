@@ -1,0 +1,167 @@
+.react-datepicker {
+  border: none;
+  border-radius: 4px;
+  font-family: inherit !important;
+
+  &__header {
+    background-color: #FFF;
+    border-bottom: none;
+    width: 272px;
+    padding: 16px 12px 2px 12px;
+  }
+
+  &__current-month {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: capitalize;
+    color: #121922;
+  }
+
+  &__navigation-icon::before {
+    border-color: #adbfdf;
+  }
+
+  &__navigation--previous,
+  &__navigation--next {
+    height: 48px;
+
+    .react-datepicker__navigation-icon::before {
+      transition: all 0.15s;
+    }
+
+
+    &:hover {
+      .react-datepicker__navigation-icon::before {
+        border-color: #002CFB;
+      }
+    }
+  }
+
+  &__day {
+    font-size: 14px;
+    line-height: 36px;
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    border-radius: 50%;
+    padding: 0 6px;
+    color: #121922;
+    transition: all 0.15s;
+
+    &:hover {
+      border-radius: 50% !important;
+      background-color: #ECF2FC !important;
+    }
+
+    &--keyboard-selected {
+      background-color: inherit;
+    }
+
+    &--outside-month {
+      color: #adbfdf;
+    }
+
+    &-names {
+      padding-top: 15px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &-name {
+      text-transform: uppercase;
+      color: #8e9aa8;
+      font-size: 12px;
+      margin: 0;
+      width: 32px;
+    }
+
+    &--today {
+      color: #002CFB;
+    }
+
+    &--selected {
+      background-color: #002CFB !important;
+      color: #fff;
+
+      &:hover {
+        background-color: #0024CB !important;
+        color: #fff;
+      }
+    }
+
+    &--range-end,
+    &--range-start {
+      background-color: #002CFB !important;
+      color: #fff;
+
+      &:hover {
+        background-color: #0024CB !important;
+        color: #fff;
+      }
+    }
+
+    &--range-end {
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+
+      &:hover {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+      }
+    }
+
+    &--range-start {
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+
+      &:hover {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+      }
+    }
+
+    &--selecting-range-start,
+    &--selecting-range-end {
+      background-color: #002CFB !important;
+      color: #fff !important;
+
+
+      &:hover {
+        background-color: #002CFB !important;
+        color: #fff !important;
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+
+      }
+    }
+
+    &--selecting-range-start {
+      border-top-left-radius: 50% !important;
+      border-bottom-left-radius: 50% !important;
+    }
+
+    &--selecting-range-end {
+      border-top-right-radius: 50% !important;
+      border-bottom-right-radius: 50% !important;
+    }
+
+    &--in-range:not(.react-datepicker__day--range-end, .react-datepicker__day--range-start) {
+      background-color: #ECF2FC;
+      color: #0024CB;
+      border-radius: 0 !important;
+
+      &:hover {
+        background-color: #002CFB !important;
+        color: #fff;
+        border-radius: 2px !important;
+      }
+    }
+
+    &--in-selecting-range:not(.react-datepicker__day--in-selecting-range-end,
+      .react-datepicker__day--in-selecting-range-start) {
+      background-color: #ECF2FC;
+      border-radius: 0;
+      color: #0024CB;
+    }
+  }
+}
