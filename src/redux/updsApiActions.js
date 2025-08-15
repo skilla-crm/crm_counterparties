@@ -1,86 +1,87 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-const token = document.getElementById('root_reconciliation')?.getAttribute('token');
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+const token = document
+  .getElementById("root_reconciliation")
+  ?.getAttribute("token");
 const baseURL = process.env.REACT_APP_BASE_URL;
 
 export const updsApiActions = createApi({
-  reducerPath: 'updsApiActions',
-  tagTypes: ['Upd', 'Upds'],
+  reducerPath: "updsApiActions",
+  tagTypes: ["Upd", "Upds"],
   baseQuery: fetchBaseQuery({
     baseUrl: baseURL,
     headers: {
-      'Content-Type': 'application/json',
-      Authorization: token ? token : '',
-      Accept: 'application/json'
-    }
+      "Content-Type": "application/json",
+      Authorization: token ? token : "",
+      Accept: "application/json",
+    },
   }),
   endpoints: (build) => ({
-
     getUpds: build.query({
       query: (params) => ({
         url: `upd`,
-        method: 'GET',
-        params
+        method: "GET",
+        params,
       }),
       transformResponse: (response) => response?.data,
-      providesTags: ['Upds']
+      providesTags: ["Upds"],
     }),
 
     getUpd: build.query({
       query: (id) => ({
         url: `upd/detail/${id}`,
-        method: 'GET',
+        method: "GET",
       }),
       transformResponse: (response) => response?.data,
-      providesTags: ['Upd']
+      providesTags: ["Upd"],
     }),
 
     getParameters: build.query({
       query: () => ({
         url: `parameters`,
-        method: 'GET',
+        method: "GET",
       }),
-      transformResponse: (response) => response?.data
+      transformResponse: (response) => response?.data,
     }),
 
     createUpd: build.mutation({
       query: (body) => ({
         url: `upd/create`,
-        method: 'POST',
-        body: body
+        method: "POST",
+        body: body,
       }),
-      invalidatesTags: ['Upds', 'Upd']
+      invalidatesTags: ["Upds", "Upd"],
     }),
 
     updateUpd: build.mutation({
       query: ({ body, id }) => ({
         url: `upd/update/${id}`,
-        method: 'PATCH',
-        body: body
+        method: "PATCH",
+        body: body,
       }),
-      invalidatesTags: ['Upds']
+      invalidatesTags: ["Upds"],
     }),
 
     deleteUpd: build.mutation({
       query: (id) => ({
         url: `upd/delete/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
       }),
-      invalidatesTags: ['Upds']
+      invalidatesTags: ["Upds"],
     }),
 
     sendUpd: build.mutation({
       query: ({ body, id }) => ({
         url: `upd/send/${id}`,
-        method: 'POST',
-        body: body
+        method: "POST",
+        body: body,
       }),
-      invalidatesTags: ['Upds']
+      invalidatesTags: ["Upds"],
     }),
 
     getUpdDownload: build.mutation({
       query: ({ id, params }) => ({
         url: `upd/download/${id}`,
-        method: 'GET',
+        method: "GET",
         params,
         responseHandler: (response) => {
           return response.blob();
@@ -88,46 +89,44 @@ export const updsApiActions = createApi({
       }),
     }),
 
-
     getUpdDownloadMass: build.mutation({
       query: ({ params }) => ({
         url: `upd/download`,
-        method: 'GET',
+        method: "GET",
         params,
         responseHandler: (response) => {
           return response.blob();
-        }
+        },
       }),
     }),
 
     sendOriginalUpd: build.mutation({
       query: ({ body, id }) => ({
         url: `upd/send_original/${id}`,
-        method: 'POST',
-        body: body
+        method: "POST",
+        body: body,
       }),
-      invalidatesTags: ['Upd']
+      invalidatesTags: ["Upd"],
     }),
 
     signOriginalUpd: build.mutation({
       query: ({ body, id }) => ({
         url: `upd/sign_original/${id}`,
-        method: 'POST',
-        body: body
+        method: "POST",
+        body: body,
       }),
-      invalidatesTags: ['Upd']
+      invalidatesTags: ["Upd"],
     }),
 
     unmarkUpd: build.mutation({
       query: ({ body, id }) => ({
         url: `upd/unmark/${id}`,
-        method: 'POST',
-        body: body
+        method: "POST",
+        body: body,
       }),
-      invalidatesTags: ['Upd']
+      invalidatesTags: ["Upd"],
     }),
-
-  })
+  }),
 });
 
 export const {

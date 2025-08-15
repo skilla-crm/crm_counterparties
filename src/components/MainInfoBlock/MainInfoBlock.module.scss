@@ -1,73 +1,78 @@
 .root {
-    display: flex;
-    gap: 20px;
-    flex-direction: column;
-    padding: 20px 24px;
-    border-radius: 8px;
-    background-color: #FFF;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  padding: 20px 24px;
+  border-radius: 8px;
+  background-color: #fff;
 }
 
 .block {
-    display: flex;
-    gap: 20px;
+  display: flex;
+  gap: 20px;
 }
 
 .orders {
+  display: flex;
+
+  p {
+    text-wrap: nowrap;
+    color: #71869d;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  ul {
+    margin-left: 6px;
     display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
 
-    p {
-        text-wrap: nowrap;
-        color: #71869D;
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 24px;
+  li {
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration-line: underline;
+    text-decoration-color: #71869d00;
+
+    &:hover {
+      text-decoration-color: #71869d;
     }
+  }
 
-    ul {
-        margin-left: 6px;
-        display: flex;
-        gap: 4px;
-        flex-wrap: wrap;
-    }
-
+  &_dis {
     li {
-        cursor: pointer;
-        transition: all 0.15s;
-        text-decoration-line: underline;
-        text-decoration-color: #71869d00;
-
-        &:hover {
-            text-decoration-color: #71869D;
-        }
+      cursor: default;
+      text-decoration: none;
     }
-
-    &_dis {
-        li {
-            cursor: default;
-            text-decoration: none;
-        }
-    }
-
+  }
 }
 
 .contract {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .number {
-    width: 160px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 
-    input {
-        text-align: start !important;
-        padding: 0 12px;
-    }
+  input {
+    text-align: start !important;
+    padding: 0 12px;
+  }
 
-    span {
-        line-height: 16px;
-    }
+  span {
+    line-height: 16px;
+  }
+}
+
+.subs {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
 }

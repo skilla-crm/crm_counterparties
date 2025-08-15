@@ -1,15 +1,17 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from './redux/store';
-import './index.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import "./index.css";
+import App from "./App";
 
-const root = ReactDOM.createRoot(document.getElementById('root_reconciliation'));
+const root = ReactDOM.createRoot(
+  document.getElementById("root_reconciliation")
+);
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename='new/reconciliation'>
+    <BrowserRouter basename="new/reconciliation">
       <Provider store={store}>
         <App />
       </Provider>
