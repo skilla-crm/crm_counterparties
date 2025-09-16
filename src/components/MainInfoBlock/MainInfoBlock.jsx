@@ -169,7 +169,7 @@ const MainInfoBlock = ({ parameters, disabled }) => {
         </div>
       </div>
 
-      {/* <DropDown
+      <DropDown
         z={4}
         type={"detail"}
         sub={"Компания"}
@@ -189,7 +189,7 @@ const MainInfoBlock = ({ parameters, disabled }) => {
         overlay={true}
       />
 
-      <DropDown
+     {/*  <DropDown
         z={3}
         type={"signatory"}
         sub={"Подписант плательщика"}
