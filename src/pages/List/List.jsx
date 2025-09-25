@@ -85,16 +85,14 @@ const List = () => {
       ])
     );
     dispatch(setCustomerValidation(true));
-    dispatch(setDetailValidation(true));
     dispatch(setNumberValidation(true));
-    dispatch(setPositionsValidation(true));
     dispatch(setContract(""));
     dispatch(setDateContract(""));
     dispatch(setNumContract(""));
   }, []);
 
   useEffect(() => {
-    dispatch(setNumberBill(parameters?.upd_num));
+    dispatch(setNumberBill(parameters?.acts_num));
   }, [parameters]);
 
   useEffect(() => {

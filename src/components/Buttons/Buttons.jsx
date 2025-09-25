@@ -179,6 +179,8 @@ const Buttons = ({ id, setType }) => {
     }, 200);
   };
 
+  console.log(customer)
+
   return (
     <div className={s.root}>
       <ButtonDelete

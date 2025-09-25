@@ -90,8 +90,8 @@ const Row = ({ bill, lastLines }) => {
         )}
       </td>
 
-      <td className={s.inn}>111111111111</td>
-      <td className={s.inn}>1111111111</td>
+      <td className={s.inn}>{bill?.company?.inn}</td>
+      <td className={s.inn}>{bill?.company?.kpp}</td>
 
       <td className={s.recipient}>
         <p>{bill?.partnership?.partnership_name}</p>

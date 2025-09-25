@@ -51,8 +51,8 @@
 
 .contract {
   display: flex;
-  align-items: center;
-  gap: 20px;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .number {
@@ -75,4 +75,31 @@
   display: flex;
   gap: 6px;
   margin-top: 6px;
+}
+
+
+.error {
+  opacity: 0;
+  height: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+  color: #e10d0d;
+  transition: all 0.2s ease-in-out;
+  margin-top: -6px;
+
+  svg {
+    margin-bottom: -2px;
+  }
+
+  &_vis {
+    margin-top: 0;
+    opacity: 1;
+    height: 20px;
+  }
+}
+.range {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }

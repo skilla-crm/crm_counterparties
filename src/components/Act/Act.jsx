@@ -10,7 +10,7 @@ import historyblur from "../../assets/images/historyblur.png";
 import { useGetParametersQuery } from "../../redux/updsApiActions";
 //slice
 import { setNumberBill } from "../../redux/mainInfo/slice";
-import { setPositionsValidation } from "../../redux/validation/slice";
+
 //components
 import HeaderDetail from "../HeaderDetail/HeaderDetail";
 import MainInfoBlock from "../MainInfoBlock/MainInfoBlock";
@@ -34,13 +34,10 @@ const Act = ({ id, type, setType }) => {
   useEffect(() => {
     numberBill == "" &&
       parameters?.upd_num &&
-      dispatch(setNumberBill(parameters?.upd_num));
+      dispatch(setNumberBill(parameters?.acts_num));
   }, [parameters]);
 
-  const handleResetErrorPositions = () => {
-    dispatch(setPositionsValidation(true));
-  };
-
+ 
   const openModalPro = () => {
     document?.getElementById("pro-open")?.click();
   };

@@ -36,7 +36,7 @@ const InputBillNumber = ({ sub, number, numberFirst, setNumber, errorEmpity, err
     }
 
     const handleBlur = () => {
-        Number(numberFirst) !== Number(number) && getCheckNumber(3, number, detail?.partnership_id)
+        Number(numberFirst) !== Number(number) && getCheckNumber(4, number, detail?.partnership_id)
             .then(res => setError(false))
             .catch(err => { number !== '' && setError(true) })
         setFocus(false)

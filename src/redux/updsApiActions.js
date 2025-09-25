@@ -18,7 +18,7 @@ export const updsApiActions = createApi({
   endpoints: (build) => ({
     getUpds: build.query({
       query: (params) => ({
-        url: `upd`,
+        url: `act-reconciliation`,
         method: "GET",
         params,
       }),
@@ -28,7 +28,7 @@ export const updsApiActions = createApi({
 
     getUpd: build.query({
       query: (id) => ({
-        url: `upd/detail/${id}`,
+        url: `act-reconciliation/detail/${id}`,
         method: "GET",
       }),
       transformResponse: (response) => response?.data,
@@ -45,7 +45,7 @@ export const updsApiActions = createApi({
 
     createUpd: build.mutation({
       query: (body) => ({
-        url: `upd/create`,
+        url: `act-reconciliation/create`,
         method: "POST",
         body: body,
       }),
@@ -54,7 +54,7 @@ export const updsApiActions = createApi({
 
     updateUpd: build.mutation({
       query: ({ body, id }) => ({
-        url: `upd/update/${id}`,
+        url: `act-reconciliation/update/${id}`,
         method: "PATCH",
         body: body,
       }),
@@ -63,7 +63,7 @@ export const updsApiActions = createApi({
 
     deleteUpd: build.mutation({
       query: (id) => ({
-        url: `upd/delete/${id}`,
+        url: `act-reconciliation/delete/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Upds"],
@@ -71,7 +71,7 @@ export const updsApiActions = createApi({
 
     sendUpd: build.mutation({
       query: ({ body, id }) => ({
-        url: `upd/send/${id}`,
+        url: `act-reconciliation/send/${id}`,
         method: "POST",
         body: body,
       }),
@@ -80,7 +80,7 @@ export const updsApiActions = createApi({
 
     getUpdDownload: build.mutation({
       query: ({ id, params }) => ({
-        url: `upd/download/${id}`,
+        url: `act-reconciliation/download/${id}`,
         method: "GET",
         params,
         responseHandler: (response) => {
@@ -91,7 +91,7 @@ export const updsApiActions = createApi({
 
     getUpdDownloadMass: build.mutation({
       query: ({ params }) => ({
-        url: `upd/download`,
+        url: `act-reconciliation/download`,
         method: "GET",
         params,
         responseHandler: (response) => {
@@ -102,7 +102,7 @@ export const updsApiActions = createApi({
 
     sendOriginalUpd: build.mutation({
       query: ({ body, id }) => ({
-        url: `upd/send_original/${id}`,
+        url: `act-reconciliation/send_original/${id}`,
         method: "POST",
         body: body,
       }),
@@ -111,7 +111,7 @@ export const updsApiActions = createApi({
 
     signOriginalUpd: build.mutation({
       query: ({ body, id }) => ({
-        url: `upd/sign_original/${id}`,
+        url: `act-reconciliation/sign_original/${id}`,
         method: "POST",
         body: body,
       }),
@@ -120,7 +120,7 @@ export const updsApiActions = createApi({
 
     unmarkUpd: build.mutation({
       query: ({ body, id }) => ({
-        url: `upd/unmark/${id}`,
+        url: `act-reconciliation/unmark/${id}`,
         method: "POST",
         body: body,
       }),

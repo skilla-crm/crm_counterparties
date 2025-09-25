@@ -2,15 +2,15 @@ export const handlerLog = (log) => {
     const position = log?.person?.position === 'director' ? 'Руководитель' : log?.person?.position === 'accountant' ? 'Бухгалтер' : 'Менеджер'
     const person = `${log?.person?.name} ${position}`
     if (log?.action === 'created') {
-        return `${person} создал УПД`
+        return `${person} создал акт сверки`
     }
 
     if (log?.action === 'updated') {
-        return `${person} изменил УПД`
+        return `${person} изменил акт сверки`
     }
 
     if (log?.action === 'download') {
-        return `${person} скачал/распечатал УПД`
+        return `${person} скачал/распечатал акт сверки`
     }
 
     if (log?.action === 'sent') {

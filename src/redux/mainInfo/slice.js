@@ -12,6 +12,8 @@ const initialState = {
   signatory: {},
   contract: '',
   dateContract: '',
+  dateStart: '',
+  dateEnd: '',
   numContract: '',
   nds: null,
 };
@@ -68,6 +70,14 @@ export const mainInfoSlice = createSlice({
 
     setNds: (state, action) => {
       state.nds = action.payload;
+    },
+
+    setDateStart: (state, action) => {
+      state.dateStart = action.payload;
+    },
+
+    setDateEnd: (state, action) => {
+      state.dateEnd = action.payload;
     }
   }
 });
@@ -84,6 +94,8 @@ export const {
   setContract,
   setDateContract,
   setNumContract,
-  setNds
+  setNds,
+  setDateStart,
+  setDateEnd
 } = mainInfoSlice.actions;
 export default mainInfoSlice.reducer;

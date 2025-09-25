@@ -11,9 +11,8 @@ import { ReactComponent as IconDoneWhite } from "../../assets/icons/iconDoneWhit
 //slice
 import {
   setCustomerValidation,
-  setDetailValidation,
   setNumberValidation,
-  setPositionsValidation,
+  setDateRangeValidation
 } from "../../redux/validation/slice";
 //components
 import Button from "../Genegal/Button/Button";
@@ -25,16 +24,12 @@ import { BUTTON_TEXT_CREATE } from "../../constants/upds";
 const HeaderDetail = ({ id, type, setType }) => {
   const {
     customer,
-    detail,
-    signatory,
-    contract,
-    dateContract,
-    numContract,
     numberBill,
     date,
-    nds,
+    dateStart,
+    dateEnd
+
   } = useSelector((state) => state.mainInfo);
-  const { positions, total } = useSelector((state) => state.positions);
   const [createUpd, { data, isError, isLoading }] = useCreateUpdMutation();
   const [updateUpd, { isLoading: isLoadingEdit }] = useUpdateUpdMutation();
   const dispatch = useDispatch();
@@ -42,29 +37,17 @@ const HeaderDetail = ({ id, type, setType }) => {
 
   const handleValidation = () => {
     const customerValidation = customer?.partnership_id ? true : false;
-    const detailValidation = detail?.partnership_id ? true : false;
     const numberValidation = Number(numberBill) !== 0 ? true : false;
-    const positionsValidation = positions.every(
-      (el) =>
-        el?.rate?.name_service !== "" &&
-        el?.rate?.name_service &&
-        Number(el?.count) > 0 &&
-        el?.count !== "" &&
-        el?.units !== "" &&
-        Number(el?.code) > 0 &&
-        Number(el?.price) >= 0 &&
-        Number(el?.total) >= 0
-    );
+    const dateRangeValidation = dateStart && dateStart !== '' && dateEnd && dateEnd !== '' ? true : false;
     dispatch(setCustomerValidation(customerValidation));
-    dispatch(setDetailValidation(detailValidation));
     dispatch(setNumberValidation(numberValidation));
-    dispatch(setPositionsValidation(positionsValidation));
+    dispatch(setDateRangeValidation(dateRangeValidation))
 
+    console.log(dateRangeValidation)
     if (
       customerValidation &&
-      detailValidation &&
       numberValidation &&
-      positionsValidation
+      dateRangeValidation
     ) {
       return true;
     } else {
@@ -73,39 +56,13 @@ const HeaderDetail = ({ id, type, setType }) => {
   };
 
   const handleCreate = () => {
-    const rows = positions?.map((el) => {
-      return {
-        description: el?.rate?.name_service,
-        date: "",
-        amount: Number(el?.count),
-        unit: el?.units,
-        okei: Number(el?.code),
-        sum_unit: Number(el?.price),
-        sum: Number(el?.total),
-      };
-    });
     const dataForSend = {
-      order_ids: [],
       company_id: customer?.id,
       partnership_id: customer?.partnership_id,
       date: dayjs(date).format("YYYY-MM-DD"),
       num: Number(numberBill),
-      detail_partnership_id: detail?.partnership_id,
-      detail_number: detail?.num,
-      company_contact_id:
-        signatory.id &&
-        signatory.id !== "dir" &&
-        signatory.id !== "no" &&
-        signatory.id !== "another"
-          ? signatory.id
-          : null,
-      signature: signatory.id !== "no" ? signatory.name : null,
-      contract: contract,
-      contract_date: dayjs(dateContract).format("YYYY-MM-DD"),
-      contract_n: numContract,
-      rows,
-      sum: total,
-      nds,
+      date_start: dateStart,
+      date_end: dateEnd
     };
 
     if (handleValidation()) {
@@ -121,39 +78,14 @@ const HeaderDetail = ({ id, type, setType }) => {
   };
 
   const handleUpdate = () => {
-    const rows = positions?.map((el) => {
-      return {
-        description: el?.rate?.name_service,
-        date: /* el?.date ? el?.date : */ "",
-        amount: Number(el?.count),
-        unit: el?.units,
-        okei: Number(el?.code),
-        sum_unit: Number(el?.price),
-        sum: Number(el?.total),
-      };
-    });
+
     const dataForSend = {
       company_id: customer?.id,
       partnership_id: customer?.partnership_id,
       date: dayjs(date).format("YYYY-MM-DD"),
       num: Number(numberBill),
-      detail_partnership_id: detail?.partnership_id,
-      detail_number: detail?.num,
-      company_contact_id:
-        signatory.id &&
-        signatory.id !== "dir" &&
-        signatory.id !== "no" &&
-        signatory.id !== "another"
-          ? signatory.id
-          : null,
-      signature: signatory.id !== "no" ? signatory.name : null,
-      contract: contract,
-      contract_date: dayjs(dateContract).format("YYYY-MM-DD"),
-      contract_n: numContract,
-      rows,
-      sum: total,
-      draft: 0,
-      nds,
+      date_start: dateStart,
+      date_end: dateEnd
     };
 
     if (handleValidation()) {
