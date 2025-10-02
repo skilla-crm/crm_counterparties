@@ -16,17 +16,16 @@ import {
   setDetail,
   setNumberBill,
   setDate,
-  setOrders,
-  setContract,
-  setDateContract,
-  setNumContract,
+  setDateStart,
+  setDateEnd
+
 } from "../../redux/mainInfo/slice";
 import { setPositions } from "../../redux/positions/slice";
 import {
   setCustomerValidation,
-  setDetailValidation,
+
   setNumberValidation,
-  setPositionsValidation,
+
 } from "../../redux/validation/slice";
 //components
 import Header from "../../components/Header/Header";
@@ -70,7 +69,8 @@ const List = () => {
     dispatch(setCustomer({}));
     dispatch(setDetail({}));
     dispatch(setDate(dayjs()));
-    dispatch(setOrders([]));
+    dispatch(setDateStart(null));
+    dispatch(setDateEnd(null));
     dispatch(
       setPositions([
         {
@@ -86,9 +86,7 @@ const List = () => {
     );
     dispatch(setCustomerValidation(true));
     dispatch(setNumberValidation(true));
-    dispatch(setContract(""));
-    dispatch(setDateContract(""));
-    dispatch(setNumContract(""));
+
   }, []);
 
   useEffect(() => {

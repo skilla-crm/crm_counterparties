@@ -8,14 +8,9 @@ const initialState = {
   numberBill: '',
   numberBillFirst: '',
   date: dayjs().locale('ru') || '',
-  orders: [],
-  signatory: {},
-  contract: '',
-  dateContract: '',
   dateStart: '',
   dateEnd: '',
-  numContract: '',
-  nds: null,
+
 };
 
 export const mainInfoSlice = createSlice({
@@ -48,30 +43,6 @@ export const mainInfoSlice = createSlice({
       state.date = action.payload;
     },
 
-    setOrders: (state, action) => {
-      state.orders = action.payload;
-    },
-
-    setSignatory: (state, action) => {
-      state.signatory = action.payload;
-    },
-
-    setContract: (state, action) => {
-      state.contract = action.payload;
-    },
-
-    setDateContract: (state, action) => {
-      state.dateContract = action.payload;
-    },
-
-    setNumContract: (state, action) => {
-      state.numContract = action.payload;
-    },
-
-    setNds: (state, action) => {
-      state.nds = action.payload;
-    },
-
     setDateStart: (state, action) => {
       state.dateStart = action.payload;
     },
@@ -89,12 +60,6 @@ export const {
   setNumberBill,
   setNumberBillFirst,
   setDate,
-  setOrders,
-  setSignatory,
-  setContract,
-  setDateContract,
-  setNumContract,
-  setNds,
   setDateStart,
   setDateEnd
 } = mainInfoSlice.actions;
