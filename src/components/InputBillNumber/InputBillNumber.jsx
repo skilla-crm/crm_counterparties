@@ -49,19 +49,22 @@ const InputBillNumber = ({ sub, number, numberFirst, setNumber, errorEmpity, err
         setLoad(true)
 
         setTimeout(() => {
-            if (detail?.number) {
-                detail?.number === number ? setNumber(detail?.number + 1) : setNumber(detail?.number)
-            } else {
-                parameters?.acts_num === number ? setNumber(parameters?.acts_num + 1) : setNumber(parameters?.acts_num)
-            }
 
-            getCheckNumber(4, number, detail?.partnership_id)
+            let newNumber
+            if (detail?.number) {
+                detail?.number === number ? newNumber = detail?.number + 1 : newNumber = detail?.number
+            } else {
+                parameters?.acts_num === number ? newNumber = parameters?.acts_num + 1 : newNumber = parameters?.acts_num
+            }
+            setNumber(newNumber)
+
+            getCheckNumber(4, newNumber, detail?.partnership_id)
                 .then(res => {
                     setError(false)
                     setDone(true)
                   
                 })
-                .catch(err => { number !== '' && setError(true) })
+                .catch(err => { newNumber !== '' && setError(true) })
             setFocus(false)
               setLoad(false)
 

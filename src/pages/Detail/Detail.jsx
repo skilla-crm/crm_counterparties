@@ -38,7 +38,7 @@ const Detail = () => {
 
   useEffect(() => {
     if (data) {
-      document.title = `УПД №${data?.number} от ${dayjs(data?.date).format(
+      document.title = `Акт сверки №${data?.number} от ${dayjs(data?.date).format(
         "DD.MM.YYYY"
       )}`;
       dispatch(setDate(dayjs(data?.date)));

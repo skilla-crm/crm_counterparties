@@ -37,7 +37,7 @@ const Act = ({ id, type, setType }) => {
       dispatch(setNumberBill(parameters?.acts_num));
   }, [parameters]);
 
- 
+
   const openModalPro = () => {
     document?.getElementById("pro-open")?.click();
   };
@@ -60,27 +60,28 @@ const Act = ({ id, type, setType }) => {
           /> */}
         </div>
 
-        <div className={s.right}>
-          {(type === "detail" || type === "edit") && (
-            <DocumentFlow id={id} exchange={exchange} />
-          )}
-          <div className={s.preview}>
+        {(type === "detail" || type === "edit") && <div className={s.right}>
+
+          <DocumentFlow id={id} exchange={exchange} />
+
+          {/* <div className={s.preview}>
             <img src={iconPreview}></img>
             <p>Предварительный просмотр в разработке</p>
-          </div>
-          {(type === "detail" || type === "edit") && ispro === "1" && (
-            <History logs={logs} />
-          )}
-          {(type === "detail" || type === "edit") && ispro === "0" && (
-            <div className={s.pro}>
-              <h3>История изменений</h3>
-              <img src={historyblur} alt="история доступна для про"></img>
-              <p onClick={openModalPro}>
-                Доступно только для <BadgePro />
-              </p>
-            </div>
-          )}
+          </div> */}
+
+          {ispro === "1" && <History logs={logs} />}
+
+
+          {ispro === "0" && <div className={s.pro}>
+            <h3>История изменений</h3>
+            <img src={historyblur} alt="история доступна для про"></img>
+            <p onClick={openModalPro}>
+              Доступно только для <BadgePro />
+            </p>
+          </div>}
+
         </div>
+        }
       </div>
     </div>
   );

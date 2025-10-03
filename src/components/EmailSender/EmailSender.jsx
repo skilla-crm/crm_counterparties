@@ -350,14 +350,14 @@ const EmailSender = ({
             </div>
           </div> */}
 
-          {/* <div className={s.block}>
+          <div className={s.block}>
             <span>Формат</span>
             <FormatList
               formats={formats}
               format={formatDoc}
               setFormat={setFormatDoc}
             />
-          </div> */}
+          </div> 
 
           <Switch
             text={`Копию письма отправить на почту компании ${partnerEmail}`}

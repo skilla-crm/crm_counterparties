@@ -8,7 +8,7 @@ const Create = () => {
   const [anim, setAnim] = useState(false);
 
   useEffect(() => {
-    document.title = `Создать УПД`;
+    document.title = `Создать акт сверки`;
     setTimeout(() => {
       setAnim(true);
     });
