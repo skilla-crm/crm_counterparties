@@ -96,10 +96,10 @@ const Row = ({ bill, lastLines }) => {
       <td className={s.recipient}>
         <p>{bill?.partnership?.partnership_name}</p>
       </td>
-      <td className={s.summ}>
+      <td className={classNames(s.summ)}>
         <p>
-          {addSpaceNumber(bill?.sum?.split(".").shift())}
-          <span>.{bill?.sum?.split(".").pop()}</span>
+          {addSpaceNumber(Math.abs(bill?.debt?.split(".").shift()))}
+          <span>.{bill?.debt?.split(".").pop()}</span>
         </p>
       </td>
       <td className={s.progress}>

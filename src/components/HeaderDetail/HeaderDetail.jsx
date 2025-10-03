@@ -61,8 +61,8 @@ const HeaderDetail = ({ id, type, setType }) => {
       partnership_id: customer?.partnership_id,
       date: dayjs(date).format("YYYY-MM-DD"),
       num: Number(numberBill),
-      date_start: dateStart,
-      date_end: dateEnd
+      date_start: dayjs(dateStart).format("YYYY-MM-DD"),
+      date_end: dayjs(dateEnd).format("YYYY-MM-DD")
     };
 
     if (handleValidation()) {
@@ -84,8 +84,8 @@ const HeaderDetail = ({ id, type, setType }) => {
       partnership_id: customer?.partnership_id,
       date: dayjs(date).format("YYYY-MM-DD"),
       num: Number(numberBill),
-      date_start: dateStart,
-      date_end: dateEnd
+      date_start: dayjs(dateStart).format("YYYY-MM-DD"),
+      date_end: dayjs(dateEnd).format("YYYY-MM-DD")
     };
 
     if (handleValidation()) {

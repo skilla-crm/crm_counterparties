@@ -1,6 +1,7 @@
 import s from './InputData.module.scss';
 import { useState, useRef, useEffect } from 'react';
 import dayjs from 'dayjs';
+import 'dayjs/locale/ru'
 import { ReactComponent as IconCalendar } from '../../assets/icons/iconCalendar.svg';
 //components
 import DataPickerCalendar from '../Genegal/DataPickerCalendar/DataPickerCalendar'
@@ -9,6 +10,8 @@ const InputData = ({ sub, nosub, setDate, date, disabled }) => {
     const [fieldFocus, setFieldFocus] = useState(false);
     const [openCalendar, setOpenCalendar] = useState(false);
     const [dateVis, setDateVis] = useState('');
+
+    console.log(date, dateVis)
 
     const inputRef = useRef();
     const fieldRef = useRef();

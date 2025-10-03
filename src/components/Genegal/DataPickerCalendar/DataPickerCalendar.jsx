@@ -26,7 +26,8 @@ const DataPickerCalendar = ({ value, setValue, setOpenCalendar, nosub }) => {
     }, []);
 
     function onChange(newValue) {
-        setValue(dayjs(newValue))
+        console.log(newValue,)
+        setValue(dayjs(newValue).locale('ru'))
         setTimeout(() => {
             setAnim(false)
         }, 200)
