@@ -209,13 +209,13 @@ module.exports = function (webpackEnv) {
       // There will be one main bundle, and one file per asynchronous chunk.
       // In development, it does not produce real files.
       filename: isEnvProduction
-        ? 'static_reconciliation/js/[name]Reconciliation.js'
-        : isEnvDevelopment && 'static_reconciliation/js/bundle.js',
+        ? 'static_actreconciliation/js/[name]Reconciliation.js'
+        : isEnvDevelopment && 'static_actreconciliation/js/bundle.js',
       // There are also additional JS chunk files if you use code splitting.
       chunkFilename: isEnvProduction
-        ? 'static_reconciliation/js/[name]Reconciliation.chunk.js'
-        : isEnvDevelopment && 'static_reconciliation/js/[name]Reconciliation.chunk.js',
-      assetModuleFilename: 'static_reconciliation/media/[name]Reconciliation.[hash][ext]',
+        ? 'static_actreconciliation/js/[name]Reconciliation.chunk.js'
+        : isEnvDevelopment && 'static_actreconciliation/js/[name]Reconciliation.chunk.js',
+      assetModuleFilename: 'static_actreconciliation/media/[name]Reconciliation.[hash][ext]',
       // webpack uses `publicPath` to determine where the app is being served from.
       // It requires a trailing slash, or the file assets will get an incorrect path.
       // We inferred the "public path" (such as / or /my-project) from homepage.
@@ -393,7 +393,7 @@ module.exports = function (webpackEnv) {
                 {
                   loader: require.resolve('file-loader'),
                   options: {
-                    name: 'static_reconciliation/media/[name]Reconciliation.[hash].[ext]',
+                    name: 'static_actreconciliation/media/[name]Reconciliation.[hash].[ext]',
                   },
                 },
               ],
@@ -625,8 +625,8 @@ module.exports = function (webpackEnv) {
         new MiniCssExtractPlugin({
           // Options similar to the same options in webpackOptions.output
           // both options are optional
-          filename: 'static_reconciliation/css/[name]Reconciliation.css',
-          chunkFilename: 'static_reconciliation/css/[name]Reconciliation.chunk.css',
+          filename: 'static_actreconciliation/css/[name]Reconciliation.css',
+          chunkFilename: 'static_actreconciliation/css/[name]Reconciliation.chunk.css',
         }),
       // Generate an asset manifest file with the following content:
       // - "files" key: Mapping of all asset filenames to their corresponding

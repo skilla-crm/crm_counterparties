@@ -135,7 +135,7 @@ const MainInfoBlock = ({ parameters, disabled }) => {
               dispatch(setDateStart(data))
                dispatch(setDateRangeValidation(true))
             }}
-            date={dateStart ? dayjs(dateStart) : null}
+            date={dateStart ? dateStart : null}
             disabled={disabled}
           />
           <InputData
@@ -145,7 +145,7 @@ const MainInfoBlock = ({ parameters, disabled }) => {
               dispatch(setDateRangeValidation(true))
               dispatch(setDateEnd(data))
             }}
-            date={dateEnd ? dayjs(dateEnd) : null}
+            date={dateEnd ? dateEnd : null}
             disabled={disabled}
           />
         </div>
