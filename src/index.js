@@ -7,11 +7,11 @@ import "./index.css";
 import App from "./App";
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root_reconciliation")
+  document.getElementById("root_counterparties")
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename="new/reconciliation">
+    <BrowserRouter basename="new/counterparties">
       <Provider store={store}>
         <App />
       </Provider>

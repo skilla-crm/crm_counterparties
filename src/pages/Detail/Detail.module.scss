@@ -1,9 +1,6 @@
 .root {
-    position: relative;
     opacity: 0;
-    padding-bottom: 40px;
     transition: all 0.15s;
-    min-width: 1210px;
     scroll-behavior: smooth;
 
     &_anim {
