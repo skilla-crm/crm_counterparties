@@ -1,0 +1,40 @@
+.root {
+  padding: 0 28px 20px 28px;
+  width: 100%;
+  max-width: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  border-spacing: 0;
+  color: var(--Text-Primary, #121922);
+
+  th,
+  td {
+    height: 50px;
+    padding: 12px 20px 12px 0;
+    white-space: nowrap;
+    text-align: start;
+    border-bottom: 1px solid #eff4fb;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+  }
+
+  th {
+    color: #71869d;
+  }
+
+  td {
+    color: #121922;
+  }
+
+  &_vis {
+    opacity: 1;
+  }
+
+  &_fetch td {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+}

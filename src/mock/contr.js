@@ -1,0 +1,23 @@
+export const approvedCounterparties = Array.from({ length: 30 }, (_, i) => ({
+  id: i + 1,
+  inn: `77012${(34567 + i).toString().padStart(5, "0")}`,
+  kpp: `77010${(100 + i).toString().padStart(3, "0")}`,
+  name: `ООО "Рога и Копыта №${i + 1}"`,
+  title: `Ярлык контрагента №${i + 1}`,
+  okved: `78.${(30 + (i % 10)).toString().padStart(2, "0")}.00`,
+  shareOfRevenue: +(Math.random() * 20).toFixed(1),
+  revenue: 500000 + i * 10000,
+  note: `Примечание для компании №${i + 1}. Длинный текст с описанием, который может быть обрезан...`,
+  status:
+    i % 3 === 0 ? "действующее" : i % 3 === 1 ? "ликвидируется" : "банкротство",
+  peopleCount: 30 + (i % 15) * 5,
+  risk: i % 3 === 0 ? 0 : i % 3 === 1 ? 1 : 0,
+}));
+export const notApprovedCounterparties = Array.from({ length: 30 }, (_, i) => ({
+  id: i + 1,
+  name: `ООО "Рога и Копыта №${i + 1}"`,
+  label: `Ярлык контрагента №${i + 1}`,
+  note: `Примечание для компании №${i + 1}. Длинный текст с описанием, который может быть обрезан...`,
+  inn: i % 4 === 0 ? null : `77012${(34567 + i).toString().padStart(5, "0")}`,
+  kpp: i % 4 === 0 ? null : `77010${(100 + i).toString().padStart(3, "0")}`,
+}));

@@ -1,0 +1,98 @@
+.root {
+  padding: 0 24px 20px 24px;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+  background-color: #fff;
+  border-radius: 0 0 8px 8px;
+  border-spacing: 0;
+  color: var(--Text-Primary, #121922);
+  transition: all 0.15s;
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  top: 50px;
+
+  &_vis {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &_fetch td {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+}
+.gridRow {
+  display: grid;
+  align-items: center;
+  padding: 0;
+  // margin-top: -1px;
+  border-bottom: 1px solid #eff4fb;
+  height: 50px;
+  box-sizing: border-box;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #121922;
+  cursor: pointer;
+
+  &.clientsDebts {
+    grid-template-columns: minmax(200px, 1fr) //Контрагент
+      minmax(130px, 130px) // ИНН
+      minmax(100px, 100px) // КПП
+      minmax(100px, 0.5fr) // Сумма
+      minmax(140px, 140px) // Нет упд
+      minmax(130px, 0.5fr) // Выручка за год
+      minmax(140px, 140px) // Дней с заказа
+      minmax(150px, 1fr) // Примечание
+      minmax(140px, 140px) // Риск
+      // minmax(120px, 120px) // Акт Сверки
+      minmax(50px, 0.1fr); // Кнопка
+  }
+  &.ourDebts {
+    grid-template-columns: minmax(200px, 2fr) //Контрагент
+      minmax(130px, 130px) // ИНН
+      minmax(100px, 100px) // КПП
+      minmax(250px, 1fr) // Сумма
+      minmax(150px, 1.5fr) // Примечание
+      minmax(140px, 140px) // Риск
+      // minmax(120px, 120px) // Акт Сверки
+      minmax(50px, 0.1fr); // Кнопка
+  }
+}
+.gridCell {
+  padding-right: 12px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &.right {
+    justify-self: end;
+    text-align: right;
+    padding-right: 16px;
+  }
+  &.center {
+    justify-content: center;
+  }
+
+  &.gray {
+    color: #71869d;
+  }
+  &.amount {
+    padding-right: 40px;
+  }
+}
+.firstCell {
+  padding-left: 12px;
+  gap: 12px;
+}
+.lastCell {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding-right: 40px;
+}

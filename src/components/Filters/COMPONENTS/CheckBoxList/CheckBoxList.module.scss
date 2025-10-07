@@ -1,0 +1,35 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #f9fbff;
+  }
+}
+
+.item_header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.companyName {
+  font-weight: 500;
+  font-size: 14px;
+  color: #121922;
+}
+
+.companyDetails {
+  margin-left: 28px;
+  font-size: 12px;
+  color: #6a7b92;
+  line-height: 1.4;
+}

@@ -1,0 +1,33 @@
+.root {
+  z-index: 3;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(31, 51, 69, 0.9);
+  width: max-content;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.15s;
+  color: var(--White, #fff);
+  font-family: Inter;
+
+  p {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 140%;
+    text-wrap: wrap !important;
+  }
+
+  &_open {
+    visibility: visible;
+    opacity: 1;
+    z-index: 9999;
+  }
+
+  &_center {
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    top: calc(100% + 8px);
+  }
+}

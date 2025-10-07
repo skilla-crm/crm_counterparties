@@ -1,0 +1,129 @@
+.option {
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  &.focused {
+    background-color: #f0f4ff;
+  }
+
+  .companyInfo {
+    flex-shrink: 0;
+    width: 400px;
+
+    .companyName {
+      margin-bottom: 4px;
+      overflow: hidden;
+      color: #121922;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 18px;
+    }
+
+    .companyDetails {
+      color: #6a7b92;
+      font-size: 12px;
+    }
+  }
+}
+
+.singleValue {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  overflow: hidden;
+  max-width: 100%;
+  .companyInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    gap: 8px;
+  }
+
+  .companyName {
+    max-width: 60%;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .companyDetails {
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #6a7b92;
+    font-size: 14px;
+  }
+}
+
+.badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px;
+  height: 24px;
+  background: #f1f4f9;
+  border-radius: 4px;
+  color: #71869d;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  max-width: 150px;
+
+  .badgeText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+.error {
+  overflow: hidden;
+  height: 0;
+  opacity: 0;
+  visibility: hidden;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #e10d0d;
+  font-size: 14px;
+  line-height: 14px;
+  transition: all 0.2s ease;
+
+  &.active {
+    height: 16px;
+    opacity: 1;
+    visibility: visible;
+    margin-top: 7px;
+  }
+
+  .icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+.noOptionsMessage {
+  padding: 12px;
+  text-align: left;
+  overflow: hidden;
+  color: #71869d;
+  text-overflow: ellipsis;
+
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}

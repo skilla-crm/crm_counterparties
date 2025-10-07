@@ -1,0 +1,47 @@
+.operationItem {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  height: 24px;
+  justify-content: end;
+  gap: 10px;
+  cursor: pointer;
+  &:hover {
+    color: #002cfb;
+    * {
+      color: #002cfb;
+    }
+  }
+}
+.operationItemNoHover {
+  align-items: center;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  height: 24px;
+  justify-content: end;
+  gap: 10px;
+}
+
+
+.textEllipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.right {
+  text-align: right;
+}
+
+.gray {
+  color: #71869d;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background-color: #eaf0fa;
+  margin: 0;
+}

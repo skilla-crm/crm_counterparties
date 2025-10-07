@@ -1,0 +1,6 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Ручка -->
+  <path d="M6 4V3.2C6 2.53726 6.53726 2 7.2 2H8.8C9.46274 2 10 2.53726 10 3.2V4" stroke="#ADBFDF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+  <!-- Основа кейса -->
+  <path d="M3.5 4.53711H12.5C13.4389 4.53711 14.2002 5.29842 14.2002 6.2373V11.5C14.2002 12.4389 13.4389 13.2002 12.5 13.2002H3.5C2.56112 13.2002 1.7998 12.4389 1.7998 11.5V6.2373C1.7998 5.29842 2.56112 4.53711 3.5 4.53711Z" stroke="#ADBFDF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>

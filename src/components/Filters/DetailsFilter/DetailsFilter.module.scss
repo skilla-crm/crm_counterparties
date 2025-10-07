@@ -1,0 +1,115 @@
+.container {
+  position: relative;
+}
+
+.modal {
+  width: 450px;
+  position: absolute;
+  z-index: 14;
+  right: 0;
+  top: 44px;
+  padding: 12px 0 20px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0px 0px 10px 0px rgba(0, 32, 51, 0.1);
+  transition: all 0.2s ease-in-out;
+  transform: scale(0.7);
+  opacity: 0;
+  visibility: hidden;
+
+  &_open {
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 2;
+  visibility: hidden;
+
+  &_anim {
+    visibility: visible;
+  }
+}
+
+.headerTitle {
+  margin: 0 20px;
+  border-bottom: 1px solid #eaf0fa;
+  display: flex;
+  align-items: center;
+  height: 30px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  color: #71869d;
+}
+
+.listContainer {
+  margin-left: 20px;
+  max-height: 200px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  padding-right: 20px;
+  span {
+    color: #71869d;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+  }
+}
+.cityTitle {
+  margin: 6px 0;
+}
+
+.item {
+  display: flex;
+
+  gap: 12px;
+  padding: 6px 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+.check {
+  padding-top: 4px;
+}
+
+.block {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.blockDetails {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.buttons {
+  margin-left: 20px;
+  margin-top: 18px;
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+.ogrnLine {
+  display: block;
+
+  color: #71869d;
+  font-size: 14px;
+}
