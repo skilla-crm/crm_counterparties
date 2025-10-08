@@ -1,11 +1,10 @@
-const formatSum = (type, sum) => {
-  const sign = type === 'income' || type === 'refund_outcome' ? '+' : '-';
-  const num = parseFloat(sum);
+const formatNumWithSpace = (num) => {
+    if (num == null) return '';
 
-  if (isNaN(num)) return `${sign}${num}`;
+    const [intPart, decimalPart] = num.toString().split('.');
+    const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
-  const rounded = num.toFixed(2);
-  return `${sign}${rounded}`;
+    return decimalPart ? `${formattedInt}.${decimalPart}` : formattedInt;
 };
 
-export default formatSum;
+export default formatNumWithSpace;

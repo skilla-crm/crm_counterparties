@@ -1,25 +1,31 @@
 .root {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .header {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 .block {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .queryPanel {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 .container {
-  height: auto;
-  overflow: visible;
-  overflow-y: auto;
+    height: auto;
+    overflow: visible;
+    overflow-y: auto;
+}
+.searchPanel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
 }
