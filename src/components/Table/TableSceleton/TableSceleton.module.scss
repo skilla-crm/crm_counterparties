@@ -1,98 +1,184 @@
 .root {
-  padding: 0 24px 20px 24px;
-  width: 100%;
-  box-sizing: border-box;
-  max-width: 100%;
-  background-color: #fff;
-  border-radius: 0 0 8px 8px;
-  border-spacing: 0;
-  color: var(--Text-Primary, #121922);
-  transition: all 0.15s;
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
-  top: 50px;
+    // padding: 0 24px 20px 24px;
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+    background-color: #fff;
+    border-radius: 0 0 8px 8px;
+    border-spacing: 0;
+    color: var(--Text-Primary, #121922);
+    transition: all 0.15s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: 49px;
 
-  &_vis {
-    visibility: visible;
-    opacity: 1;
-  }
+    &_vis {
+        visibility: visible;
+        opacity: 1;
+    }
 
-  &_fetch td {
-    opacity: 0.6;
-    pointer-events: none;
-  }
+    &_fetch td {
+        opacity: 0.6;
+        pointer-events: none;
+    }
 }
-.gridRow {
-  display: grid;
-  align-items: center;
-  padding: 0;
-  // margin-top: -1px;
-  border-bottom: 1px solid #eff4fb;
-  height: 50px;
-  box-sizing: border-box;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 18px;
-  color: #121922;
-  cursor: pointer;
 
-  &.clientsDebts {
-    grid-template-columns: minmax(200px, 1fr) //Контрагент
-      minmax(130px, 130px) // ИНН
-      minmax(100px, 100px) // КПП
-      minmax(100px, 0.5fr) // Сумма
-      minmax(140px, 140px) // Нет упд
-      minmax(130px, 0.5fr) // Выручка за год
-      minmax(140px, 140px) // Дней с заказа
-      minmax(150px, 1fr) // Примечание
-      minmax(140px, 140px) // Риск
-      // minmax(120px, 120px) // Акт Сверки
-      minmax(50px, 0.1fr); // Кнопка
-  }
-  &.ourDebts {
-    grid-template-columns: minmax(200px, 2fr) //Контрагент
-      minmax(130px, 130px) // ИНН
-      minmax(100px, 100px) // КПП
-      minmax(250px, 1fr) // Сумма
-      minmax(150px, 1.5fr) // Примечание
-      minmax(140px, 140px) // Риск
-      // minmax(120px, 120px) // Акт Сверки
-      minmax(50px, 0.1fr); // Кнопка
-  }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+.gridRow {
+    display: grid;
+    align-items: center;
+    padding: 0 20px;
+    height: 60px;
+    /*  margin-top: -1px; */
+    // border-bottom: 1px solid #eff4fb;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #121922;
+    position: relative;
+
+    &.approved {
+        grid-template-columns: minmax(350px, 1fr) // Наименование
+            minmax(60px, 60px) // Риск
+            minmax(140px, 140px) // Оквед
+            minmax(200px, 200px) // доля выручки
+            minmax(140px, 140px) // выручка ЕГРЮЛ
+            minmax(90px, 90px) // ССч
+            minmax(200px, 200px) // Статус ЕГРюл
+            minmax(140px, 2fr); //Примечание
+        // minmax(70px, 70px); //Карточка
+        transition: all 0.15s;
+        cursor: pointer;
+    }
+
+    &.notApproved {
+        grid-template-columns: minmax(200px, 2fr) //Наименование
+            minmax(200px, 2fr); // Примечание
+    }
+}
+
+.line {
+    margin: -1px 20px -1px;
+    width: calc(100% - 40px);
+    height: 1px;
+    background-color: #eaf0fa;
 }
 .gridCell {
-  padding-right: 12px;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 16px 20px 16px 0;
 
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+    &.right {
+        justify-content: flex-end;
+        text-align: right;
+    }
 
-  &.right {
-    justify-self: end;
-    text-align: right;
-    padding-right: 16px;
-  }
-  &.center {
-    justify-content: center;
-  }
+    &.center {
+        justify-content: center;
+        text-align: center;
+    }
 
-  &.gray {
+    &.gray {
+        color: #71869d;
+    }
+
+    &.bigPadding {
+        padding-right: 40px;
+    }
+
+    &.button {
+        justify-content: flex-end;
+        padding: 0;
+        padding-right: 20px;
+    }
+}
+
+.gridHeader {
+    @extend .gridRow;
+    height: 50px;
+    font-weight: 500;
     color: #71869d;
-  }
-  &.amount {
-    padding-right: 40px;
-  }
+
+    &:hover {
+        background-color: transparent !important;
+
+        .deleteWrapper {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+    }
+
+    > div {
+        padding: 16px 20px 16px 0px;
+    }
+
+    > div:first-child {
+        padding-left: 12px;
+    }
 }
-.firstCell {
-  padding-left: 12px;
-  gap: 12px;
+
+.justifyCell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-.lastCell {
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding-right: 40px;
+.labelBadge {
+    display: flex;
+    flex-direction: row;
+
+    gap: 6px;
+    padding-left: 12px;
+    justify-content: start;
+
+    min-width: 0;
+    overflow: hidden;
+
+    > * {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+.updCell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+}
+.nameWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    width: 100%;
+}
+.columnCell {
+    padding: 0;
+    padding-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+    width: auto;
+}
+.inn {
+    padding-left: 12px;
+    display: flex;
+
+    gap: 6px;
+    overflow: hidden;
+    color: #71869d;
+    text-overflow: ellipsis;
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
 }

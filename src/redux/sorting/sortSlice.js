@@ -1,27 +1,27 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  sortBy: 'sum',
-  sortDir: '-',
+    sortBy: 'share_of_partnership_revenue',
+    sortDir: 'asc',
 };
 
 const sortSlice = createSlice({
-  name: 'sort',
-  initialState,
-  reducers: {
-    setSort: (state, action) => {
-      const { type, dir } = action.payload;
+    name: 'sort',
+    initialState,
+    reducers: {
+        setSort: (state, action) => {
+            const { type, dir } = action.payload;
 
-      if (state.sortBy === type && state.sortDir === dir) {
-        state.sortBy = '';
-        state.sortDir = '';
-      } else {
-        state.sortBy = type;
-        state.sortDir = dir;
-      }
+            if (state.sortBy === type && state.sortDir === dir) {
+                state.sortBy = '';
+                state.sortDir = '';
+            } else {
+                state.sortBy = type;
+                state.sortDir = dir;
+            }
+        },
+        resetSort: () => initialState,
     },
-    resetSort: () => initialState,
-  },
 });
 
 export const { setSort, resetSort } = sortSlice.actions;

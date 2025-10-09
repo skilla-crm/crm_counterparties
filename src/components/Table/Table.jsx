@@ -1,17 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 // Components
 
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
-import Accordion from './Accordion/Accordion';
-import BottomInfo from 'components/General/BottomInfo/BottomInfo';
 
 // Styles
 import s from './Table.module.scss';
 import classNames from 'classnames';
 import TableSceleton from './TableSceleton/TableSceleton';
 
-const Table = ({ type, anim, isLoading, list = [], error, totalSum }) => {
+const Table = ({ type, anim, isLoading, list = [], error }) => {
     // if (error)
     //   return (
     //     <div className={s.error}>
@@ -31,9 +29,15 @@ const Table = ({ type, anim, isLoading, list = [], error, totalSum }) => {
 
     return (
         <>
-            <div className={classNames(s.overlay, anim && s.overlay_anim)}>
+            <div className={classNames(s.overlay)}>
                 <TableSceleton isLoading={isLoading} type={type} />
-                <div className={classNames(s.root, isLoading && s.root_fetch)}>
+                <div
+                    className={classNames(
+                        s.root,
+                        anim && s.root_anim,
+                        isLoading && s.root_fetch
+                    )}
+                >
                     <TableHeader type={type} />
                     <div className={s.line}></div>
 
@@ -42,6 +46,7 @@ const Table = ({ type, anim, isLoading, list = [], error, totalSum }) => {
                             return (
                                 <React.Fragment key={row.id}>
                                     <TableRow row={row} type={type} />
+                                    <div className={s.line}></div>
                                 </React.Fragment>
                             );
                         })}

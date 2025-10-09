@@ -1,29 +1,29 @@
 .root {
-  position: relative;
-  width: 100%;
+    position: relative;
+    width: 100%;
 }
 
 .container {
-  width: 100%;
-
-  p {
     width: 100%;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
+
+    p {
+        width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
 }
 .gray {
-  color: #71869d;
+    color: #71869d;
 }
 .over {
-  top: 0;
-  width: fit-content !important;
-  position: absolute;
-  visibility: hidden;
+    top: 0;
+    width: fit-content !important;
+    position: absolute;
+    visibility: hidden;
 }
 .textEllipsis {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
 }

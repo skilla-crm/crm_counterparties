@@ -17,91 +17,95 @@ import { ReactComponent as SmileYellow } from 'assets/icons/cardFilling/yellowSm
 import s from './Table.module.scss';
 import formatSum from 'utils/formatSum';
 import formatNumWithSpace from 'utils/formatSum';
+import UniButton from 'components/General/UniButton/UniButton';
 
 const TableRow = ({ row, type }) => {
     const navigate = useNavigate();
 
     const {
-        peopleCount,
+        employee_count,
         status,
         id,
         name,
         label,
         inn,
         kpp,
-        note,
+        notes,
         okved,
-        filling,
+        is_hidden,
         revenue,
-        shareOfRevenue,
+        share_of_partnership_revenue,
     } = row;
     console.log(row);
     const renderApproved = () => {
         return (
-            <>
-                <div
-                    className={classNames(s.gridRow, s.approved)}
-                    onClick={() => {}}
-                >
-                    <div className={classNames(s.gridCell, s.columnCell)}>
-                        <div
-                            className={classNames(s.nameWrapper, s.labelBadge)}
-                        >
-                            <Goal text={name} />
-                            <CompanyLabelBadge label={label} />
-                        </div>{' '}
-                        <div className={s.inn}>
-                            <div> {inn && `ИНН ${inn}`}</div>
-                            <div> {kpp && `КПП${kpp}`}</div>
-                        </div>
-                    </div>
-                    <div className={classNames(s.gridCell)}>РИСК</div>
-                    <div className={classNames(s.gridCell)}>{okved}</div>
-
-                    <div className={classNames(s.gridCell, s.right)}>
-                        {shareOfRevenue}
-                    </div>
-                    <div className={classNames(s.gridCell, s.right)}>
-                        {formatNumWithSpace(revenue)}
-                    </div>
-                    <div className={classNames(s.gridCell, s.right)}>
-                        {formatNumWithSpace(peopleCount)}
-                    </div>
-                    <div className={classNames(s.gridCell)}>
-                        <Badge status={status} />
-                    </div>
-
-                    <div className={classNames(s.gridCell)}>
-                        <Goal text={note} />
-                    </div>
-                    <div className={classNames(s.gridCell, s.center)}>
-                        <CardFilling filling={filling} />
+            <div
+                className={classNames(s.gridRow, s.approved)}
+                onClick={() => {}}
+            >
+                <div className={classNames(s.gridCell, s.columnCell)}>
+                    <div className={classNames(s.nameWrapper, s.labelBadge)}>
+                        <Goal text={name} />
+                        <CompanyLabelBadge label={label} />
+                    </div>{' '}
+                    <div className={s.inn}>
+                        <div> {inn && `ИНН ${inn}`}</div>
+                        <div> {kpp && `КПП${kpp}`}</div>
                     </div>
                 </div>
-                <div className={s.line}></div>
-            </>
+                <div>
+                    {Boolean(is_hidden) && (
+                        <UniButton
+                            text="Риск"
+                            type="danger"
+                            width={44}
+                            style={{ height: '24px' }}
+                        />
+                    )}
+                </div>
+                <div className={classNames(s.gridCell)}>{okved}</div>
+
+                <div className={classNames(s.gridCell, s.right)}>
+                    {share_of_partnership_revenue}
+                </div>
+                <div className={classNames(s.gridCell, s.right)}>
+                    {formatNumWithSpace(revenue)}
+                </div>
+                <div className={classNames(s.gridCell, s.right)}>
+                    {formatNumWithSpace(employee_count)}
+                </div>
+                <div className={classNames(s.gridCell)}>
+                    <Badge status={status} />
+                </div>
+
+                <div className={classNames(s.gridCell)}>
+                    <Goal text={notes} />
+                </div>
+                {/* <div className={classNames(s.gridCell, s.center)}>
+                        <CardFilling filling={filling} />
+                    </div> */}
+            </div>
         );
     };
 
     const renderNotApproved = () => {
-        const { id, sum, name, label, note } = row;
+        const { id, sum, name, label, notes } = row;
 
         return (
-            <>
-                {' '}
-                <div
-                    className={classNames(s.gridRow, s.notApproved)}
-                    onClick={() => {}}
-                >
-                    <div className={classNames(s.gridCell, s.labelBadge)}>
-                        <Goal text={name} /> <CompanyLabelBadge label={label} />
+            <div
+                className={classNames(s.gridRow, s.notApproved)}
+                onClick={() => {}}
+            >
+                <div className={classNames(s.gridCell, s.labelBadge)}>
+                    <div>
+                        <Goal text={name} />{' '}
                     </div>
-                    <div className={classNames(s.gridCell, s.gray)}>
-                        <Goal text={note} />{' '}
-                    </div>
+                    <CompanyLabelBadge label={label} />
                 </div>
-                <div className={s.line}></div>
-            </>
+                <div className={classNames(s.gridCell, s.gray)}>
+                    <Goal text={notes} />{' '}
+                </div>
+            </div>
         );
     };
 
@@ -175,7 +179,7 @@ const Badge = ({ status }) => {
                     Прекратил деятельность
                 </div>
             );
-        case 7:
+        case 'BANKRUPT':
             return (
                 <div className={classNames(s.badge, s.badge_red)}>
                     Исключается из ЕГРЮЛ
@@ -187,12 +191,12 @@ const Badge = ({ status }) => {
                     Недейств. регистрация
                 </div>
             );
-        case 'BANKRUPT':
-            return (
-                <div className={classNames(s.badge, s.badge_red)}>
-                    Банкротство
-                </div>
-            );
+        // case 'BANKRUPT':
+        //     return (
+        //         <div className={classNames(s.badge, s.badge_red)}>
+        //             Банкротство
+        //         </div>
+        //     );
         default:
             return null;
     }

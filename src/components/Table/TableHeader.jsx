@@ -23,13 +23,9 @@ const TableHeader = ({ type }) => {
                     Выручка ЕГРЮЛ
                 </div>
                 <div className={classNames(s.gridCell, s.right)}>ССЧ, чел</div>
-                <div className={classNames(s.gridCell, s.right)}>
-                    Статус ЕГРЮЛ{' '}
-                </div>
-                <div className={classNames(s.gridCell, s.center)}>
-                    Примечание
-                </div>
-                <div className={classNames(s.gridCell, s.center)}>Карточка</div>
+                <div className={classNames(s.gridCell)}>Статус ЕГРЮЛ </div>
+                <div className={classNames(s.gridCell)}>Примечание</div>
+                {/* <div className={classNames(s.gridCell, s.center)}>Карточка</div> */}
             </div>
         );
     }

@@ -3,14 +3,7 @@
     position: relative;
     width: 100%;
     overflow: hidden;
-    opacity: 0;
-    transition: all 0.15s;
-
-    &_anim {
-        opacity: 1;
-    }
 }
-
 .root {
     table-layout: fixed;
     width: 100%;
@@ -30,7 +23,6 @@
     line-height: 18px;
     margin-bottom: 40px;
 }
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 .gridRow {
@@ -63,12 +55,12 @@
         grid-template-columns: minmax(350px, 1fr) // Наименование
             minmax(60px, 60px) // Риск
             minmax(140px, 140px) // Оквед
-            minmax(195px, 195px) // доля выручки
-            minmax(130px, 130px) // выручка ЕГРЮЛ
+            minmax(200px, 200px) // доля выручки
+            minmax(140px, 140px) // выручка ЕГРЮЛ
             minmax(90px, 90px) // ССч
             minmax(200px, 200px) // Статус ЕГРюл
-            minmax(140px, 1fr) //Примечание
-            minmax(70px, 70px); //Примечание
+            minmax(140px, 2fr); //Примечание
+        // minmax(70px, 70px); //Карточка
         transition: all 0.15s;
         cursor: pointer;
 
@@ -91,17 +83,12 @@
 
         &:hover {
             background-color: #f8fafd;
-
-            .deleteWrapper {
-                opacity: 1;
-                pointer-events: auto;
-            }
         }
     }
 }
 
 .line {
-    margin: -1px 20px 0;
+    margin: -1px 20px -1px;
     width: calc(100% - 40px);
     height: 1px;
     background-color: #eaf0fa;
@@ -109,7 +96,7 @@
 .gridCell {
     display: flex;
     align-items: center;
-    height: 59px;
+    height: 60px;
     white-space: nowrap;
     text-overflow: ellipsis;
     padding: 16px 20px 16px 0;
@@ -169,12 +156,6 @@
     align-items: center;
 }
 
-.updCell {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 4px;
-}
 .nameWrapper {
     display: flex;
     align-items: center;

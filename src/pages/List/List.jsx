@@ -1,18 +1,10 @@
-import { act, useEffect, useMemo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
-//utils
-
-import arrayToString from 'utils/arrayToString';
 
 import { approvedCounterparties, notApprovedCounterparties } from 'mock/contr';
 
-//redux
-import { useGetCompaniesQuery } from '../../redux/services/filtersApiActions';
-import { setPartnerships } from '../../redux/filters/companiesListSlice';
-
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetDebtsInfiniteQuery } from '../../redux/services/debtsApiActions';
+import { useGetCounterpartiesInfiniteQuery } from '../../redux/services/counterpartiesApiActions';
 
 // Components
 import Search from 'components/General/Search/Search';
@@ -23,10 +15,10 @@ import ListHeader from './ListHeader';
 // Styles
 import s from './List.module.scss';
 import SegmentButtons from 'components/General/SegmentButtons/SegmentButtons';
-import { set } from 'lodash';
+import { useCounterparties } from 'hooks/useCounterarties';
 
 const List = () => {
-    const COUNTERPARTIES_TYPES = [
+    const COUNTERPARTIES_SUB_TYPES = [
         { value: 'active', label: 'Активные', ref: useRef() },
         { value: 'stop', label: 'Стоп-лист', ref: useRef() },
     ];
@@ -39,36 +31,43 @@ const List = () => {
     const [anim, setAnim] = useState(true);
 
     const { sortBy, sortDir } = useSelector((state) => state.sort);
+    const { allRows, fetchNextPage, hasNextPage, isLoading, isFetching } =
+        useCounterparties({ activeTab, sortDir, sortBy, counterpartiesType });
 
-    const {
-        data: approvedData,
-        fetchNextPage: fetchNextPageApproved,
-        hasNextPage: hasNextPageApproved,
-        isLoading: isLoadingApproved,
-        isFetching: isFetchingApproved,
-        error: approvedDataError,
-    } = useGetDebtsInfiniteQuery({
-        sort: activeTab === 'approved' ? `${sortDir}${sortBy}` : '',
-    });
+    // const {
+    //     data: approvedData,
+    //     fetchNextPage: fetchNextPageApproved,
+    //     hasNextPage: hasNextPageApproved,
+    //     isLoading: isLoadingApproved,
+    //     isFetching: isFetchingApproved,
+    //     error: approvedDataError,
+    // } = useGetCounterpartiesInfiniteQuery({
+    //     sort: activeTab === 'approved' ? `${sortDir}${sortBy}` : '',
+    //     'filter[verified_id]': 'approved',
+    //     'filter[is_black]': activeTab === 'approved' ? counterpartiesType : '',
+    // });
 
-    const {
-        data: notApprovedData,
-        fetchNextPage: fetchNextPageNotApproved,
-        hasNextPage: hasNextPageNotApproved,
-        isLoading: isLoadingNotApproved,
-        isFetching: isFetchingNotApproved,
-        error: notApprovedDataError,
-    } = useGetDebtsInfiniteQuery({
-        sort: activeTab === 'notApproved' ? `${sortDir}${sortBy}` : '',
-    });
+    // const {
+    //     data: notApprovedData,
+    //     fetchNextPage: fetchNextPageNotApproved,
+    //     hasNextPage: hasNextPageNotApproved,
+    //     isLoading: isLoadingNotApproved,
+    //     isFetching: isFetchingNotApproved,
+    //     error: notApprovedDataError,
+    // } = useGetCounterpartiesInfiniteQuery({
+    //     sort: activeTab === 'notApproved' ? `${sortDir}${sortBy}` : '',
+    //     'filter[verified_id]': 'notApproved',
+    //     'filter[is_black]':
+    //         activeTab === 'notApproved' ? counterpartiesType : '',
+    // });
 
-    const allRowsApproved =
-        approvedData?.pages?.flatMap((page) => page.data) || [];
+    // const allRowsApproved =
+    //     approvedData?.pages?.flatMap((page) => page.data) || [];
     // const totalCountApproved = approvedData?.pages?.[0]?.meta?.total;
     const totalCountApproved = approvedCounterparties.length;
 
-    const allRowsNotApproved =
-        notApprovedData?.pages?.flatMap((page) => page.data) || [];
+    // const allRowsNotApproved =
+    //     notApprovedData?.pages?.flatMap((page) => page.data) || [];
     // const totalCountNotApproved = notApprovedData?.pages?.[0]?.meta?.total;
     const totalCountNotApproved = notApprovedCounterparties.length;
 
@@ -78,13 +77,20 @@ const List = () => {
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
                 setAnim={setAnim}
-                isLoading={isLoadingApproved || isLoadingNotApproved}
+                isLoading={isLoading}
                 counters={{
                     approved: totalCountApproved,
                     notApproved: totalCountNotApproved,
                 }}
             />
-
+            <span
+                key={activeTab}
+                className={`${s.subtitle} ${activeTab === 'approved' ? s.fadeIn : s.fadeOut}`}
+            >
+                {activeTab === 'approved'
+                    ? 'Проверены платформой'
+                    : 'Реквизиты не найдены в базах и не могут быть проверены платформой '}
+            </span>
             <div className={s.queryPanel}>
                 <div className={s.searchPanel}>
                     <Search
@@ -98,73 +104,136 @@ const List = () => {
                         value={counterpartiesType}
                         callback={(val) => setCounterpartiesType(val)}
                         controlRef={useRef()}
-                        segments={COUNTERPARTIES_TYPES}
+                        segments={COUNTERPARTIES_SUB_TYPES}
                     />
                 </div>
 
-                <FiltersContainer
-                    type={activeTab}
-                    isFetching={
-                        activeTab === 'approved'
-                            ? isFetchingApproved
-                            : isFetchingNotApproved
-                    }
-                />
+                <FiltersContainer type={activeTab} isFetching={isFetching} />
             </div>
 
             <div className={s.container}>
                 <InfiniteScroll
-                    dataLength={
-                        activeTab === 'approved'
-                            ? allRowsApproved.length
-                            : allRowsNotApproved.length
-                    }
-                    next={
-                        activeTab === 'approved'
-                            ? fetchNextPageApproved
-                            : fetchNextPageNotApproved
-                    }
-                    hasMore={
-                        activeTab === 'approved'
-                            ? hasNextPageApproved
-                            : hasNextPageNotApproved
-                    }
+                    dataLength={allRows.length}
+                    next={fetchNextPage}
+                    hasMore={hasNextPage}
                     scrollableTarget="scrollableDiv"
                     style={{
-                        overflow:
-                            allRowsApproved.length === 0 ? 'hidden' : 'auto',
+                        overflow: allRows.length === 0 ? 'hidden' : 'auto',
                     }}
                 >
                     <Table
                         anim={anim}
                         type={activeTab}
-                        // list={
-                        //   activeTab === "approved" ? allRowsApproved : allRowsNotApproved
-                        // }
                         list={
                             activeTab === 'approved'
                                 ? approvedCounterparties
                                 : notApprovedCounterparties
                         }
-                        totalCount={
-                            activeTab === 'approved'
-                                ? totalCountApproved
-                                : totalCountNotApproved
-                        }
-                        isLoading={
-                            activeTab === 'approved'
-                                ? isLoadingApproved
-                                : isLoadingNotApproved
-                        }
-                        // error={
-                        //   activeTab === "approved"
-                        //     ? approvedDataError
-                        //     : notApprovedDataError
-                        // }
+                        // isLoading={isLoading}
+                        isLoading={isLoading}
                     />
                 </InfiniteScroll>
             </div>
         </div>
+        // <div className={s.root} ref={containerRef}>
+        //     <ListHeader
+        //         activeTab={activeTab}
+        //         setActiveTab={setActiveTab}
+        //         setAnim={setAnim}
+        //         isLoading={isLoadingApproved || isLoadingNotApproved}
+        //         counters={{
+        //             approved: totalCountApproved,
+        //             notApproved: totalCountNotApproved,
+        //         }}
+        //     />
+        //     <span
+        //         key={activeTab}
+        //         className={`${s.subtitle} ${activeTab === 'approved' ? s.fadeIn : s.fadeOut}`}
+        //     >
+        //         {activeTab === 'approved'
+        //             ? 'Проверены платформой'
+        //             : 'Реквизиты не найдены в базах и не могут быть проверены платформой '}
+        //     </span>
+        //     <div className={s.queryPanel}>
+        //         <div className={s.searchPanel}>
+        //             <Search
+        //                 searchValue={searchQuery}
+        //                 setSearchQuery={setSearchQuery}
+        //                 placeholder="Наименование, ИНН, ОГРН, телефон, e-mail, имя"
+        //                 style={{ width: '500px' }}
+        //             />
+        //             <SegmentButtons
+        //                 style={2}
+        //                 value={counterpartiesType}
+        //                 callback={(val) => setCounterpartiesType(val)}
+        //                 controlRef={useRef()}
+        //                 segments={COUNTERPARTIES_SUB_TYPES}
+        //             />
+        //         </div>
+
+        //         <FiltersContainer
+        //             type={activeTab}
+        //             isFetching={
+        //                 activeTab === 'approved'
+        //                     ? isFetchingApproved
+        //                     : isFetchingNotApproved
+        //             }
+        //         />
+        //     </div>
+
+        //     <div className={s.container}>
+        //         <InfiniteScroll
+        //             dataLength={
+        //                 activeTab === 'approved'
+        //                     ? allRowsApproved.length
+        //                     : allRowsNotApproved.length
+        //             }
+        //             next={
+        //                 activeTab === 'approved'
+        //                     ? fetchNextPageApproved
+        //                     : fetchNextPageNotApproved
+        //             }
+        //             hasMore={
+        //                 activeTab === 'approved'
+        //                     ? hasNextPageApproved
+        //                     : hasNextPageNotApproved
+        //             }
+        //             scrollableTarget="scrollableDiv"
+        //             style={{
+        //                 overflow:
+        //                     allRowsApproved.length === 0 ? 'hidden' : 'auto',
+        //             }}
+        //         >
+        //             <Table
+        //                 anim={anim}
+        //                 type={activeTab}
+        //                 // list={
+        //                 //   activeTab === "approved" ? allRowsApproved : allRowsNotApproved
+        //                 // }
+        //                 list={
+        //                     activeTab === 'approved'
+        //                         ? approvedCounterparties
+        //                         : notApprovedCounterparties
+        //                 }
+        //                 totalCount={
+        //                     activeTab === 'approved'
+        //                         ? totalCountApproved
+        //                         : totalCountNotApproved
+        //                 }
+        //                 isLoading={
+        //                     activeTab === 'approved'
+        //                         ? isLoadingApproved
+        //                         : isLoadingNotApproved
+        //                 }
+        //                 // error={
+        //                 //   activeTab === "approved"
+        //                 //     ? approvedDataError
+        //                 //     : notApprovedDataError
+        //                 // }
+        //             />
+        //         </InfiniteScroll>
+        //     </div>
+        // </div>
     );
 };
 
