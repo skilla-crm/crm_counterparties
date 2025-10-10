@@ -6,6 +6,7 @@ export const useCounterparties = ({
     sortDir,
     sortBy,
     counterpartiesType,
+    searchQuery,
 }) => {
     const isApproved = activeTab === 'approved';
     const isNotApproved = activeTab === 'notApproved';
@@ -16,6 +17,7 @@ export const useCounterparties = ({
             'sort[dir]': sortDir,
             'filter[verified_id]': 'approved',
             'filter[is_black]': counterpartiesType,
+            'filter[search]': searchQuery,
         },
         { skip: !isApproved, refetchOnMountOrArgChange: false }
     );
@@ -26,6 +28,7 @@ export const useCounterparties = ({
             'sort[dir]': sortDir,
             'filter[verified_id]': 'notApproved',
             'filter[is_black]': counterpartiesType,
+            'filter[search]': searchQuery,
         },
         { skip: !isNotApproved, refetchOnMountOrArgChange: false }
     );

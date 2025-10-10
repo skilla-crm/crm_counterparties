@@ -40,6 +40,23 @@ export const counterpartiesApiActions = createApi({
             providesTags: ['counterparties'],
             keepUnusedDataFor: 300,
         }),
+        removeRiskBadge: build.mutation({
+            query: (id) => ({
+                url: `${COUNTERPARTIES_URL}/${id}`,
+                method: 'POST',
+            }),
+        }),
+        addСounterparty: build.mutation({
+            query: (data) => ({
+                url: `${COUNTERPARTIES_URL}`,
+                method: 'POST',
+                body: data,
+            }),
+        }),
     }),
 });
-export const { useGetCounterpartiesInfiniteQuery } = counterpartiesApiActions;
+export const {
+    useGetCounterpartiesInfiniteQuery,
+    useRemoveRiskBadgeMutation,
+    useAddСounterpartyMutation,
+} = counterpartiesApiActions;

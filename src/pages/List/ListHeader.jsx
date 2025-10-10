@@ -1,16 +1,21 @@
+// React
+import React, { useRef } from 'react';
+
 // Redux
 import { useDispatch } from 'react-redux';
 
+//hooks
+import { useModal } from 'hooks/useModal';
+
 //Components
 import UniButton from 'components/General/UniButton/UniButton';
+import SegmentButtons from 'components/General/SegmentButtons/SegmentButtons';
 
 // Icons
 import { ReactComponent as IconPlus } from 'assets/icons/iconPlus.svg';
 
 // Styles
 import s from './List.module.scss';
-import SegmentButtons from 'components/General/SegmentButtons/SegmentButtons';
-import React, { useRef } from 'react';
 
 const TABS = [
     { value: 'approved', label: 'Контрагенты' },
@@ -24,6 +29,7 @@ const ListHeader = ({
     isLoading,
     counters = {},
 }) => {
+    const { showModal } = useModal();
     const controlRef = useRef(null);
     const dispatch = useDispatch();
     const segmentRefs = useRef(TABS.map(() => React.createRef()));
@@ -41,6 +47,10 @@ const ListHeader = ({
             return counters?.notApproved ?? null;
         }
         return 0;
+    };
+
+    const handleShowModalAdd = () => {
+        showModal('ADD_COUNTERPARTY');
     };
 
     return (
@@ -65,7 +75,11 @@ const ListHeader = ({
                 />
 
                 <div className={s.buttons}>
-                    <UniButton icon={IconPlus} text="Добавить контрагента" />
+                    <UniButton
+                        icon={IconPlus}
+                        text="Добавить контрагента"
+                        onClick={handleShowModalAdd}
+                    />
                 </div>
             </div>
         </header>

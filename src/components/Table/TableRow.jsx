@@ -2,11 +2,16 @@ import classNames from 'classnames';
 
 //components
 import CompanyLabelBadge from 'components/General/CompanyLabelBadge/CompanyLabelBadge';
-import AmountFormatted from 'components/General/AmountFormatted/AmountFormatted';
+
 import Goal from 'components/General/Goal/Goal';
+import UniButton from 'components/General/UniButton/UniButton';
+
+//utils
+import formatNumWithSpace from 'utils/formatSum';
 
 //hooks
 import { useNavigate } from 'react-router-dom';
+import { useModal } from 'hooks/useModal';
 
 // icons
 import { ReactComponent as SmileRed } from 'assets/icons/cardFilling/redSmile.svg';
@@ -15,12 +20,10 @@ import { ReactComponent as SmileYellow } from 'assets/icons/cardFilling/yellowSm
 
 // styles
 import s from './Table.module.scss';
-import formatSum from 'utils/formatSum';
-import formatNumWithSpace from 'utils/formatSum';
-import UniButton from 'components/General/UniButton/UniButton';
 
 const TableRow = ({ row, type }) => {
     const navigate = useNavigate();
+    const { showModal } = useModal();
 
     const {
         employee_count,
@@ -60,6 +63,9 @@ const TableRow = ({ row, type }) => {
                             type="danger"
                             width={44}
                             style={{ height: '24px' }}
+                            onClick={(id) => {
+                                showModal('REMOVE_RISK_BADGE', { id });
+                            }}
                         />
                     )}
                 </div>

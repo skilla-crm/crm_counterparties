@@ -1,0 +1,68 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  opacity: 0;
+  transition: all 0.15s;
+
+  &_anim {
+    opacity: 1;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.block {
+  width: 100%;
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px;
+  align-items: flex-start;
+  gap: 20px;
+  align-self: stretch;
+  border-radius: 8px;
+  background: #fff;
+  min-width: 790px;
+}
+
+.fields {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.showAddBlock {
+  padding-top: 0;
+  display: flex;
+  flex-direction: column;
+  height: 0px;
+  opacity: 0;
+  gap: 20px;
+  transition: all 0.2s ease-in-out;
+
+  &_active {
+    padding-top: 20px;
+    height: auto;
+    opacity: 1;
+  }
+}
+
+.dateInputWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.default {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+}
+
+

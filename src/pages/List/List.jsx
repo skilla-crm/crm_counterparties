@@ -32,7 +32,13 @@ const List = () => {
 
     const { sortBy, sortDir } = useSelector((state) => state.sort);
     const { allRows, fetchNextPage, hasNextPage, isLoading, isFetching } =
-        useCounterparties({ activeTab, sortDir, sortBy, counterpartiesType });
+        useCounterparties({
+            activeTab,
+            sortDir,
+            sortBy,
+            counterpartiesType,
+            searchQuery,
+        });
 
     // const {
     //     data: approvedData,
