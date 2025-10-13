@@ -1,30 +1,27 @@
-import { useState } from 'react';
+import s from "./Switch.module.scss";
+import classNames from "classnames";
 
-// Icons
-import { ReactComponent as IconClose } from 'assets/icons/iconClose.svg';
+const Switch = ({ text, switchState, setSwitchState, disabled }) => {
 
-// Styles
-import s from './Switch.module.scss';
-
-const Switch = ({ label, activate, onChange, blocked }) => {
-  const [checked, setChecked] = useState(activate);
-
-  return (
-    <div className={s.switchWrapper}>
-      <button
-        onClick={() => setChecked(!checked)}
-        className={`${s.switch} ${checked ? s.active : ''}`}
-      >
-        {checked && blocked && (
-          <span className={s.icon}>
-            <IconClose />
-          </span>
+  const handleSwitch = () => {
+    setSwitchState(!switchState)
+  }
+  return ( 
+    <div
+      onClick={handleSwitch}
+      className={classNames(s.container, disabled && s.container_disabled)}
+    >
+      <div
+        className={classNames(
+          s.switch,
+          disabled && s.switch_disabled,
+          switchState && s.switch_on,
         )}
-        <div className={`${s.thumb} ${checked ? s.thumbActive : ''}`} />
-      </button>
-      <div className={s.labelWrapper}>
-        <span className={s.label}>{label}</span>
+      >
+        <div className={classNames(s.inner, switchState && s.inner_on)}>
+        </div>
       </div>
+      {text.length > 0 && <p>{text}</p>}
     </div>
   );
 };

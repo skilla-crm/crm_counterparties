@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 //components
 import List from "./pages/List/List";
 import Detail from "./pages/Detail/Detail";
-import Create from "./pages/Create/Create";
+import CreateCounterparty from "pages/CreateCounterparty/CreateCounterparty";
 
 import { ToastContainer, Slide } from "react-toastify";
 import ScrollToTopButton from "components/General/ScrollToTopBtn/ScrollToTopBtn";
@@ -16,7 +16,7 @@ const App = () => {
     <div id="scrollableDiv" className={s.root} ref={scrollRef}>
       <Routes>
         <Route path="/" element={<List />} />
-        <Route path="/create" element={<Create />} />
+        <Route path="/create" element={<CreateCounterparty />} />
         <Route path="/detail/:id" element={<Detail />} />
       </Routes>
 

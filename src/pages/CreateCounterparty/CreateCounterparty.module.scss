@@ -65,4 +65,15 @@
   justify-content: center;
 }
 
+.percent {
+  display: block;
+  height: 100%;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
 
+.percent_hidden {
+  display: none;
+  opacity: 0;
+  height: 0;
+}

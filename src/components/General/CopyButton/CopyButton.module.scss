@@ -1,0 +1,38 @@
+.iconButton {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover .icon {
+    opacity: 1;
+  }
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  fill: #71869d;
+}
+
+.toastWrapper {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.toastBody {
+  padding: 0;
+}
+
+.copied {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: green;
+}

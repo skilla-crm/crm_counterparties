@@ -1,65 +1,72 @@
-.switchWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  height: 40px;
+.container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+    height: 20px;
+    opacity: 1;
+    visibility: visible;
+    transition: all 0.15s;
+    flex-shrink: 0;
+    width: fit-content;
+
+    p {
+        padding: 0;
+        margin: 0;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+        transition: all 0.15s;
+    }
+
+    &_disabled {
+        pointer-events: none;
+    }
 }
 
 .switch {
-  position: relative;
-  width: 34px;
-  height: 20px;
-  border-radius: 999px;
-  padding: 4px;
-  background-color: #d1d5db;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  transition: background-color 0.2s ease;
-  &:not(.active):hover {
-    background-color: #adbfdf;
-  }
+    width: 34px;
+    height: 20px;
+    background-color: rgba(173, 191, 223, 0.40);
+    border-radius: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    transition: all 0.15s;
 
-  &.active {
-    background-color: #0057ff;
-  }
+    &_on {
+        background-color: #002CFB;
+    }
+
+
+    &_disabled {
+        background-color: #71869D;
+    }
 }
 
-.thumb {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease;
+.inner {
+    position: relative;
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background-color: #ffff;
+    margin-left: 3px;
+    transition: all 0.15s;
 
-  &.thumbActive {
-    transform: translateX(14px);
-  }
+    &_on {
+        transform: translateX(14px);
+    }
 }
 
-.icon {
-  position: absolute;
-  left: 8px;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.loader {
+    transform: scale(0.7);
+    transition: all 0.25s;
+    opacity: 0;
 
-  svg {
-    width: 12px;
-    height: 12px;
-    fill: white;
-  }
-}
-
-.labelWrapper {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 16px;
-  font-weight: 500;
-  color: #121922;
+    &_vis {
+       
+        opacity: 1;
+    }
 }
