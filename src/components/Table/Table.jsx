@@ -9,15 +9,18 @@ import s from './Table.module.scss';
 import classNames from 'classnames';
 import TableSceleton from './TableSceleton/TableSceleton';
 
-const Table = ({ type, anim, isLoading, list = [], error }) => {
-    // if (error)
-    //   return (
-    //     <div className={s.error}>
-    //       <div className={s.error}>
-    //         {error?.data?.message || error?.error || "Произошла ошибка..."}
-    //       </div>
-    //     </div>
-    //   );
+const Table = ({ type, anim, isLoading, isFetching, list = [], error }) => {
+    console.log(isLoading);
+    if (error)
+        return (
+            <div className={s.error}>
+                <div className={s.error}>
+                    {error?.data?.message ||
+                        error?.error ||
+                        'Произошла ошибка...'}
+                </div>
+            </div>
+        );
     if (list.length === 0 && !isLoading) {
         return (
             <div className={s.noData}>
@@ -30,7 +33,10 @@ const Table = ({ type, anim, isLoading, list = [], error }) => {
     return (
         <>
             <div className={classNames(s.overlay)}>
-                <TableSceleton isLoading={isLoading} type={type} />
+                <TableSceleton
+                    isLoading={isLoading || isFetching}
+                    type={type}
+                />
                 <div
                     className={classNames(
                         s.root,

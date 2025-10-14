@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import {
-    useGetCompanyInfoMutation,
-    useGetCompaniesByNameMutation,
-} from '../../../../../../redux/services/dadataApiActions';
+import { useGetCompanyInfoMutation } from '../../../../../../redux/services/dadataApiActions';
 import CompanyListInn from './CompanyList/CompanyListInn';
+
+import {
+    useAddСounterpartyByIdMutation,
+    useCheckCounterpartyMutation,
+} from '../../../../../../redux/services/counterpartiesApiActions';
 
 import useDebounce from 'hooks/useSimpleDebounce';
 
@@ -18,9 +20,12 @@ const InputCounterparty = ({ value, setValue, setField, disabled, form }) => {
     const [noFind, setNoFind] = useState(false);
     const [error, setError] = useState('');
     const inputRef = useRef();
-    const [getCompanyInfo] = useGetCompanyInfoMutation();
+
     const debouncedValue = useDebounce(value, 500);
 
+    const [getCompanyInfo] = useGetCompanyInfoMutation();
+
+    const [checkCounterparty] = useCheckCounterpartyMutation();
     useEffect(() => {
         if (!debouncedValue) {
             setError('');
@@ -56,23 +61,49 @@ const InputCounterparty = ({ value, setValue, setField, disabled, form }) => {
 
     const handleChoose = useCallback(
         (company) => {
-            setField('inn', company.inn);
-            setField('kpp', company.kpp);
-            setField('ogrn', company.ogrn);
-            setField('name', company?.name?.short_with_opf);
-            setField('ur_adress', company?.address?.unrestricted_value);
-            setField('adress', company?.address?.value);
-            setField('signature', company?.management?.name || '');
-            setField('signature_position', company?.management?.post || '');
+            setField({
+                inn: company.inn,
+                kpp: company.kpp,
+                ogrn: company.ogrn,
+                name: company?.name?.short_with_opf,
+                ur_adress: company?.address?.unrestricted_value,
+                adress: company?.address?.value,
+                signature: company?.management?.name || '',
+                signature_position: company?.management?.post || '',
+            });
 
-            setOpenList(false);
+            // setOpenList(false);
+
+            handleCheck(company.inn);
         },
-        [setField]
+        [setField, checkCounterparty]
     );
 
     const handleBlur = () => {
-        setTimeout(() => setOpenList(false), 200);
         setFieldFocus(false);
+        setOpenList(false);
+
+        const found = suggestions.find((s) => s.inn === value);
+        if (!found && value) {
+            checkCounterparty({ inn: value, kpp: null })
+                .unwrap()
+                .catch((err) =>
+                    console.error('Ошибка проверки контрагента', err)
+                );
+        }
+    };
+    const handleCheck = async (inn) => {
+        if (!inn || error) return;
+        try {
+            const res = await checkCounterparty({ inn, kpp: null }).unwrap();
+
+            if (res.success) {
+                setError(res.message);
+                console.log(res.message);
+            }
+        } catch (err) {
+            console.error('Ошибка проверки контрагента', err);
+        }
     };
 
     return (
@@ -89,14 +120,28 @@ const InputCounterparty = ({ value, setValue, setField, disabled, form }) => {
                     setFieldFocus(true);
                     if (suggestions.length > 0) setOpenList(true);
                 }}
-                onBlur={handleBlur}
+                onKeyDown={async (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (value) {
+                            await handleCheck(value);
+                            setOpenList(false);
+                            setFieldFocus(false);
+                        }
+                    }
+                }}
+                onBlur={() => {
+                    setTimeout(async () => {
+                        handleBlur();
+                    }, 150);
+                }}
                 disabled={disabled}
             />
 
             <div
                 className={classNames(s.errorText, error && s.errorText_active)}
             >
-                <p>ИНН должен состоять из 10 или 12 цифр</p>
+                <p>{error}</p>
             </div>
 
             {openList && (

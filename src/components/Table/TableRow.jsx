@@ -39,7 +39,7 @@ const TableRow = ({ row, type }) => {
         revenue,
         share_of_partnership_revenue,
     } = row;
-    console.log(row);
+
     const renderApproved = () => {
         return (
             <div

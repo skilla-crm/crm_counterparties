@@ -139,7 +139,7 @@ sup {
     transition: all 0.15s;
 
     &_load {
-        // max-width: 0;
+        max-width: 0;
         opacity: 0;
     }
 }
