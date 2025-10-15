@@ -17,7 +17,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<List />} />
         <Route path="/create" element={<CreateCounterparty />} />
-        <Route path="/detail/:id" element={<Detail />} />
+        <Route path="/details/:id" element={<Detail />} />
       </Routes>
 
       <ScrollToTopButton scrollContainerRef={scrollRef} />

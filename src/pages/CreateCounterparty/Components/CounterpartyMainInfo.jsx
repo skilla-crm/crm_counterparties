@@ -75,7 +75,7 @@ const CompanyMainInfo = ({ form, setField, data, isEditMode, isPercent }) => {
         <Field text="Процент менеджера по персоналу">
           <InputText
             width={200}
-            text={form.site}
+            text={form.is_percent}
             setText={(v) => setField("is_percent", v)}
           />
         </Field>

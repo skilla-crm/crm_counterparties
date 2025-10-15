@@ -1,15 +1,15 @@
-import Field from 'components/General/Field/Field';
-import InputText from 'components/General/InputText/InputText';
+import Field from "components/General/Field/Field";
+import InputText from "components/General/InputText/InputText";
 
 // Styles
-import s from '../CreateCounterparty.module.scss';
-import InputEmail from 'components/General/InputEmail/InputEmail';
-import InputPhone from 'components/General/InputPhone/InputPhone';
+import s from "../CreateCounterparty.module.scss";
+import InputEmail from "components/General/InputEmail/InputEmail";
+import InputPhone from "components/General/InputPhone/InputPhone";
 
 const CounterpartyRepresentative = ({ form, setField, setError }) => (
-    <div className={s.block}>
-        <h3>Представитель</h3>
-        <Field text="Фамилия">
+  <div className={s.block}>
+    <h3>Представитель</h3>
+    {/* <Field text="Фамилия">
             <InputText
                 width={600}
                 text={form.company_contact.name}
@@ -69,8 +69,8 @@ const CounterpartyRepresentative = ({ form, setField, setError }) => (
             text={form.diadoc_id}
             setText={(v) => setField('diadoc_id', v)}
             copyable={true}
-        />
-    </div>
+        /> */}
+  </div>
 );
 
 export default CounterpartyRepresentative;

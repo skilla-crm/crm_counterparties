@@ -18,7 +18,9 @@
   font-weight: 400;
   line-height: 16px;
   transition: all 0.15s;
-
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   &:disabled {
     background-color: rgba(212, 223, 243, 0.17);
     color: #121922;
@@ -37,6 +39,19 @@
   height: 0;
   padding-top: 0;
   color: #e10d0d;
+  font-size: 12px;
+  transition: all 0.2s ease-in-out;
+
+  &_active {
+    height: 23px;
+    padding-top: 6px;
+  }
+}
+.warningText {
+  overflow: hidden;
+  height: 0;
+  padding-top: 0;
+  color: #f89500;
   font-size: 12px;
   transition: all 0.2s ease-in-out;
 

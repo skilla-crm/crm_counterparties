@@ -3,24 +3,18 @@ import classNames from "classnames";
 
 import { useEffect, useState } from "react";
 
-
-
 const Detail = () => {
   const [anim, setAnim] = useState(false);
- 
+
   useEffect(() => {
     setTimeout(() => {
       setAnim(true);
-       document.title = ''
+      document.title = "";
     });
   }, []);
 
-
-
   return (
-    <div className={classNames(s.root, anim && s.root_anim)}>
-     
-    </div>
+    <div className={classNames(s.root, anim && s.root_anim)}>Карточка</div>
   );
 };
 
