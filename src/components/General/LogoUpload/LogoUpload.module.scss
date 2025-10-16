@@ -1,0 +1,95 @@
+.block {
+    flex-shrink: 0;
+    height: 40px;
+    width: 200px;
+    position: relative;
+    transition: all 0.25s ease-in-out;
+}
+
+.overlay {
+    box-sizing: border-box;
+    padding: 12px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: flex-end;
+    border-radius: 8px;
+    background: #000000;
+    background: linear-gradient(180deg, #3737384c 5%, rgba(13, 10, 0, 0) 96%);
+    opacity: 0;
+
+    transition: all 0.15s ease-in-out;
+
+    &_vis {
+        opacity: 1;
+    }
+}
+
+
+.image {
+    overflow: hidden;
+    min-width: 100px;
+    height: 90px;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    border-radius: 8px;
+    background: #F8FAFD;
+    z-index: -1;
+    opacity: 0;
+
+    transition: all 0.15s ease-in-out;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    &_vis {
+        opacity: 1;
+        z-index: 1;
+    }
+}
+
+.buttons {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 12px;
+    height: fit-content;
+}
+
+.button {
+
+
+    svg path {
+        transition: all 0.15s;
+    }
+
+
+
+    p {
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 16px;
+    }
+
+    &_overlay {
+        transition: all 0.15s;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.7;
+        }
+
+    }
+}

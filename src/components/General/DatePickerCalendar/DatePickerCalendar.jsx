@@ -11,65 +11,68 @@ import './DatePickerCalendar.scss';
 import 'dayjs/locale/ru';
 
 const DatePickerCalendar = ({ value, setValue, setOpenCalendar, nosub }) => {
-  const [anim, setAnim] = useState(false);
+    const [anim, setAnim] = useState(false);
 
-  const modalRef = useRef();
-  const theme = createTheme({
-    typography: {
-      fontFamily: 'Inter, sans-serif',
-    },
-  });
-
-  useEffect(() => {
-    setTimeout(() => {
-      setAnim(true);
+    const modalRef = useRef();
+    const theme = createTheme({
+        typography: {
+            fontFamily: 'Inter, sans-serif',
+        },
     });
-  }, []);
 
-  function onChange(newValue) {
-    setValue(dayjs(newValue));
-    setTimeout(() => {
-      setAnim(false);
-    }, 200);
+    useEffect(() => {
+        setTimeout(() => {
+            setAnim(true);
+        });
+    }, []);
 
-    setTimeout(() => {
-      setOpenCalendar(false);
-    }, 400);
-  }
-
-  useEffect(() => {
-    const closeModal = (e) => {
-      e.stopPropagation();
-      if (modalRef.current && !modalRef.current.contains(e.target)) {
-        setAnim(false);
+    function onChange(newValue) {
+        console.log(newValue, 'newValue');
+        setValue(dayjs(newValue));
+        setTimeout(() => {
+            setAnim(false);
+        }, 200);
 
         setTimeout(() => {
-          setOpenCalendar(false);
-        }, 200);
-      }
-    };
-    document.addEventListener('mouseup', closeModal);
+            setOpenCalendar(false);
+        }, 400);
+    }
 
-    return () => document.removeEventListener('mouseup', closeModal);
-  }, [setOpenCalendar]);
+    useEffect(() => {
+        const closeModal = (e) => {
+            e.stopPropagation();
+            if (modalRef.current && !modalRef.current.contains(e.target)) {
+                setAnim(false);
 
-  return (
-    <div
-      ref={modalRef}
-      className={`calendar ${anim && 'calendar_anim'} ${nosub && 'calendar_nosub'}`}
-    >
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
-        <ThemeProvider theme={theme}>
-          <DateCalendar
-            value={value}
-            onChange={onChange}
-            views={['day']}
-            showDaysOutsideCurrentMonth
-          />
-        </ThemeProvider>
-      </LocalizationProvider>
-    </div>
-  );
+                setTimeout(() => {
+                    setOpenCalendar(false);
+                }, 200);
+            }
+        };
+        document.addEventListener('mouseup', closeModal);
+
+        return () => document.removeEventListener('mouseup', closeModal);
+    }, [setOpenCalendar]);
+
+    return (
+        <div
+            ref={modalRef}
+            className={`calendar ${anim && 'calendar_anim'} ${
+                nosub && 'calendar_nosub'
+            }`}
+        >
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
+                <ThemeProvider theme={theme}>
+                    <DateCalendar
+                        value={value}
+                        onChange={onChange}
+                        views={['day']}
+                        showDaysOutsideCurrentMonth
+                    />
+                </ThemeProvider>
+            </LocalizationProvider>
+        </div>
+    );
 };
 
 export default DatePickerCalendar;

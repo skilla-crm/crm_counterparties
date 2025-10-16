@@ -1,0 +1,45 @@
+.root {
+    min-width: 552px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.container {
+    border-radius: 4px;
+    background: #F8FAFD;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.block {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    span {
+        color: #71869D;
+    }
+}
+
+.list {
+    list-style-type: disc;
+    padding-left: 26px;
+
+    li {
+        line-height: 24px;
+    }
+}
+
+.bold {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+}
