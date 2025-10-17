@@ -59,6 +59,7 @@ const List = () => {
         'sort[dir]': sortDir,
         'filter[verified]': 1,
         'filter[is_black]': activeTab === 'approved' ? counterpartiesType : 0,
+        // 'filter[search]': activeTab === 'approved' ? searchQuery : '',
     });
 
     const {
@@ -74,6 +75,7 @@ const List = () => {
         'filter[verified]': 0,
         'filter[is_black]':
             activeTab === 'notApproved' ? counterpartiesType : 0,
+        // 'filter[search]': activeTab === 'notApproved' ? searchQuery : '',
     });
 
     const allRowsApproved =
@@ -89,6 +91,7 @@ const List = () => {
             <ListHeader
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
+                setCounterpartiesType={setCounterpartiesType}
                 setAnim={setAnim}
                 isLoading={isLoadingApproved || isLoadingNotApproved}
                 counters={{

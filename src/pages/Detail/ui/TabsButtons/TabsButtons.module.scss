@@ -1,0 +1,73 @@
+.container {
+    --highlight-width: auto;
+    --highlight-x-pos: 0;
+    display: flex;
+    user-select: none;
+}
+
+.controls {
+    display: inline-flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 6px 0 12px;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.controls input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.segment {
+    position: relative;
+    text-align: center;
+    z-index: 1;
+
+    label {
+        cursor: pointer;
+        display: block;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 22px;
+        color: #71869d;
+        transition: color 0.3s ease;
+    }
+
+    &_active label {
+        color: #121922;
+    }
+
+    &_disabled {
+        pointer-events: none;
+        opacity: 0.6;
+    }
+}
+
+.segmentRow {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+}
+
+.controls::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 0;
+    border-bottom: 2px solid #002cfb;
+    width: var(--highlight-width);
+    transform: translateX(var(--highlight-x-pos));
+    transition:
+        transform 0.3s ease,
+        width 0.3s ease;
+}

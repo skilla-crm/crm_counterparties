@@ -2,8 +2,48 @@
     opacity: 0;
     transition: all 0.15s;
     scroll-behavior: smooth;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
 
     &_anim {
         opacity: 1;
+    }
+}
+.contentWrapper {
+    display: flex;
+    gap: 12px;
+}
+.contentHeader {
+    width: 100%;
+
+    padding: 24px 20px;
+    border-radius: 8px;
+    background: #f8fafd;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.mainContent {
+    width: 100%;
+    min-width: 1078px;
+    padding: 24px 20px;
+    border-radius: 8px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.rightPannel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 0;
+    opacity: 0;
+    transition: all 0.15s;
+
+    &_vis {
+        opacity: 1;
+        width: 500px;
     }
 }

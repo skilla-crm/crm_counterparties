@@ -1,0 +1,15 @@
+.root {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+}
+
+.text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    min-width: 0;
+    cursor: default;
+    color: inherit;
+}

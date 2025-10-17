@@ -39,7 +39,10 @@ const CreateCounterparty = ({ initialData }) => {
 
     const isCreateMode = !id;
 
-    const { data: counterparty, isLoading } = useGetCounterpartyInfoQuery(id);
+    const { data: counterparty, isLoading } = useGetCounterpartyInfoQuery(
+        { id },
+        { skip: !id }
+    );
 
     const {
         form,

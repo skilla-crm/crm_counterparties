@@ -69,9 +69,10 @@ export const counterpartiesApiActions = createApi({
         }),
         getCounterpartyInfo: build.query({
             query: (id) => ({
-                url: `${COUNTERPARTIES_URL}/${id}`,
+                url: `${COUNTERPARTIES_URL}/${id}/details`,
                 method: 'GET',
             }),
+            transformResponse: (response) => response.data,
         }),
     }),
 });

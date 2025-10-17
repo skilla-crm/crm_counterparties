@@ -7,7 +7,7 @@ import Goal from 'components/General/Goal/Goal';
 import UniButton from 'components/General/UniButton/UniButton';
 
 //utils
-import formatNumWithSpace from 'utils/formatSum';
+import formatNumWithSpace from 'utils/formatNumWithSpace';
 
 //hooks
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +20,7 @@ import { ReactComponent as SmileYellow } from 'assets/icons/cardFilling/yellowSm
 
 // styles
 import s from './Table.module.scss';
+import EllipsisWithTooltip from 'components/General/EllipsisWithTooltip/EllipsisWithTooltip';
 
 const TableRow = ({ row, type }) => {
     const navigate = useNavigate();
@@ -48,7 +49,7 @@ const TableRow = ({ row, type }) => {
             >
                 <div className={classNames(s.gridCell, s.columnCell)}>
                     <div className={classNames(s.nameWrapper, s.labelBadge)}>
-                        <Goal text={name} />
+                        <EllipsisWithTooltip text={name} />
                         <CompanyLabelBadge label={label} />
                     </div>{' '}
                     <div className={s.inn}>
@@ -85,7 +86,7 @@ const TableRow = ({ row, type }) => {
                 </div>
 
                 <div className={classNames(s.gridCell)}>
-                    <Goal text={notes} />
+                    <EllipsisWithTooltip text={notes} />
                 </div>
                 {/* <div className={classNames(s.gridCell, s.center)}>
                         <CardFilling filling={filling} />
@@ -104,12 +105,12 @@ const TableRow = ({ row, type }) => {
             >
                 <div className={classNames(s.gridCell, s.labelBadge)}>
                     <div>
-                        <Goal text={name} />{' '}
+                        <EllipsisWithTooltip text={name} />{' '}
                     </div>
                     <CompanyLabelBadge label={label} />
                 </div>
                 <div className={classNames(s.gridCell, s.gray)}>
-                    <Goal text={notes} />{' '}
+                    <EllipsisWithTooltip text={notes} />{' '}
                 </div>
             </div>
         );

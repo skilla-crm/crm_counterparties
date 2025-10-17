@@ -24,6 +24,7 @@ const TABS = [
 
 const ListHeader = ({
     activeTab,
+    setCounterpartiesType,
     setActiveTab,
     setAnim,
     isLoading,
@@ -63,6 +64,7 @@ const ListHeader = ({
                         setAnim(false);
                         setTimeout(() => {
                             setActiveTab(val);
+                            setCounterpartiesType(0);
                         }, 100);
 
                         setTimeout(() => {

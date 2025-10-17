@@ -16,11 +16,7 @@
     &_vis {
         visibility: visible;
         opacity: 1;
-    }
-
-    &_fetch td {
-        opacity: 0.6;
-        pointer-events: none;
+        z-index: 10;
     }
 }
 
