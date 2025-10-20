@@ -1,0 +1,16 @@
+.label {
+  display: flex;
+  height: 24px;
+  padding: 0 8px;
+  align-items: center;
+  gap: 4px;
+  border-radius: 4px;
+  background: var(--icon-blue-l-5, rgba(0, 44, 251, 0.05));
+  color: var(--Text-Secondary, #71869d);
+
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+}

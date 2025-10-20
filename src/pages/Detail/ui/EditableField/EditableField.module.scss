@@ -1,0 +1,26 @@
+.editableField {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #002cfb;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  cursor: pointer;
+  &:hover {
+    color: #0024cb;
+  }
+}
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-direction: row;
+  input {
+    height: 22px;
+    width: 250px;
+    border-radius: 4px;
+    border: #002cfb 1px solid;
+  }
+}
