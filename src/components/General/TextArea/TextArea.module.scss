@@ -1,0 +1,30 @@
+.area {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  outline: none;
+  border-radius: 4px;
+  border: 1px solid rgba(216, 228, 251, 0.55);
+  background-color: #ffffff;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+  resize: none;
+  transition: all 0.15s;
+  white-space: pre-wrap;
+  word-break: break-word;
+  &:disabled {
+    background-color: rgba(212, 223, 243, 0.17);
+    color: #121922;
+  }
+
+  &::placeholder {
+    color: #71869d;
+  }
+
+  &:focus {
+    border-color: #002cfb;
+  }
+}

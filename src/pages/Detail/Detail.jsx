@@ -12,6 +12,8 @@ import RightPanelBlock from "./components/RightPanelBlock/RightPanelBlock";
 import TabsButtons from "./ui/TabsButtons/TabsButtons";
 import HistoryBlock from "./components/HistoryBlock/HistoryBlock";
 import ContentHeader from "./components/ContentHeader/ContentHeader";
+import General from "./TABS/General/General";
+import Details from "./TABS/Details/Details";
 
 const TABS = [
   { value: "general", label: "Общее" },
@@ -36,8 +38,13 @@ const Detail = () => {
 
   const { data: counterparty, isLoading } = useGetCounterpartyInfoQuery(id);
   console.log(counterparty);
-  const { last_documents, last_orders, last_transactions, general } =
-    counterparty || {};
+  const {
+    last_documents,
+    last_orders,
+    last_transactions,
+    general,
+    requisites,
+  } = counterparty || {};
 
   useEffect(() => {
     setTimeout(() => {
@@ -48,7 +55,7 @@ const Detail = () => {
 
   return (
     <div className={classNames(s.root, anim && s.root_anim)}>
-      <Header tab="general" isChecked={counterparty?.general?.verified_id} />
+      <Header tab={activeTab} isChecked={counterparty?.general?.verified_id} />
       <div className={classNames(s.contentWrapper)}>
         <div className={classNames(s.mainContent)}>
           <ContentHeader data={general} />
@@ -67,6 +74,45 @@ const Detail = () => {
             }}
             controlRef={controlRef}
           />
+          <div className={classNames(s.tabContent, { [s.animate]: anim })}>
+            <div className={classNames(s.tabContent, { [s.animate]: anim })}>
+              {activeTab === "general" && (
+                <div className={s.tabPane}>
+                  <General data={general} />
+                </div>
+              )}
+
+              {activeTab === "details" && (
+                <div className={s.tabPane}>
+                  <Details general={general} requisites={requisites} />
+                </div>
+              )}
+              {/*
+              {activeTab === "contracts" && (
+                <div className={s.tabPane}>
+                  <Contracts />
+                </div>
+              )}
+
+              {activeTab === "price" && (
+                <div className={s.tabPane}>
+                  <PriceList />
+                </div>
+              )}
+
+              {activeTab === "contacts" && (
+                <div className={s.tabPane}>
+                  <Contacts />
+                </div>
+              )}
+
+              {activeTab === "bank" && (
+                <div className={s.tabPane}>
+                  <BankAccounts />
+                </div>
+              )} */}
+            </div>
+          </div>
         </div>
         <div
           className={classNames(

@@ -36,13 +36,12 @@ const CreateCounterparty = ({ initialData }) => {
   const navigate = useNavigate();
   const [anim, setAnim] = useState(false);
   const { showToast } = useToast();
-
+  console.log(id);
   const isCreateMode = !id;
 
-  const { data: counterparty, isLoading } = useGetCounterpartyInfoQuery(
-    { id },
-    { skip: !id }
-  );
+  const { data: counterparty, isLoading } = useGetCounterpartyInfoQuery(id, {
+    skip: !id,
+  });
   console.log(counterparty);
 
   const {
@@ -164,12 +163,16 @@ const CreateCounterparty = ({ initialData }) => {
     }
   };
 
+  const handleEdit = () => {};
+
   return (
     <div className={classNames(s.root, anim && s.root_anim)}>
       <CounterpartyHeader
+        isEditMode={isEditMode}
         data={counterparty}
-        isLoading={isCreating}
-        onSave={handleCreate}
+        isLoading={isEditMode ? false : isCreating}
+        handler={isEditMode ? handleEdit : handleCreate}
+        buttonText={isEditMode ? "Сохранить изменения" : "Сохранить"}
       />
 
       <div className={s.wrapper}>

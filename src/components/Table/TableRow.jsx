@@ -41,9 +41,17 @@ const TableRow = ({ row, type }) => {
     share_of_partnership_revenue,
   } = row;
 
+  const handleOpenDetails = (id) => {
+    navigate(`/details/${id}`);
+  };
   const renderApproved = () => {
     return (
-      <div className={classNames(s.gridRow, s.approved)} onClick={() => {}}>
+      <div
+        className={classNames(s.gridRow, s.approved)}
+        onClick={() => {
+          handleOpenDetails(id);
+        }}
+      >
         <div className={classNames(s.gridCell, s.columnCell)}>
           <div className={classNames(s.nameWrapper, s.labelBadge)}>
             <EllipsisWithTooltip text={name} />
@@ -96,7 +104,12 @@ const TableRow = ({ row, type }) => {
     const { id, sum, name, label, notes } = row;
 
     return (
-      <div className={classNames(s.gridRow, s.notApproved)} onClick={() => {}}>
+      <div
+        className={classNames(s.gridRow, s.notApproved)}
+        onClick={() => {
+          handleOpenDetails(id);
+        }}
+      >
         <div className={classNames(s.gridCell, s.labelBadge)}>
           <div>
             <EllipsisWithTooltip text={name} />{" "}

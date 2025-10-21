@@ -16,6 +16,7 @@ const App = () => {
     <div id="scrollableDiv" className={s.root} ref={scrollRef}>
       <Routes>
         <Route path="/" element={<List />} />
+        <Route path="/create/:id" element={<CreateCounterparty />} />
         <Route path="/create" element={<CreateCounterparty />} />
         <Route path="/details/:id" element={<Detail />} />
       </Routes>

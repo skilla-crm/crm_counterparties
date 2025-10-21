@@ -9,6 +9,7 @@ import UniButton from "components/General/UniButton/UniButton";
 import { useModal } from "hooks/useModal";
 import dayjs from "dayjs";
 import EditableField from "pages/Detail/ui/EditableField/EditableField";
+import LogoUpload from "components/General/LogoUpload/LogoUpload";
 
 const ContentHeader = ({ data }) => {
   const { showModal } = useModal();
@@ -21,10 +22,22 @@ const ContentHeader = ({ data }) => {
     label,
     verified_date,
     verified_id,
+    logo,
   } = data || {};
   return (
     <div className={classNames(s.contentHeader)}>
-      <div className={classNames(s.logo)}></div>
+      <div className={classNames(s.logo)}>
+        {" "}
+        <LogoUpload
+          disabled={false}
+          buttonText="Загрузить логотип"
+          buttonWidth={176}
+          width={176}
+          height={80}
+          logo={logo}
+          setLogo={(val) => {}}
+        />
+      </div>
       <div className={s.section}>
         <div className={s.flexRow}>
           <Label label={label} />
@@ -44,9 +57,7 @@ const ContentHeader = ({ data }) => {
           {kpp && <p>{`КПП ${kpp}`}</p>}
           {ogrn && <p>{`ОГРН ${ogrn}`}</p>}
         </div>
-        <p className={s.description}>
-          <EllipsisWithTooltip text={okved_name} />
-        </p>
+        <div className={s.description}>{okved_name}</div>
         {Boolean(verified_id) && (
           <div className={s.flexRow}>
             <div className={s.verified}>

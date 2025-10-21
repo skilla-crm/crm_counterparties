@@ -7,7 +7,7 @@ const COUNTERPARTIES_URL = "/counterparties";
 
 export const counterpartiesApiActions = createApi({
   reducerPath: "counerpartiesApiActions",
-  tagTypes: ["counterparties"],
+  tagTypes: ["counterparties, counterparty"],
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.REACT_APP_BASE_URL,
     prepareHeaders: (headers) => {
@@ -72,6 +72,29 @@ export const counterpartiesApiActions = createApi({
         method: "GET",
       }),
       transformResponse: (response) => response.data,
+      providesTags: ["counterparty"],
+    }),
+
+    switchCounterpartyStopList: build.mutation({
+      query: (companyId) => ({
+        url: `/companies/${companyId}/stop_list/change`,
+        method: "PATCH",
+      }),
+      providesTags: ["counterparty"],
+    }),
+    switchCounterpartyHidden: build.mutation({
+      query: (companyId) => ({
+        url: `/companies/${companyId}/activity/change`,
+        method: "PATCH",
+      }),
+      providesTags: ["counterparty"],
+    }),
+    switchCounterpartyStatistic: build.mutation({
+      query: (companyId) => ({
+        url: `/companies/${companyId}/statistic_exclusion`,
+        method: "PATCH",
+      }),
+      providesTags: ["counterparty"],
     }),
   }),
 });
@@ -82,4 +105,7 @@ export const {
   useAddСounterpartyByIdMutation,
   useCreateCounterpartyMutation,
   useGetCounterpartyInfoQuery,
+  useSwitchCounterpartyStopListMutation,
+  useSwitchCounterpartyHiddenMutation,
+  useSwitchCounterpartyStatisticMutation,
 } = counterpartiesApiActions;
