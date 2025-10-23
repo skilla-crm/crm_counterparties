@@ -4,10 +4,10 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 // Redux API
 import {
-    useCreateCounterpartyMutation,
     useGetCounterparyRequisitesQuery,
     useUpdateCounterpartyRequisitesMutation,
-} from '../../../src/redux/services/counterpartiesApiActions';
+} from '../../redux/services/counterpartyDetailsApiActions';
+import { useCreateCounterpartyMutation } from '../../redux/services/counterpartiesListApiActions';
 
 // Custom Hooks
 import { useCounterpartyForm } from 'hooks/useCounterpartyForm';
@@ -198,8 +198,8 @@ const CreateCounterparty = () => {
                 isEditMode={isEditMode}
                 data={counterparty}
                 isLoading={isEditMode ? isUpdating : isCreating}
-                // handler={isEditMode ? handleEdit : handleCreate}
-                handler={handleEdit}
+                handler={isEditMode ? handleEdit : handleCreate}
+                // handler={handleEdit}
                 buttonText={isEditMode ? 'Сохранить изменения' : 'Сохранить'}
             />
 

@@ -5,9 +5,9 @@ const token = document
     ?.getAttribute('token');
 const COUNTERPARTIES_URL = '/counterparties';
 
-export const counterpartiesApiActions = createApi({
-    reducerPath: 'counerpartiesApiActions',
-    tagTypes: ['counterparties, counterparty'],
+export const counterpartyDetailsApiActions = createApi({
+    reducerPath: 'counerpartyDetailsApiActions',
+    tagTypes: ['counterparty'],
     baseQuery: fetchBaseQuery({
         baseUrl: process.env.REACT_APP_BASE_URL,
         prepareHeaders: (headers) => {
@@ -17,61 +17,6 @@ export const counterpartiesApiActions = createApi({
         },
     }),
     endpoints: (build) => ({
-        getCounterparties: build.infiniteQuery({
-            infiniteQueryOptions: {
-                initialPageParam: 1,
-                getNextPageParam: (lastPage) => {
-                    const next = lastPage.links?.next;
-                    if (!next) return undefined;
-                    const nextPage = new URL(
-                        next,
-                        'http://dummy'
-                    ).searchParams.get('page');
-                    return Number(nextPage);
-                },
-            },
-            query: ({ queryArg, pageParam }) => ({
-                url: `${COUNTERPARTIES_URL}/companies?page=${pageParam}`,
-                method: 'GET',
-                params: queryArg,
-            }),
-            transformResponse: (response) => {
-                return response;
-            },
-            providesTags: ['counterparties'],
-            keepUnusedDataFor: 300,
-        }),
-
-        //РИСКИ
-        removeRiskBadge: build.mutation({
-            query: (id) => ({
-                url: `${COUNTERPARTIES_URL}/${id}`,
-                method: 'POST',
-            }),
-        }),
-
-        //СОЗДАНИЕ КОНТРАГЕНТА
-        checkCounterparty: build.mutation({
-            query: ({ inn, kpp }) => ({
-                url: `/counterparties/check_company?inn=${inn}${kpp ? `&kpp=${kpp}` : ''}`,
-                method: 'GET',
-            }),
-        }),
-        addСounterpartyById: build.mutation({
-            query: (data) => ({
-                url: `${COUNTERPARTIES_URL}/create_by_id`,
-                method: 'POST',
-                body: data,
-            }),
-        }),
-        createCounterparty: build.mutation({
-            query: (data) => ({
-                url: `${COUNTERPARTIES_URL}/create`,
-                method: 'POST',
-                body: Object.fromEntries(data.entries()),
-            }),
-        }),
-
         //ДЕТАЛКА КОНТРАГЕНТА
         getCounterpartyInfo: build.query({
             query: (id) => ({
@@ -94,6 +39,7 @@ export const counterpartiesApiActions = createApi({
                 method: 'POST',
                 body: data,
             }),
+            invalidatesTags: ['counterparty'],
         }),
 
         //ВКЛАДКА GENERAL
@@ -121,25 +67,45 @@ export const counterpartiesApiActions = createApi({
 
         //ВКЛАДКА КОНТАКТЫ
         switchContactStatus: build.mutation({
-            query: (id) => ({
-                url: `/company-contracts/${id}/is-active/change`,
-                method: 'POST',
+            query: ({ companyId, contactId }) => ({
+                url: `/companies/${companyId}/contacts/${contactId}/change-active`,
+                method: 'PATCH',
             }),
+        }),
+        createContact: build.mutation({
+            query: ({ companyId, data }) => ({
+                url: `/companies/${companyId}/contacts/create`,
+                method: 'POST',
+                body: data,
+            }),
+            providesTags: ['counterparty'],
+        }),
+        updateContact: build.mutation({
+            query: ({ companyId, contactId, data }) => ({
+                url: `/companies/${companyId}/contacts/${contactId}/update`,
+                method: 'PUT',
+                body: data,
+            }),
+            providesTags: ['counterparty'],
+        }),
+        deleteContact: build.mutation({
+            query: ({ companyId, contactId }) => ({
+                url: `/companies/${companyId}/contacts/${contactId}/delete`,
+                method: 'DELETE',
+            }),
+            providesTags: ['counterparty'],
         }),
     }),
 });
 export const {
-    useCheckCounterpartyMutation,
-    useGetCounterpartiesInfiniteQuery,
-    useRemoveRiskBadgeMutation,
-    useAddСounterpartyByIdMutation,
-    useCreateCounterpartyMutation,
     useGetCounterpartyInfoQuery,
     useSwitchCounterpartyStopListMutation,
     useSwitchCounterpartyHiddenMutation,
     useSwitchCounterpartyStatisticMutation,
     useGetCounterparyRequisitesQuery,
     useUpdateCounterpartyRequisitesMutation,
-
     useSwitchContactStatusMutation,
-} = counterpartiesApiActions;
+    useCreateContactMutation,
+    useUpdateContactMutation,
+    useDeleteContactMutation,
+} = counterpartyDetailsApiActions;

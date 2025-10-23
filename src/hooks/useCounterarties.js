@@ -1,4 +1,4 @@
-import { useGetCounterpartiesInfiniteQuery } from '../redux/services/counterpartiesApiActions';
+import { useGetCounterpartiesInfiniteQuery } from '../redux/services/counterpartiesListApiActions';
 import { useMemo } from 'react';
 export const useCounterparties = ({
     activeTab,

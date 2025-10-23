@@ -4,50 +4,12 @@ import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import Switch from 'components/EmailSender/Switch/Switch';
 import useToast from 'hooks/useToast';
-import { useSwitchContactStatusMutation } from '../../../../redux/services/counterpartiesApiActions';
+import { useSwitchContactStatusMutation } from '../../../../redux/services/counterpartyDetailsApiActions';
 import dayjs from 'dayjs';
 import { useModal } from 'hooks/useModal';
+import EllipsisWithTooltip from 'components/General/EllipsisWithTooltip/EllipsisWithTooltip';
 
-const mockContacts = [
-    {
-        id: 1,
-        surname: 'Иванов',
-        name: 'Иван',
-        patronymic: 'Иванович',
-        phone: '+7 (900) 123-45-67',
-        e_mail: 'ivanov@example.com',
-        position: 'Менеджер',
-        dob: '1985-05-10',
-        is_active: 1,
-        created_at: '2025-10-21',
-    },
-    {
-        id: 2,
-        surname: 'Петров',
-        name: 'Пётр',
-        patronymic: 'Петрович',
-        phone: '+7 (901) 234-56-78',
-        e_mail: 'petrov@example.com',
-        position: 'Директор',
-        dob: '1980-02-15',
-        is_active: 0,
-        created_at: '2025-10-20',
-    },
-    {
-        id: 3,
-        surname: 'Сидорова',
-        name: 'Мария',
-        patronymic: 'Александровна',
-        phone: '+7 (902) 345-67-89',
-        e_mail: 'sidorova@example.com',
-        position: 'Бухгалтер',
-        dob: '1990-07-25',
-        is_active: 1,
-        created_at: '2025-10-19',
-    },
-];
-
-const Contacts = ({}) => {
+const Contacts = ({ data = [], counterpartyId }) => {
     return (
         <div className={s.root}>
             <div className={s.infoTitle}>
@@ -66,9 +28,13 @@ const Contacts = ({}) => {
                     <div className={s.switchContainer}>Активный</div>
                     <div>Добавлен</div>
                 </div>
-                {mockContacts.length > 0 ? (
-                    mockContacts.map((contact) => (
-                        <ContactRow key={contact.id} contact={contact} />
+                {data.length > 0 ? (
+                    data.map((contact) => (
+                        <ContactRow
+                            key={contact.id}
+                            contact={contact}
+                            counterpartyId={counterpartyId}
+                        />
                     ))
                 ) : (
                     <div className={s.empty}>Нет контактов</div>
@@ -79,7 +45,8 @@ const Contacts = ({}) => {
 };
 export default Contacts;
 
-const ContactRow = ({ contact }) => {
+const ContactRow = ({ contact, counterpartyId }) => {
+    console.log(contact);
     const { showModal } = useModal();
     const { showToast } = useToast();
     const [isActive, setIsActive] = useState(false);
@@ -91,10 +58,16 @@ const ContactRow = ({ contact }) => {
 
     const handleSwitchStatus = () => {
         if (!contact.id) return;
-        switchContactStatus(contact.id)
+        switchContactStatus({
+            contactId: contact.id,
+            companyId: counterpartyId,
+        })
             .unwrap()
             .then((res) => {
-                if (res.message === 'Request processed successfully') {
+                if (
+                    res.message ===
+                    'Company contact active status changed successfully'
+                ) {
                     setIsActive(!isActive);
                 }
             })
@@ -104,14 +77,19 @@ const ContactRow = ({ contact }) => {
     };
 
     const handleOpenConact = () => {
-        showModal('CONTACT_DETAILS', { contact });
+        showModal('CONTACT', {
+            companyId: counterpartyId,
+            contact: contact,
+        });
     };
     return (
         <div className={classNames(s.gridRow)} onClick={handleOpenConact}>
             <div>
                 {`${contact.surname} ${contact.name} ${contact.patronymic}`.trim()}
             </div>
-            <div>{contact.position || ''}</div>
+            <div>
+                <EllipsisWithTooltip text={contact.position} />
+            </div>
             <div>{contact.phone || ''}</div>
             <div>{contact.e_mail || ''}</div>
             <div className={s.switchContainer}>

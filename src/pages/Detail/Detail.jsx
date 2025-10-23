@@ -2,7 +2,7 @@ import React from 'react';
 import s from './Detail.module.scss';
 import classNames from 'classnames';
 // Redux API
-import { useGetCounterpartyInfoQuery } from '../../../src/redux/services/counterpartiesApiActions';
+import { useGetCounterpartyInfoQuery } from '../../redux/services/counterpartyDetailsApiActions';
 
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -13,16 +13,16 @@ import TabsButtons from './ui/TabsButtons/TabsButtons';
 import HistoryBlock from './components/HistoryBlock/HistoryBlock';
 import ContentHeader from './components/ContentHeader/ContentHeader';
 import General from './TABS/General/General';
-import Details from './TABS/Details/Details';
+import Requisites from './TABS/Requisites/Requisites';
 import Contacts from './TABS/Contacts/Contacts';
 
 const TABS = [
     { value: 'general', label: 'Общее' },
     { value: 'details', label: 'Реквизиты' },
-    { value: 'contracts', label: 'Договоры' },
-    { value: 'price', label: 'Прайс-лист' },
+    // { value: 'contracts', label: 'Договоры' },
+    // { value: 'price', label: 'Прайс-лист' },
     { value: 'contacts', label: 'Представители' },
-    { value: 'bank', label: 'Банковские счета' },
+    // { value: 'bank', label: 'Банковские счета' },
 ];
 
 const Detail = () => {
@@ -45,7 +45,7 @@ const Detail = () => {
         last_transactions,
         general,
         requisites,
-        contacts, 
+        contacts,
     } = counterparty || {};
 
     useEffect(() => {
@@ -60,6 +60,7 @@ const Detail = () => {
             <Header
                 tab={activeTab}
                 isChecked={counterparty?.general?.verified_id}
+                counterpartyId={id}
             />
             <div className={classNames(s.contentWrapper)}>
                 <div className={classNames(s.mainContent)}>
@@ -97,7 +98,7 @@ const Detail = () => {
 
                             {activeTab === 'details' && (
                                 <div className={s.tabPanel}>
-                                    <Details
+                                    <Requisites
                                         general={general}
                                         requisites={requisites}
                                     />
@@ -105,7 +106,10 @@ const Detail = () => {
                             )}
                             {activeTab === 'contacts' && (
                                 <div className={s.tabPanel}>
-                                    <Contacts data={contacts} />
+                                    <Contacts
+                                        data={contacts}
+                                        counterpartyId={id}
+                                    />
                                 </div>
                             )}
                             {/*

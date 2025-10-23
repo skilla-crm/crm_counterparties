@@ -13,7 +13,7 @@ import {
     useSwitchCounterpartyHiddenMutation,
     useSwitchCounterpartyStatisticMutation,
     useSwitchCounterpartyStopListMutation,
-} from '../../../../redux/services/counterpartiesApiActions';
+} from '../../../../redux/services/counterpartyDetailsApiActions';
 import formatNumWithSpace from 'utils/formatNumWithSpace';
 import useToast from 'hooks/useToast';
 import IconWithTooltip from 'components/General/IconWithTooltip/IconWithTooltip';

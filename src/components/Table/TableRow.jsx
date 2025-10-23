@@ -3,7 +3,6 @@ import classNames from 'classnames';
 //components
 import CompanyLabelBadge from 'components/General/CompanyLabelBadge/CompanyLabelBadge';
 
-import Goal from 'components/General/Goal/Goal';
 import UniButton from 'components/General/UniButton/UniButton';
 
 //utils
