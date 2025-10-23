@@ -78,7 +78,7 @@ export const counterpartyDetailsApiActions = createApi({
                 method: 'POST',
                 body: data,
             }),
-            providesTags: ['counterparty'],
+            invalidatesTags: ['counterparty'],
         }),
         updateContact: build.mutation({
             query: ({ companyId, contactId, data }) => ({
@@ -86,14 +86,22 @@ export const counterpartyDetailsApiActions = createApi({
                 method: 'PUT',
                 body: data,
             }),
-            providesTags: ['counterparty'],
+            invalidatesTags: ['counterparty'],
         }),
         deleteContact: build.mutation({
             query: ({ companyId, contactId }) => ({
                 url: `/companies/${companyId}/contacts/${contactId}/delete`,
                 method: 'DELETE',
             }),
-            providesTags: ['counterparty'],
+            invalidatesTags: ['counterparty'],
+        }),
+
+        //ВКЛАДКА БАНКОВСКИЕ СЧЕТА
+        switchBankAccountStatus: build.mutation({
+            query: ({ companyId, contactId }) => ({
+                url: `/companies/${companyId}/bank-accounts/${contactId}/change-active`,
+                method: 'PATCH',
+            }),
         }),
     }),
 });
@@ -108,4 +116,5 @@ export const {
     useCreateContactMutation,
     useUpdateContactMutation,
     useDeleteContactMutation,
+    useSwitchBankAccountStatusMutation,
 } = counterpartyDetailsApiActions;

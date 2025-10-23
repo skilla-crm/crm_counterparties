@@ -8,7 +8,7 @@ import Switch from 'components/EmailSender/Switch/Switch';
 
 import TextArea from 'components/General/TextArea/TextArea';
 import dayjs from 'dayjs';
-import {  useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     useSwitchCounterpartyHiddenMutation,
     useSwitchCounterpartyStatisticMutation,

@@ -15,14 +15,16 @@ import ContentHeader from './components/ContentHeader/ContentHeader';
 import General from './TABS/General/General';
 import Requisites from './TABS/Requisites/Requisites';
 import Contacts from './TABS/Contacts/Contacts';
+import PriceList from './TABS/PriceList/Pricelist';
+import BankAccounts from './TABS/BankAccounts/BankAccounts';
 
 const TABS = [
     { value: 'general', label: 'Общее' },
     { value: 'details', label: 'Реквизиты' },
     // { value: 'contracts', label: 'Договоры' },
-    // { value: 'price', label: 'Прайс-лист' },
+    { value: 'price', label: 'Прайс-лист' },
     { value: 'contacts', label: 'Представители' },
-    // { value: 'bank', label: 'Банковские счета' },
+    { value: 'bank', label: 'Банковские счета' },
 ];
 
 const Detail = () => {
@@ -46,6 +48,8 @@ const Detail = () => {
         general,
         requisites,
         contacts,
+        price_list,
+        bank_accounts,
     } = counterparty || {};
 
     useEffect(() => {
@@ -112,6 +116,17 @@ const Detail = () => {
                                     />
                                 </div>
                             )}
+                            {activeTab === 'price' && (
+                                <div className={s.tabPanel}>
+                                    <PriceList data={price_list} />
+                                </div>
+                            )}
+
+                            {activeTab === 'bank' && (
+                                <div className={s.tabPanel}>
+                                    <BankAccounts data={bank_accounts} s />
+                                </div>
+                            )}
                             {/*
               {activeTab === "contracts" && (
                 <div className={s.tabPane}>
@@ -119,11 +134,7 @@ const Detail = () => {
                 </div>
               )}
 
-              {activeTab === "price" && (
-                <div className={s.tabPane}>
-                  <PriceList />
-                </div>
-              )}
+              
 
             
 
