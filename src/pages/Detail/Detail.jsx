@@ -1,22 +1,29 @@
-import React from 'react';
-import s from './Detail.module.scss';
+// External
+import React, { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import classNames from 'classnames';
+
 // Redux API
 import { useGetCounterpartyInfoQuery } from '../../redux/services/counterpartyDetailsApiActions';
 
-import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+// Components
 import Header from './components/Header/Header';
-
-import RightPanelBlock from './components/RightPanelBlock/RightPanelBlock';
-import TabsButtons from './ui/TabsButtons/TabsButtons';
-import HistoryBlock from './components/HistoryBlock/HistoryBlock';
 import ContentHeader from './components/ContentHeader/ContentHeader';
+import RightPanelBlock from './components/RightPanelBlock/RightPanelBlock';
+import HistoryBlock from './components/HistoryBlock/HistoryBlock';
+import TabsButtons from './ui/TabsButtons/TabsButtons';
+
+// Tabs
 import General from './TABS/General/General';
 import Requisites from './TABS/Requisites/Requisites';
 import Contacts from './TABS/Contacts/Contacts';
 import PriceList from './TABS/PriceList/Pricelist';
 import BankAccounts from './TABS/BankAccounts/BankAccounts';
+import Other from './TABS/Other/Other';
+import Objects from './TABS/Objects/Objects';
+
+// Styles
+import s from './Detail.module.scss';
 
 const TABS = [
     { value: 'general', label: 'Общее' },
@@ -25,6 +32,8 @@ const TABS = [
     { value: 'price', label: 'Прайс-лист' },
     { value: 'contacts', label: 'Представители' },
     { value: 'bank', label: 'Банковские счета' },
+    { value: 'objects', label: 'Объекты' },
+    { value: 'other', label: 'Другое' },
 ];
 
 const Detail = () => {
@@ -40,7 +49,7 @@ const Detail = () => {
     }));
 
     const { data: counterparty, isLoading } = useGetCounterpartyInfoQuery(id);
-    console.log(counterparty);
+
     const {
         last_documents,
         last_orders,
@@ -124,25 +133,19 @@ const Detail = () => {
 
                             {activeTab === 'bank' && (
                                 <div className={s.tabPanel}>
-                                    <BankAccounts data={bank_accounts} s />
+                                    <BankAccounts data={bank_accounts} />
                                 </div>
                             )}
-                            {/*
-              {activeTab === "contracts" && (
-                <div className={s.tabPane}>
-                  <Contracts />
-                </div>
-              )}
-
-              
-
-            
-
-              {activeTab === "bank" && (
-                <div className={s.tabPane}>
-                  <BankAccounts />
-                </div>
-              )} */}
+                            {activeTab === 'other' && (
+                                <div className={s.tabPanel}>
+                                    <Other data={bank_accounts} />
+                                </div>
+                            )}
+                            {activeTab === 'objects' && (
+                                <div className={s.tabPanel}>
+                                    <Objects data={bank_accounts} />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

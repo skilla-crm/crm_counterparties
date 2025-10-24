@@ -1,13 +1,14 @@
+// External
 import React from "react";
-// Components
+import classNames from "classnames";
 
+// Components
 import TableHeader from "./TableHeader";
 import TableRow from "./TableRow";
+import TableSceleton from "./TableSceleton/TableSceleton";
 
 // Styles
 import s from "./Table.module.scss";
-import classNames from "classnames";
-import TableSceleton from "./TableSceleton/TableSceleton";
 
 const Table = ({ type, anim, isLoading, isFetching, list = [], error }) => {
   if (error)

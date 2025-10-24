@@ -7,14 +7,12 @@ import dayjs from 'dayjs';
 // Components
 import Field from 'components/General/Field/Field';
 import InputText from 'components/General/InputText/InputText';
-
 import DateInput from 'components/General/DateInput/DateInput';
 import DatePickerCalendar from 'components/General/DatePickerCalendar/DatePickerCalendar';
-import DropZone from 'components/DropZone/DropZone';
+import Switch from 'components/General/Switch/Switch';
 
 // Styles
 import s from '../CreateCounterparty.module.scss';
-import Switch from 'components/General/Switch/Switch';
 
 const CounterpartySignatory = ({
     form,

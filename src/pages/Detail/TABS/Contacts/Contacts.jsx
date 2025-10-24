@@ -1,13 +1,24 @@
-import s from './Contacts.module.scss';
-import { ReactComponent as IconInfo } from 'assets/icons/iconInfo.svg';
-import classNames from 'classnames';
+// External
 import { useEffect, useState } from 'react';
-import Switch from 'components/EmailSender/Switch/Switch';
-import useToast from 'hooks/useToast';
-import { useSwitchContactStatusMutation } from '../../../../redux/services/counterpartyDetailsApiActions';
+import classNames from 'classnames';
 import dayjs from 'dayjs';
+
+// Hooks
 import { useModal } from 'hooks/useModal';
+import useToast from 'hooks/useToast';
+
+// Redux
+import { useSwitchContactStatusMutation } from '../../../../redux/services/counterpartyDetailsApiActions';
+
+// Components
+import Switch from 'components/EmailSender/Switch/Switch';
 import EllipsisWithTooltip from 'components/General/EllipsisWithTooltip/EllipsisWithTooltip';
+
+// Icons
+import { ReactComponent as IconInfo } from 'assets/icons/iconInfo.svg';
+
+// Styles
+import s from './Contacts.module.scss';
 
 const Contacts = ({ data = [], counterpartyId }) => {
     return (

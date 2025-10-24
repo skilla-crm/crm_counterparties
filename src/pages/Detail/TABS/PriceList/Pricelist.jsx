@@ -2,7 +2,6 @@ import Rate from 'components/General/Rate/Rate';
 import s from './PriceList.module.scss';
 
 const PriceList = ({ data }) => {
-    console.log(data);
     return (
         <div className={s.root}>
             <span className={s.infoTitle}>

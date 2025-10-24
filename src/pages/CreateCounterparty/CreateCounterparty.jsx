@@ -1,15 +1,16 @@
-// React & Hooks
+// External
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import classNames from 'classnames';
 
-// Redux API
+// Redux
 import {
     useGetCounterparyRequisitesQuery,
     useUpdateCounterpartyRequisitesMutation,
 } from '../../redux/services/counterpartyDetailsApiActions';
 import { useCreateCounterpartyMutation } from '../../redux/services/counterpartiesListApiActions';
 
-// Custom Hooks
+// Hooks
 import { useCounterpartyForm } from 'hooks/useCounterpartyForm';
 import useToast from 'hooks/useToast';
 
@@ -19,13 +20,10 @@ import CounterpartyMainInfo from './Components/CounterpartyMainInfo';
 import CounterpartyAddresses from './Components/CounterpartyAddresses';
 import CounterpartyEdo from './Components/CounterpartyEdo';
 import CounterpartySignatory from './Components/CounterpartySignatory';
-
-// Utils
-import classNames from 'classnames';
+import CounterpartyRepresentative from './Components/CounterpartyRepresentative';
 
 // Styles
 import s from './CreateCounterparty.module.scss';
-import CounterpartyRepresentative from './Components/CounterpartyRepresentative';
 
 const CreateCounterparty = () => {
     const isEditMode = false;

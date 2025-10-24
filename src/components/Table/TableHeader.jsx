@@ -1,8 +1,9 @@
+// External
+import classNames from 'classnames';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Styles
 import s from './Table.module.scss';
-import classNames from 'classnames';
 
 const TableHeader = ({ type }) => {
     if (type === 'approved') {

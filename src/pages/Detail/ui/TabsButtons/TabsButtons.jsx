@@ -1,5 +1,8 @@
+// External
 import { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
+
+// Styles
 import s from './TabsButtons.module.scss';
 
 const TabsButtons = ({

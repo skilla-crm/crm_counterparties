@@ -1,7 +1,10 @@
+// Components
 import Field from 'components/General/Field/Field';
 import InputText from 'components/General/InputText/InputText';
 
+// Styles
 import s from '../CreateCounterparty.module.scss';
+
 const CounterpartyAddresses = ({ form, setField }) => (
     <div className={s.block}>
         <h3>Адреса</h3>

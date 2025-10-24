@@ -1,23 +1,34 @@
-import s from './General.module.scss';
-
-import { ReactComponent as IconCloseRed } from 'assets/icons/iconCloseRed.svg';
-import { ReactComponent as IconDoneGreen } from 'assets/icons/iconDoneGreen.svg';
-import { ReactComponent as IconUnknown } from 'assets/icons/iconUnknown.svg';
-import { ReactComponent as IconInfo } from 'assets/icons/iconInfo.svg';
-import Switch from 'components/EmailSender/Switch/Switch';
-
-import TextArea from 'components/General/TextArea/TextArea';
-import dayjs from 'dayjs';
+// External
 import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+
+// Hooks
+import useToast from 'hooks/useToast';
+
+// Redux
 import {
     useSwitchCounterpartyHiddenMutation,
     useSwitchCounterpartyStatisticMutation,
     useSwitchCounterpartyStopListMutation,
 } from '../../../../redux/services/counterpartyDetailsApiActions';
+
+// Utils
 import formatNumWithSpace from 'utils/formatNumWithSpace';
-import useToast from 'hooks/useToast';
+
+// Components
+import Switch from 'components/EmailSender/Switch/Switch';
+import TextArea from 'components/General/TextArea/TextArea';
 import IconWithTooltip from 'components/General/IconWithTooltip/IconWithTooltip';
-import { set } from 'lodash';
+
+// Icons
+import { ReactComponent as IconCloseRed } from 'assets/icons/iconCloseRed.svg';
+import { ReactComponent as IconDoneGreen } from 'assets/icons/iconDoneGreen.svg';
+import { ReactComponent as IconUnknown } from 'assets/icons/iconUnknown.svg';
+import { ReactComponent as IconInfo } from 'assets/icons/iconInfo.svg';
+
+// Styles
+import s from './General.module.scss';
+
 const General = ({ data = {} }) => {
     const { showToast } = useToast();
     const {

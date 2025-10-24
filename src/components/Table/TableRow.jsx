@@ -1,25 +1,25 @@
+// External
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 
-//components
-import CompanyLabelBadge from 'components/General/CompanyLabelBadge/CompanyLabelBadge';
-
-import UniButton from 'components/General/UniButton/UniButton';
-
-//utils
-import formatNumWithSpace from 'utils/formatNumWithSpace';
-
-//hooks
-import { useNavigate } from 'react-router-dom';
+// Hooks
 import { useModal } from 'hooks/useModal';
 
-// icons
+// Utils
+import formatNumWithSpace from 'utils/formatNumWithSpace';
+
+// Components
+import CompanyLabelBadge from 'components/General/CompanyLabelBadge/CompanyLabelBadge';
+import UniButton from 'components/General/UniButton/UniButton';
+import EllipsisWithTooltip from 'components/General/EllipsisWithTooltip/EllipsisWithTooltip';
+
+// Icons
 import { ReactComponent as SmileRed } from 'assets/icons/cardFilling/redSmile.svg';
 import { ReactComponent as SmileGreen } from 'assets/icons/cardFilling/greenSmile.svg';
 import { ReactComponent as SmileYellow } from 'assets/icons/cardFilling/yellowSmile.svg';
 
-// styles
+// Styles
 import s from './Table.module.scss';
-import EllipsisWithTooltip from 'components/General/EllipsisWithTooltip/EllipsisWithTooltip';
 
 const TableRow = ({ row, type }) => {
     const navigate = useNavigate();

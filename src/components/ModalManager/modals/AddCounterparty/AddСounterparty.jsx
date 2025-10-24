@@ -1,3 +1,6 @@
+// External
+import { use, useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import 'dayjs/locale/ru';
 
 // Redux
@@ -14,6 +17,9 @@ import useToast from 'hooks/useToast';
 // Components
 import Modal from 'components/General/Modal/Modal';
 import UniButton from 'components/General/UniButton/UniButton';
+import Field from 'components/General/Field/Field';
+import Switch from 'components/EmailSender/Switch/Switch';
+import InputCounterparty from './components/InputCounterparty/InputCounterparty';
 
 // Icons
 import { ReactComponent as IconCloseBlack } from 'assets/icons/iconCloseBlack.svg';
@@ -24,13 +30,6 @@ import { ReactComponent as IconBackForward } from 'assets/icons/iconBackForward.
 
 // Styles
 import s from './AddCounterparty.module.scss';
-import Switch from 'components/EmailSender/Switch/Switch';
-import { use, useEffect, useMemo, useState } from 'react';
-import InputCounterparty from './components/InputCounterparty/InputCounterparty';
-import Field from 'components/General/Field/Field';
-import { useNavigate } from 'react-router-dom';
-import { check } from 'prettier';
-import { set } from 'lodash';
 
 const AddCounterparty = () => {
     const navigate = useNavigate();

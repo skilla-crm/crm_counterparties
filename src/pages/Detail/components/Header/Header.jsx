@@ -1,11 +1,21 @@
+// External
+import { useNavigate } from 'react-router-dom';
+import classNames from 'classnames';
+
+// Hooks
+import { useModal } from 'hooks/useModal';
+
+// Components
 import UniButton from 'components/General/UniButton/UniButton';
+
+// Icons
 import { ReactComponent as IconDelete } from 'assets/icons/iconDeleteRed.svg';
 import { ReactComponent as IconEdit } from 'assets/icons/iconEditWhite.svg';
 import { ReactComponent as IconPlus } from 'assets/icons/iconPlus.svg';
+
+// Styles
 import s from './Header.module.scss';
-import classNames from 'classnames';
-import { useNavigate } from 'react-router-dom';
-import { useModal } from 'hooks/useModal';
+
 const Header = ({ isChecked, tab = 'general', counterpartyId }) => {
     const navigate = useNavigate();
     const { showModal } = useModal();
@@ -21,6 +31,10 @@ const Header = ({ isChecked, tab = 'general', counterpartyId }) => {
         showModal('CONTACT', { companyId: counterpartyId });
     };
 
+    //OBJECTS HANDLERS
+    const handleOpenAddObject = () => {
+        showModal('ADD_OBJECT', { companyId: counterpartyId });
+    };
     const renderBtns = (tab) => {
         switch (tab) {
             case 'general':
@@ -50,6 +64,16 @@ const Header = ({ isChecked, tab = 'general', counterpartyId }) => {
                             text="Добавить представителя"
                             icon={IconPlus}
                             onClick={handleOpenConact}
+                        />
+                    </div>
+                );
+            case 'objects':
+                return (
+                    <div className={classNames(s.headerBtns)}>
+                        <UniButton
+                            text="Добавить объект"
+                            icon={IconPlus}
+                            onClick={handleOpenAddObject}
                         />
                     </div>
                 );

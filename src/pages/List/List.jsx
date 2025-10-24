@@ -1,19 +1,23 @@
+// External
 import { useRef, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
+// Redux
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetCounterpartiesInfiniteQuery } from '../../redux/services/counterpartiesListApiActions';
 
+// Hooks
+import { useCounterparties } from 'hooks/useCounterarties';
+
 // Components
 import Search from 'components/General/Search/Search';
+import SegmentButtons from 'components/General/SegmentButtons/SegmentButtons';
 import Table from 'components/Table/Table';
 import FiltersContainer from 'components/Filters/FiltersContainer';
 import ListHeader from './ListHeader';
 
 // Styles
 import s from './List.module.scss';
-import SegmentButtons from 'components/General/SegmentButtons/SegmentButtons';
-import { useCounterparties } from 'hooks/useCounterarties';
 
 const List = () => {
     const COUNTERPARTIES_SUB_TYPES = [

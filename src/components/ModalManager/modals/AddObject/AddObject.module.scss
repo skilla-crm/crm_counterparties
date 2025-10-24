@@ -1,0 +1,45 @@
+.modal {
+    font-family: Inter;
+    background-color: #fff;
+    box-shadow: 0px 0px 50px 0px rgba(129, 135, 163, 0.2);
+    border-radius: 8px;
+    padding: 20px 24px;
+
+    width: 350px;
+    height: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    p {
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px;
+    }
+}
+.content {
+    width: 100%;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-start;
+    gap: 20px;
+    align-self: stretch;
+    border-radius: 8px;
+    background: #fff;
+}

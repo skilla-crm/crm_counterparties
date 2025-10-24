@@ -1,12 +1,20 @@
-import s from './BankAccounts.module.scss';
-import classNames from 'classnames';
+// External
 import { useEffect, useState } from 'react';
-import Switch from 'components/EmailSender/Switch/Switch';
-import useToast from 'hooks/useToast';
-import { useSwitchBankAccountStatusMutation } from '../../../../redux/services/counterpartyDetailsApiActions';
+import classNames from 'classnames';
+
+// Hooks
 import { useModal } from 'hooks/useModal';
+import useToast from 'hooks/useToast';
+
+// Redux
+import { useSwitchBankAccountStatusMutation } from '../../../../redux/services/counterpartyDetailsApiActions';
+
+// Components
+import Switch from 'components/EmailSender/Switch/Switch';
 import EllipsisWithTooltip from 'components/General/EllipsisWithTooltip/EllipsisWithTooltip';
-import { ReactComponent as IconInfo } from 'assets/icons/iconInfo.svg';
+
+// Styles
+import s from './BankAccounts.module.scss';
 
 const BankAccounts = ({ data = [], counterpartyId }) => {
     return (

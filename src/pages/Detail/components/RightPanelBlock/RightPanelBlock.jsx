@@ -1,10 +1,18 @@
+// External
 import classNames from 'classnames';
 import dayjs from 'dayjs';
+
+// Utils
 import formatNumWithSpace from 'utils/formatNumWithSpace';
-import { ReactComponent as IconArrowRight } from 'assets/icons/iconTopRight.svg';
-import s from './RightPanelBlock.module.scss';
-import Goal from 'components/General/Goal/Goal';
+
+// Components
 import EllipsisWithTooltip from 'components/General/EllipsisWithTooltip/EllipsisWithTooltip';
+
+// Icons
+import { ReactComponent as IconArrowRight } from 'assets/icons/iconTopRight.svg';
+
+// Styles
+import s from './RightPanelBlock.module.scss';
 
 const RightPanelBlock = ({ list = [], title, navigateTo }) => {
     if (!Array.isArray(list) || list.length === 0) return null;

@@ -1,7 +1,9 @@
+// External
+import { useEffect, useState } from 'react';
 import 'dayjs/locale/ru';
+import dayjs from 'dayjs';
 
 // Redux
-
 import {
     useCreateContactMutation,
     useUpdateContactMutation,
@@ -14,6 +16,11 @@ import useToast from 'hooks/useToast';
 // Components
 import Modal from 'components/General/Modal/Modal';
 import UniButton from 'components/General/UniButton/UniButton';
+import Field from 'components/General/Field/Field';
+import InputText from 'components/General/InputText/InputText';
+import InputEmail from 'components/General/InputEmail/InputEmail';
+import InputPhone from 'components/General/InputPhone/InputPhone';
+import Switch from 'components/EmailSender/Switch/Switch';
 
 // Icons
 import { ReactComponent as IconCloseBlack } from 'assets/icons/iconCloseBlack.svg';
@@ -24,13 +31,6 @@ import { ReactComponent as IconDoneGrey } from 'assets/icons/iconDoneGrey.svg';
 
 // Styles
 import s from './ContactModal.module.scss';
-import InputEmail from 'components/General/InputEmail/InputEmail';
-import Field from 'components/General/Field/Field';
-import InputText from 'components/General/InputText/InputText';
-import InputPhone from 'components/General/InputPhone/InputPhone';
-import { useEffect, useState } from 'react';
-import Switch from 'components/EmailSender/Switch/Switch';
-import dayjs from 'dayjs';
 
 const ContactModal = () => {
     const { showToast } = useToast();
@@ -118,7 +118,6 @@ const ContactModal = () => {
             e_mail: email || null,
             is_active: activity,
         };
-        console.log(companyId);
 
         try {
             const res = await updateContact({

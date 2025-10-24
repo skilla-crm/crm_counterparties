@@ -1,7 +1,14 @@
-import s from './CompanyList.module.scss';
+// External
 import { useEffect, useRef } from 'react';
-import { ReactComponent as IconAdd } from '../../../images/icons/iconAdd.svg';
+
+// Components
 import Goal from 'components/General/Goal/Goal';
+
+// Icons
+import { ReactComponent as IconAdd } from '../../../images/icons/iconAdd.svg';
+
+// Styles
+import s from './CompanyList.module.scss';
 
 const CompanyList = ({
     list,

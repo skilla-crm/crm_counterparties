@@ -1,13 +1,18 @@
-import { useState, useEffect, useRef, useCallback, use } from 'react';
-import { useGetCompanyInfoMutation } from '../../../../../../redux/services/dadataApiActions';
-import CompanyListInn from './CompanyList/CompanyListInn';
-
-import useDebounce from 'hooks/useSimpleDebounce';
-
+// External
+import { useState, useEffect, useRef, useCallback } from 'react';
 import classNames from 'classnames';
 
+// Redux
+import { useGetCompanyInfoMutation } from '../../../../../../redux/services/dadataApiActions';
+
+// Hooks
+import useDebounce from 'hooks/useSimpleDebounce';
+
+// Components
+import CompanyListInn from './CompanyList/CompanyListInn';
+
+// Styles
 import s from './InputCounterparty.module.scss';
-import { set } from 'lodash';
 
 const InputCounterparty = ({
     value,
