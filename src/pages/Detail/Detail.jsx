@@ -59,6 +59,7 @@ const Detail = () => {
         contacts,
         price_list,
         bank_accounts,
+        others,
     } = counterparty || {};
 
     useEffect(() => {
@@ -98,55 +99,47 @@ const Detail = () => {
                             [s.animate]: anim,
                         })}
                     >
-                        <div
-                            className={classNames(s.tabContent, {
-                                [s.animate]: anim,
-                            })}
-                        >
-                            {activeTab === 'general' && (
-                                <div className={s.tabPanel}>
-                                    <General data={general} />
-                                </div>
-                            )}
+                        {activeTab === 'general' && (
+                            <div className={s.tabPanel}>
+                                <General data={general} />
+                            </div>
+                        )}
 
-                            {activeTab === 'details' && (
-                                <div className={s.tabPanel}>
-                                    <Requisites
-                                        general={general}
-                                        requisites={requisites}
-                                    />
-                                </div>
-                            )}
-                            {activeTab === 'contacts' && (
-                                <div className={s.tabPanel}>
-                                    <Contacts
-                                        data={contacts}
-                                        counterpartyId={id}
-                                    />
-                                </div>
-                            )}
-                            {activeTab === 'price' && (
-                                <div className={s.tabPanel}>
-                                    <PriceList data={price_list} />
-                                </div>
-                            )}
+                        {activeTab === 'details' && (
+                            <div className={s.tabPanel}>
+                                <Requisites
+                                    general={general}
+                                    requisites={requisites}
+                                />
+                            </div>
+                        )}
+                        {activeTab === 'contacts' && (
+                            <div className={s.tabPanel}>
+                                <Contacts data={contacts} counterpartyId={id} />
+                            </div>
+                        )}
+                        {activeTab === 'price' && (
+                            <div className={s.tabPanel}>
+                                <PriceList data={price_list} />
+                            </div>
+                        )}
 
-                            {activeTab === 'bank' && (
-                                <div className={s.tabPanel}>
-                                    <BankAccounts data={bank_accounts} />
-                                </div>
-                            )}
-                            {activeTab === 'other' && (
-                                <div className={s.tabPanel}>
-                                    <Other data={bank_accounts} />
-                                </div>
-                            )}
-                            {activeTab === 'objects' && (
-                                <div className={s.tabPanel}>
-                                    <Objects data={bank_accounts} />
-                                </div>
-                            )}
-                        </div>
+                        {activeTab === 'bank' && (
+                            <div className={s.tabPanel}>
+                                <BankAccounts data={bank_accounts} />
+                            </div>
+                        )}
+
+                        {activeTab === 'objects' && (
+                            <div className={s.tabPanel}>
+                                <Objects data={bank_accounts} />
+                            </div>
+                        )}
+                        {activeTab === 'other' && (
+                            <div className={s.tabPanel}>
+                                <Other data={others} />
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div

@@ -15,6 +15,7 @@ import EllipsisWithTooltip from 'components/General/EllipsisWithTooltip/Ellipsis
 
 // Icons
 import { ReactComponent as IconInfo } from 'assets/icons/iconInfo.svg';
+import { ReactComponent as IconDoneGrey } from 'assets/icons/iconDoneGrey.svg';
 
 // Styles
 import s from './Objects.module.scss';
@@ -112,10 +113,7 @@ const ObjectsRow = ({ object, counterpartyId }) => {
             </div>
 
             <div className={s.switchContainer}>
-                <Switch
-                    switchState={isActive}
-                    handleSwitch={handleSwitchStatus}
-                />
+                {isActive && <IconDoneGrey />}
             </div>
             <div></div>
         </div>
