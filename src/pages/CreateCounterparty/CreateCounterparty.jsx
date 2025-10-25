@@ -26,15 +26,14 @@ import CounterpartyRepresentative from './Components/CounterpartyRepresentative'
 import s from './CreateCounterparty.module.scss';
 
 const CreateCounterparty = () => {
-    const isEditMode = false;
     const location = useLocation();
     const dadataState = location.state;
+
     const { id } = useParams();
+    const isCreateMode = !!id;
     const navigate = useNavigate();
     const [anim, setAnim] = useState(false);
     const { showToast } = useToast();
-
-    const isCreateMode = !id;
 
     const { data: counterparty, isLoading } = useGetCounterparyRequisitesQuery(
         id,
@@ -42,7 +41,6 @@ const CreateCounterparty = () => {
             skip: !id,
         }
     );
-    console.log(counterparty);
 
     const {
         form,
@@ -193,27 +191,27 @@ const CreateCounterparty = () => {
     return (
         <div className={classNames(s.root, anim && s.root_anim)}>
             <CounterpartyHeader
-                isEditMode={isEditMode}
+                isEditMode={!isCreateMode}
                 data={counterparty}
-                isLoading={isEditMode ? isUpdating : isCreating}
-                handler={isEditMode ? handleEdit : handleCreate}
+                isLoading={isCreateMode ? isUpdating : isCreating}
+                handler={isCreateMode ? handleEdit : handleCreate}
                 // handler={handleEdit}
-                buttonText={isEditMode ? 'Сохранить изменения' : 'Сохранить'}
+                buttonText={isCreateMode ? 'Сохранить изменения' : 'Сохранить'}
             />
 
             <div className={s.wrapper}>
                 <CounterpartyMainInfo
-                    isEditMode={isEditMode}
+                    isEditMode={!isCreateMode}
                     data={counterparty}
                     form={form}
                     setField={setField}
                     isPercent={isPercent}
                 />
                 <CounterpartyAddresses form={form} setField={setField} />
-                {!isCreateMode && (
+                {isCreateMode && (
                     <CounterpartyEdo form={form} setField={setField} />
                 )}
-                {isCreateMode && (
+                {!isCreateMode && (
                     <CounterpartyRepresentative
                         form={form}
                         setField={setContactsField}

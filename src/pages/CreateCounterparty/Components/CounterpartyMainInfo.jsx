@@ -73,7 +73,15 @@ const CompanyMainInfo = ({ form, setField, data, isEditMode, isPercent }) => {
                     width={317}
                     height={80}
                     logo={form.logo}
-                    setLogo={(val) => setField('logo', val)}
+                    setLogo={async (val) => {
+                        if (val?.handle?.getFile) {
+                            const file = await val.handle.getFile();
+                            console.log(val);
+                            setField('logo', file);
+                        } else {
+                            setField('logo', val);
+                        }
+                    }}
                 />
             </Field>
             <Switch

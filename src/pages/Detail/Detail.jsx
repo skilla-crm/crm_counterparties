@@ -78,7 +78,7 @@ const Detail = () => {
             />
             <div className={classNames(s.contentWrapper)}>
                 <div className={classNames(s.mainContent)}>
-                    <ContentHeader data={general} />
+                    <ContentHeader data={general} companyId={id} />
                     <TabsButtons
                         segments={segmentsWithRef}
                         value={activeTab}

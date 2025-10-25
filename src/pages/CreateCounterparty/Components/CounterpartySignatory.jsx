@@ -44,21 +44,21 @@ const CounterpartySignatory = ({
             <Field text="ФИО">
                 <InputText
                     width={600}
-                    text={form.signature}
+                    text={form.director}
                     setText={(v) => setField('director', v)}
                 />
             </Field>
             <Field text="Должность">
                 <InputText
                     width={600}
-                    text={form.signature_position}
+                    text={form.director_position}
                     setText={(v) => setField('director_position', v)}
                 />
             </Field>
             <Field text="Исполнитель в лице">
                 <InputText
                     width={600}
-                    text={form.contractor}
+                    text={form.director_rod}
                     setText={(v) => setField('director_rod', v)}
                     placeholder="например “генерального директора Иванова Ивана Ивановича”"
                 />

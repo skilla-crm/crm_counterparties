@@ -66,7 +66,7 @@ export const counterpartiesListApiActions = createApi({
             query: (data) => ({
                 url: `${COUNTERPARTIES_URL}/create`,
                 method: 'POST',
-                body: Object.fromEntries(data.entries()),
+                body: data,
             }),
         }),
     }),

@@ -43,6 +43,14 @@ export const counterpartyDetailsApiActions = createApi({
         }),
 
         //ВКЛАДКА GENERAL
+
+        sentReport: build.mutation({
+            query: ({ companyId, data }) => ({
+                url: `${COUNTERPARTIES_URL}/${companyId}/report`,
+                method: 'POST',
+                body: data,
+            }),
+        }),
         switchCounterpartyStopList: build.mutation({
             query: (companyId) => ({
                 url: `/companies/${companyId}/stop_list/change`,
@@ -135,4 +143,5 @@ export const {
     useSwitchBankAccountStatusMutation,
     useSwitchObjectStatusMutation,
     useCreateObjectMutation,
+    useSentReportMutation,
 } = counterpartyDetailsApiActions;

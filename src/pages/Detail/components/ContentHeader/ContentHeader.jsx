@@ -14,11 +14,12 @@ import Label from 'pages/Detail/ui/Label/Label';
 // Icons
 import { ReactComponent as CircleCheck } from 'assets/icons/circleCheck.svg';
 import { ReactComponent as IconAlert } from 'assets/icons/iconAlertOrange.svg';
+import { ReactComponent as IconEdit } from 'assets/icons/iconEdit.svg';
 
 // Styles
 import s from './ContentHeader.module.scss';
 
-const ContentHeader = ({ data }) => {
+const ContentHeader = ({ data, companyId }) => {
     const { showModal } = useModal();
     const {
         kpp,
@@ -53,8 +54,10 @@ const ContentHeader = ({ data }) => {
                         type="danger"
                         width={44}
                         style={{ height: '24px' }}
-                        onClick={(verified_id) => {
-                            showModal('REMOVE_RISK_BADGE', { id: verified_id });
+                        onClick={(companyId) => {
+                            showModal('REMOVE_RISK_BADGE', {
+                                companyId: companyId,
+                            });
                         }}
                     />
                 </div>
@@ -71,7 +74,17 @@ const ContentHeader = ({ data }) => {
                             <CircleCheck />
                             <div>{`Проверен платформой ${dayjs(verified_date).format('DD.MM.YYYY')}`}</div>
                         </div>
-                        <EditableField title="Сообщить о неточности" />
+                        <button
+                            className={s.reportBtn}
+                            onClick={() => {
+                                showModal('MISTAKE_REPORT', {
+                                    id: verified_id,
+                                });
+                            }}
+                        >
+                            <IconEdit />
+                            <span>Сообщить о неточности</span>
+                        </button>
                     </div>
                 )}
                 {!Boolean(verified_id) && (
