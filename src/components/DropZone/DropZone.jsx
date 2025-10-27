@@ -60,7 +60,6 @@ const DropZone = ({
         : setImage(URL.createObjectURL(file));
     }
   }, [type, file]);
-
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
@@ -68,9 +67,45 @@ const DropZone = ({
         const binaryStr = reader.result;
       };
       reader.readAsArrayBuffer(file);
+      console.log(file);
       setFile(file);
     });
   }, []);
+  // const onDrop = useCallback(
+  //   (acceptedFiles) => {
+  //     const file = acceptedFiles[0];
+  //     if (!file) return;
+
+  //     if (file.type !== "image/png") {
+  //       setError("Неверный формат файла: требуется PNG");
+  //       return;
+  //     }
+
+  //     if (file.size > 300 * 1024) {
+  //       setError("Файл слишком большой: до 300 КБ");
+  //       return;
+  //     }
+
+  //     const img = new Image();
+  //     img.onload = () => {
+  //       if (img.width > 317 || img.height > 80) {
+  //         setError("Неверный размер изображения: требуется 317x80 пикселей");
+  //         return;
+  //       }
+  //       const reader = new FileReader();
+  //       reader.onload = () => {
+  //         const binaryStr = reader.result;
+  //       };
+  //       reader.readAsArrayBuffer(file);
+  //       console.log("dropzone", file);
+  //       setError(false);
+  //       setFile(file);
+  //     };
+  //     img.onerror = () => setError("Не удалось прочитать изображение");
+  //     img.src = URL.createObjectURL(file);
+  //   },
+  //   [setFile]
+  // );
 
   const onDropRejected = () => {
     setError(true);
@@ -216,7 +251,7 @@ const DropZone = ({
       </div>
 
       <div className={classNames(s.error, error && s.error_active)}>
-        <p>Неверный формат файла</p>
+        {error && <p>{error}</p>}
       </div>
     </div>
   );

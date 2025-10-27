@@ -13,7 +13,7 @@ import LogoUploadInstruction from "./LogoUploadInstruction/LogoUploadInstruction
 
 const LogoUpload = ({
   disabled,
-  width,
+  width = 317,
   height,
   logo,
   setLogo,
@@ -30,10 +30,9 @@ const LogoUpload = ({
         ? setImage(logo)
         : setImage(URL.createObjectURL(logo));
     } else {
-      /*  setTimeout(() => {
-                setImage(null)
-            }, 250)
- */
+      setTimeout(() => {
+        setImage(null);
+      }, 250);
     }
   }, [logo]);
 
