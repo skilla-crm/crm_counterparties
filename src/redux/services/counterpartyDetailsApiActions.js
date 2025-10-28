@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import DeleteCounterpaty from "components/ModalManager/modals/DeleteCounterparty/DeleteCounterparty";
 
 const token = document
   .getElementById("root_counterparties")
@@ -26,24 +27,38 @@ export const counterpartyDetailsApiActions = createApi({
       transformResponse: (response) => response.data,
       providesTags: ["counterparty"],
     }),
-    getCounterparyRequisites: build.query({
-      query: (id) => ({
-        url: `${COUNTERPARTIES_URL}/${id}/requisites`,
+
+    //УДАЛЕНИЕ КОНТРАГЕНТА
+    checkDeleteCounterparty: build.query({
+      query: ({ companyId }) => ({
+        url: `${COUNTERPARTIES_URL}/${companyId}/check_delete`,
         method: "GET",
       }),
-      transformResponse: (response) => response.data,
     }),
-    updateCounterpartyRequisites: build.mutation({
-      query: ({ id, data }) => ({
-        url: `${COUNTERPARTIES_URL}/${id}/update`,
+
+    deleteCounterpaty: build.mutation({
+      query: ({ companyId }) => ({
+        url: `${COUNTERPARTIES_URL}/${companyId}/delete`,
+        method: "DELETE",
+      }),
+    }),
+    hideCounterparty: build.mutation({
+      query: ({ companyId }) => ({
+        url: `${COUNTERPARTIES_URL}/${companyId}/hidden`,
+        method: "PATCH",
+      }),
+    }),
+
+    //ЗАГРУЗКА ЛОГОТИПА
+    uploadLogo: build.mutation({
+      query: ({ companyId, data }) => ({
+        url: `${COUNTERPARTIES_URL}/${companyId}/logo`,
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["counterparty"],
     }),
 
     //ВКЛАДКА GENERAL
-
     sentReport: build.mutation({
       query: ({ companyId, data }) => ({
         url: `${COUNTERPARTIES_URL}/${companyId}/remark`,
@@ -51,13 +66,7 @@ export const counterpartyDetailsApiActions = createApi({
         body: data,
       }),
     }),
-    upploadLogo: build.mutation({
-      query: ({ companyId, data }) => ({
-        url: `${COUNTERPARTIES_URL}/${companyId}/logo`,
-        method: "POST",
-        body: data,
-      }),
-    }),
+
     switchCounterpartyStopList: build.mutation({
       query: (companyId) => ({
         url: `/companies/${companyId}/stop_list/change`,
@@ -78,6 +87,23 @@ export const counterpartyDetailsApiActions = createApi({
         method: "PATCH",
       }),
       providesTags: ["counterparty"],
+    }),
+
+    //ВКЛАДКА РЕКВИЗИТЫ
+    getCounterparyRequisites: build.query({
+      query: (id) => ({
+        url: `${COUNTERPARTIES_URL}/${id}/requisites`,
+        method: "GET",
+      }),
+      transformResponse: (response) => response.data,
+    }),
+    updateCounterpartyRequisites: build.mutation({
+      query: ({ id, data }) => ({
+        url: `${COUNTERPARTIES_URL}/${id}/update`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["counterparty"],
     }),
 
     //ВКЛАДКА КОНТАКТЫ
@@ -136,20 +162,37 @@ export const counterpartyDetailsApiActions = createApi({
     }),
   }),
 });
+
 export const {
+  // ДЕТАЛКА КОНТРАГЕНТА
   useGetCounterpartyInfoQuery,
+  useSentReportMutation,
+  useUploadLogoMutation,
+
+  //УДАЛЕНИЕ КОНТРАГЕНТА
+  useDeleteCounterpatyMutation,
+  useCheckDeleteCounterpartyQuery,
+  useHideCounterpartyMutation,
+
+  // ВКЛАДКА GENERAL
   useSwitchCounterpartyStopListMutation,
   useSwitchCounterpartyHiddenMutation,
   useSwitchCounterpartyStatisticMutation,
+
+  // ВКЛАДКА РЕКВИЗИТЫ
   useGetCounterparyRequisitesQuery,
   useUpdateCounterpartyRequisitesMutation,
+
+  // ВКЛАДКА КОНТАКТЫ
   useSwitchContactStatusMutation,
   useCreateContactMutation,
   useUpdateContactMutation,
   useDeleteContactMutation,
+
+  // ВКЛАДКА БАНКОВСКИЕ СЧЕТА
   useSwitchBankAccountStatusMutation,
+
+  // ВКЛАДКА ОБЪЕКТЫ
   useSwitchObjectStatusMutation,
   useCreateObjectMutation,
-  useSentReportMutation,
-  useUpploadLogoMutation,
 } = counterpartyDetailsApiActions;

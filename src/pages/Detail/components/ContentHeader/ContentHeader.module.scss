@@ -1,77 +1,83 @@
 .contentHeader {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    border-radius: 8px;
-    background: var(--My-hover, #f8fafd);
-    padding: 20px 24px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  border-radius: 8px;
+  background: var(--My-hover, #f8fafd);
+  padding: 20px 24px;
 }
 .section {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 .logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 200px;
-    height: 100%;
-    border-radius: 8px;
-    background: var(--White, #fff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 100%;
+  border-radius: 8px;
+  background: var(--White, #fff);
 }
 .flexRow {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 
-    gap: 20px;
+  gap: 20px;
 }
 .description {
-    max-width: 1000px;
+  max-width: 1000px;
 
-    overflow: hidden;
-    color: #71869d;
+  overflow: hidden;
+  color: #71869d;
 
-    font-family: Inter;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px;
-    white-space: normal;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .verified,
 .notVerified {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-direction: row;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-direction: row;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
 }
 .verified {
-    color: #28a879;
+  color: #28a879;
 }
 .notVerified {
-    color: #f89500;
+  color: #f89500;
 }
 .reportBtn {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 6px;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px;
-    cursor: pointer;
-    color: #002cfb;
-    &:hover {
-        color: #0024cb;
-    }
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  cursor: pointer;
+  color: #002cfb;
+  &:hover {
+    color: #0024cb;
+  }
+}
+.noLogo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
 }

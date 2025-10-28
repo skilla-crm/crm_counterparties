@@ -136,7 +136,7 @@ const CreateCounterparty = () => {
 
   useEffect(() => {
     if (!counterparty) return;
-    setIsVerified(!!counterparty.is_verified);
+    setIsVerified(!!counterparty.verified_id);
   }, [counterparty]);
 
   const handleCreate = async () => {
