@@ -53,6 +53,7 @@ export default BankAccounts;
 
 const BankAccountRow = ({ account, counterpartyId }) => {
     const { showToast } = useToast();
+    const { showModal } = useModal();
     const [isActive, setIsActive] = useState(false);
     const [switchBankAccountStatus] = useSwitchBankAccountStatusMutation();
 
@@ -60,27 +61,35 @@ const BankAccountRow = ({ account, counterpartyId }) => {
         setIsActive(Boolean(account.is_default));
     }, [account]);
 
-    const handleSwitchStatus = async () => {
+    const handleOpenAccount = () => {
+        showModal('BANK_ACCOUNT', {
+            bankAccount: account,
+            companyId: counterpartyId,
+        });
+    };
+
+    const handleSwitchStatus = async (e) => {
+        e.stopPropagation();
         if (!account.id) return;
 
         try {
             const res = await switchBankAccountStatus({
                 accountId: account.id,
-                companyId: counterpartyId,
+                // companyId: counterpartyId,
             }).unwrap();
 
-            if (res?.data?.success) {
-                setIsActive(!isActive);
-            } else {
-                showToast('Не удалось изменить статус счета', 'error');
-            }
+            // if (res?.data?.success) {
+            // } else {
+            //     showToast('Не удалось изменить статус счета', 'error');
+            // }
+            setIsActive(!isActive);
         } catch {
             showToast('Произошла ошибка', 'error');
         }
     };
 
     return (
-        <div className={classNames(s.gridRow)}>
+        <div className={classNames(s.gridRow)} onClick={handleOpenAccount}>
             <div>
                 <EllipsisWithTooltip text={account.bank || '-'} />
             </div>

@@ -1,235 +1,225 @@
-// External
-import { useEffect, useState } from "react";
-import "dayjs/locale/ru";
-import dayjs from "dayjs";
+import { useEffect, useState, useMemo } from 'react';
+import 'dayjs/locale/ru';
 
 // Redux
 import {
-  useCreateContactMutation,
-  useUpdateContactMutation,
-} from "../../../../redux/services/counterpartyDetailsApiActions";
+    useCreateBankAccountMutation,
+    useUpdateBankAccountMutation,
+    useDeleteBankAccountMutation,
+} from '../../../../redux/services/counterpartyDetailsApiActions';
+import { useGetBankByBikMutation } from '../../../../redux/services/dadataApiActions';
 
 // Hooks
-import { useModal } from "hooks/useModal";
-import useToast from "hooks/useToast";
+import { useModal } from 'hooks/useModal';
+import useToast from 'hooks/useToast';
 
 // Components
-import Modal from "components/General/Modal/Modal";
-import UniButton from "components/General/UniButton/UniButton";
-import Field from "components/General/Field/Field";
-import InputText from "components/General/InputText/InputText";
-import InputEmail from "components/General/InputEmail/InputEmail";
-import InputPhone from "components/General/InputPhone/InputPhone";
-import Switch from "components/EmailSender/Switch/Switch";
+import Modal from 'components/General/Modal/Modal';
+import UniButton from 'components/General/UniButton/UniButton';
+import Field from 'components/General/Field/Field';
+import Switch from 'components/EmailSender/Switch/Switch';
+import InputBankAccount from 'components/General/InputBankAccount/InputBankAccount';
+import InputBik from 'components/General/InputBik/InputBik';
+import Label from 'components/General/Label/Label';
+import InputText from 'components/General/InputText/InputText';
 
 // Icons
-import { ReactComponent as IconCloseBlack } from "assets/icons/iconCloseBlack.svg";
-import { ReactComponent as IconPlusBlack } from "assets/icons/iconPlusBlack.svg";
-import { ReactComponent as IconAccount } from "assets/icons/iconAccountCard.svg";
-import { ReactComponent as IconDoneWhite } from "assets/icons/iconDoneWhite.svg";
-import { ReactComponent as IconDoneGrey } from "assets/icons/iconDoneGrey.svg";
+import { ReactComponent as IconCloseBlack } from 'assets/icons/iconCloseBlack.svg';
+import { ReactComponent as IconPlusBlack } from 'assets/icons/iconPlusBlack.svg';
+import { ReactComponent as IconRuble } from 'assets/icons/IconRubleBlack.svg';
+import { ReactComponent as IconDelete } from 'assets/icons/iconDeleteRed.svg';
+import { ReactComponent as IconDoneWhite } from 'assets/icons/iconDoneWhite.svg';
+import { ReactComponent as IconDoneGrey } from 'assets/icons/iconDoneGrey.svg';
 
 // Styles
-import s from "./BankAccount.module.scss";
+import s from './BankAccount.module.scss';
 
 const BankAccount = () => {
-  const { showToast } = useToast();
-  const { modalProps, hideModal } = useModal();
-  const { companyId, bankAccount = {} } = modalProps;
-  const isCreateMode = Object.keys(bankAccount).length === 0;
-  const [bik, setBik] = useState("");
-  const [bank, setBank] = useState("");
-  const [ks, setKs] = useState("");
-  const [rs, setRs] = useState("");
+    const { showToast } = useToast();
+    const { modalProps, hideModal } = useModal();
+    const { companyId, bankAccount = {} } = modalProps;
+    const isCreateMode = Object.keys(bankAccount).length === 0;
 
-  const [activity, setActivity] = useState(0);
+    const [bik, setBik] = useState('');
+    const [bank, setBank] = useState('');
+    const [ks, setKs] = useState('');
+    const [rs, setRs] = useState('');
+    const [isDefault, setIsDefault] = useState(0);
+    const [dadata, setDadata] = useState({});
 
-  const disabledBtn = !bik || !bank || ks.length !== 20 || rs.length !== 20;
+    const [getBankByBik] = useGetBankByBikMutation();
+    const [createBankAccount, { isLoading: isCreating }] =
+        useCreateBankAccountMutation();
+    const [updateBankAccount, { isLoading: isUpdating }] =
+        useUpdateBankAccountMutation();
+    const [deleteBankAccount, { isLoading: isDeleting }] =
+        useDeleteBankAccountMutation();
 
-  const [createContact, { isLoading: isCreating }] = useCreateContactMutation();
+    const disabledBtn = useMemo(
+        () => bik.length !== 9 || !bank || ks.length !== 20 || rs.length !== 20,
+        [bik, bank, ks, rs]
+    );
 
-  const [updateContact, { isLoading: isUpdating }] = useUpdateContactMutation();
+    useEffect(() => {
+        if (bankAccount.id) {
+            setBank(bankAccount.bank || '');
+            setBik(bankAccount.bik || '');
+            setKs(bankAccount.ks || '');
+            setRs(bankAccount.rs || '');
+            setIsDefault(bankAccount.is_active || 0);
+        }
+    }, [bankAccount]);
 
-  useEffect(() => {
-    if (!bankAccount.id) return;
+    useEffect(() => {
+        if (bik.length !== 9) return;
 
-    setBank(bankAccount.bank);
-    setBik(bankAccount.bik);
-    setKs(bankAccount.ks);
-    setRs(bankAccount.rs);
-    setActivity(bankAccount.is_active);
-  }, [bankAccount]);
+        getBankByBik({ bik })
+            .unwrap()
+            .then(setDadata)
+            .catch((error) =>
+                console.error('Ошибка получения банка по БИК:', error)
+            );
+    }, [bik, getBankByBik]);
 
-  //   const handleCreateContact = async () => {
-  //     const payload = {
-  //       name,
-  //       surname,
-  //       patronymic,
-  //       position,
-  //       phone,
-  //       dob,
-  //       e_mail: email,
-  //       is_active: activity,
-  //     };
+    const handleFillByBik = () => {
+        setBank(dadata.value || '');
+        setKs(dadata.data?.correspondent_account || '');
+    };
 
-  //     try {
-  //       const res = await createContact({
-  //         companyId: companyId,
-  //         data: payload,
-  //       }).unwrap();
+    const getPayload = () => ({
+        company_id: companyId,
+        bank,
+        bik,
+        ks,
+        rs,
+        is_default: isDefault,
+    });
 
-  //       if (res?.success) {
-  //         hideModal();
-  //       }
-  //     } catch {
-  //       showToast("Произошла ошибка", "error");
-  //     }
-  //   };
+    const handleSaveAccount = async () => {
+        const mutation = isCreateMode ? createBankAccount : updateBankAccount;
+        const params = isCreateMode
+            ? { data: getPayload() }
+            : { accountId: bankAccount.id, data: getPayload() };
 
-  //   const handleUpdateContact = async () => {
-  //     if (!phoneValidateError) {
-  //       showToast("Неверно введен номер телефона", "error");
-  //       return;
-  //     }
-  //     // if (!emailValidateError) {
-  //     //     showToast('Неверно введен email', 'error');
-  //     //     return;
-  //     // }
-  //     const payload = {
-  //       name,
-  //       surname,
-  //       patronymic,
-  //       position,
-  //       phone,
-  //       dob,
-  //       e_mail: email || null,
-  //       is_active: activity,
-  //     };
+        try {
+            const res = await mutation(params).unwrap();
+            if (res?.success) hideModal();
+            showToast('Изменеия сохранены', 'success');
+        } catch {
+            showToast('Произошла ошибка', 'error');
+        }
+    };
 
-  //     try {
-  //       const res = await updateContact({
-  //         companyId: companyId,
-  //         contactId: contact.id,
-  //         data: payload,
-  //       }).unwrap();
+    const handleDeleteAccount = async () => {
+        try {
+            await deleteBankAccount({ accountId: bankAccount.id }).unwrap();
+            hideModal();
+            showToast('Счет удален', 'success');
+        } catch {
+            showToast('Произошла ошибка', 'error');
+        }
+    };
 
-  //       if (res?.success) {
-  //         hideModal();
-  //       }
-  //     } catch {
-  //       showToast("Произошла ошибка", "error");
-  //     }
-  //   };
+    return (
+        <Modal isOpen onClose={hideModal}>
+            <div className={s.modal}>
+                <div className={s.header}>
+                    <div className={s.title}>
+                        {isCreateMode ? <IconPlusBlack /> : <IconRuble />}
+                        <p>
+                            {isCreateMode ? 'Добавить счет' : 'Банковский счет'}
+                        </p>
+                    </div>
+                    <div onClick={hideModal} className={s.close}>
+                        <IconCloseBlack />
+                    </div>
+                </div>
 
-  return (
-    <Modal isOpen={true} onClose={hideModal}>
-      <div className={s.modal}>
-        <div className={s.header}>
-          {isCreateMode ? (
-            <div className={s.title}>
-              <IconPlusBlack />
-              <p>Новый представитель</p>
+                <div className={s.content}>
+                    <Field text="БИК">
+                        <InputBik
+                            account={bik}
+                            setAccount={setBik}
+                            width={300}
+                        />
+                    </Field>
+
+                    {Object.keys(dadata).length > 0 && (
+                        <button onClick={handleFillByBik} className={s.fillBtn}>
+                            Заполнить по БИК
+                        </button>
+                    )}
+
+                    <Field text="Банк">
+                        <InputText width={300} text={bank} setText={setBank} />
+                    </Field>
+
+                    <Field text="Корреспондентский счет">
+                        <InputBankAccount
+                            account={ks}
+                            setAccount={setKs}
+                            width={300}
+                        />
+                    </Field>
+
+                    <Field text="Расчётный счет">
+                        <InputBankAccount
+                            account={rs}
+                            setAccount={setRs}
+                            width={300}
+                        />
+                    </Field>
+
+                    <Switch
+                        text="Назначить основным"
+                        switchState={isDefault}
+                        handleSwitch={() =>
+                            setIsDefault((prev) => (prev === 0 ? 1 : 0))
+                        }
+                    />
+
+                    {!isCreateMode && bankAccount?.is_default && (
+                        <div className={s.warning}>
+                            <Label
+                                label="Основной счет"
+                                color="green"
+                                width={120}
+                            />
+                            <Field info="Этот счет используется по умолчанию, его нельзя удалить. Чтобы назначить другой счет в качестве основного, перейди в его карточку." />
+                        </div>
+                    )}
+                </div>
+
+                <div className={s.btns}>
+                    <UniButton
+                        text={isCreateMode ? 'Готово' : 'Сохранить изменения'}
+                        onClick={handleSaveAccount}
+                        isLoading={isCreating || isUpdating}
+                        icon={
+                            !isCreateMode
+                                ? IconDoneWhite
+                                : disabledBtn
+                                  ? IconDoneGrey
+                                  : IconDoneWhite
+                        }
+                        width={300}
+                        disabled={isCreateMode ? disabledBtn : false}
+                    />
+
+                    {!isCreateMode && !bankAccount?.is_active && (
+                        <UniButton
+                            text="Удалить"
+                            onClick={handleDeleteAccount}
+                            type="danger"
+                            icon={IconDelete}
+                            width={300}
+                            disabled={isDeleting}
+                        />
+                    )}
+                </div>
             </div>
-          ) : (
-            <div className={s.title}>
-              <IconAccount />
-              <p>Представитель</p>
-            </div>
-          )}
-
-          <div onClick={hideModal} className={s.close}>
-            <IconCloseBlack />
-          </div>
-        </div>
-
-        {/* <div className={s.content}>
-          <Field text="Фамилия">
-            <InputText
-              width={452}
-              text={surname}
-              setText={(v) => setSurname(v)}
-            />
-          </Field>
-          <Field text="Имя">
-            <InputText width={452} text={name} setText={(v) => setName(v)} />
-          </Field>
-          <Field text="Отчество">
-            <InputText
-              width={452}
-              text={patronymic}
-              setText={(v) => setPatronymic(v)}
-            />
-          </Field>
-
-          <Field text="Должность">
-            <InputText
-              width={452}
-              text={position}
-              setText={(v) => setPosition(v)}
-            />
-          </Field>
-
-          <div className={s.fields}>
-            <Field text="Моб. телефон">
-              <InputPhone
-                required={true}
-                phone={phone}
-                setPhone={(v) => {
-                  setPhone(v);
-                }}
-                width={282}
-                setValidate={(v) => {
-                  setPhoneValidateError(v);
-                }}
-              />
-            </Field>
-            <Field text="Добавочный">
-              <InputText width={150} text={dob} setText={(v) => setDob(v)} />
-            </Field>
-          </div> */}
-        {/* <Field text="Эл. почта">
-            <InputEmail
-              width={452}
-              email={email}
-              required={false}
-              setEmail={(v) => {
-                setEmail(v);
-              }}
-              setValidate={(v) => {
-                setEmailValidateError(v);
-              }}
-            />
-          </Field>
-          <Switch
-            text="Активный"
-            switchState={activity}
-            handleSwitch={() => setActivity(!activity)}
-          /> */}
-        {/* 
-          {!isCreateMode && (
-            <span
-              className={s.date}
-            >{`Добавлен ${dayjs(contact.created_at).format("DD.MM.YYYY")}`}</span>
-          )}
-        </div> */}
-        {/* <div className={s.btns}>
-          <UniButton
-            text={isCreateMode ? "Готово" : "Сохранить изменения"}
-            onClick={isCreateMode ? handleCreateContact : handleUpdateContact}
-            isLoading={isCreating || isUpdating}
-            icon={
-              !isCreateMode
-                ? IconDoneWhite
-                : disabledBtn
-                  ? IconDoneGrey
-                  : IconDoneWhite
-            }
-            width={452}
-            disabled={isCreateMode ? disabledBtn : false}
-          />
-        </div> */}
-      </div>
-    </Modal>
-  );
+        </Modal>
+    );
 };
+
 export default BankAccount;

@@ -18,7 +18,9 @@
     align-items: center;
     justify-content: space-between;
 }
-
+.close {
+    cursor: pointer;
+}
 .title {
     display: flex;
     align-items: center;

@@ -12,7 +12,9 @@
     flex-direction: column;
     gap: 20px;
 }
-
+.close {
+    cursor: pointer;
+}
 .header {
     display: flex;
     align-items: center;

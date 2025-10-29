@@ -1,0 +1,17 @@
+import s from './Label.module.scss';
+
+const Label = ({ label, background, width }) => {
+    return (
+        <div
+            className={s.label}
+            style={{
+                background: background || '#F1F4F9',
+                width: width ? `${width}px` : 'auto',
+            }}
+        >
+            {label}
+        </div>
+    );
+};
+
+export default Label;

@@ -4,28 +4,36 @@ import { useState } from 'react';
 import { NumericFormat } from 'react-number-format';
 import { ReactComponent as IconRuble } from './assets/IconRuble.svg';
 
-const InputFinancial = ({ amount, setAmount, disabled, placeholder, width, icon }) => {
+const InputFinancial = ({
+    amount,
+    setAmount,
+    disabled,
+    placeholder,
+    width,
+    icon,
+}) => {
     const [focus, setFocus] = useState(false);
 
     const handleChange = (e) => {
         const value = e.currentTarget.value.replace(' ', '').replace(',', '.');
-        setAmount(Number(value))
-       
-    }
-
+        setAmount(Number(value));
+    };
 
     const handleBlur = () => {
-        setFocus(false)
-
-    }
+        setFocus(false);
+    };
 
     const handleFocus = () => {
-        setFocus(true)
-    }
+        setFocus(true);
+    };
 
     return (
         <div
-            className={classNames(s.root, disabled && s.root_disabled, focus && s.root_focus)}
+            className={classNames(
+                s.root,
+                disabled && s.root_disabled,
+                focus && s.root_focus
+            )}
             style={{ width: width ? `${width}px` : '100%' }}
         >
             <NumericFormat
@@ -37,14 +45,11 @@ const InputFinancial = ({ amount, setAmount, disabled, placeholder, width, icon 
                 decimalSeparator=","
                 value={amount || ''}
                 onChange={handleChange}
-                thousandSeparator=" " />
-            {<div className={s.icon}>
-                {icon && <IconRuble />}
-            </div>}
+                thousandSeparator=" "
+            />
+            {<div className={s.icon}>{icon && <IconRuble />}</div>}
         </div>
-
-
-    )
+    );
 };
 
 export default InputFinancial;
