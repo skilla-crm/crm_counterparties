@@ -49,7 +49,7 @@ const AddCounterparty = () => {
     const [checkCounterparty, { isLoading: isLoadingCheck }] =
         useCheckCounterpartyMutation();
     const [addCounterpartyById, { isLoading: isLoadingAdd }] =
-        useAddСounterpartyByIdMutation({ id });
+        useAddСounterpartyByIdMutation();
 
     useEffect(() => {
         const validInn =
@@ -85,10 +85,12 @@ const AddCounterparty = () => {
 
     const handleConfirm = async () => {
         try {
-            const res = await addCounterpartyById(
-                checkResult?.data?.id
-            ).unwrap();
-            if (res.data.success) hideModal();
+            const res = await addCounterpartyById({
+                id: checkResult?.data?.id,
+            }).unwrap();
+            if (res.success) hideModal();
+            showToast('Контрагент добавлен', 'success');
+            navigate(`/details/${res.data.id}`);
         } catch {
             showToast('Произошла ошибка', 'error');
         }

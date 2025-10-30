@@ -5,6 +5,11 @@ import classNames from 'classnames';
 
 // Redux API
 import { useGetCounterpartyInfoQuery } from '../../redux/services/counterpartyDetailsApiActions';
+import {
+    resetActiveTab,
+    setActiveTab,
+} from '../../redux/slices/detailTabSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 // Components
 import Header from './components/Header/Header';
@@ -40,7 +45,11 @@ const TABS = [
 const Detail = () => {
     const { id } = useParams();
     const [anim, setAnim] = useState(false);
-    const [activeTab, setActiveTab] = useState('general');
+    const dispatch = useDispatch();
+
+    const activeTab = useSelector((state) => state.detailTab.activeTab);
+
+    // const [activeTab, setActiveTab] = useState('general');
     const controlRef = useRef(null);
     const segmentRefs = useRef(TABS.map(() => React.createRef()));
 
@@ -73,6 +82,12 @@ const Detail = () => {
         }
     }, [isLoading]);
 
+    useEffect(() => {
+        return () => {
+            dispatch(resetActiveTab());
+        };
+    }, [dispatch]);
+
     return (
         <div className={s.overlay}>
             <DetailLoader isLoading={isLoading} />
@@ -97,7 +112,7 @@ const Detail = () => {
                             callback={(val) => {
                                 setAnim(false);
                                 setTimeout(() => {
-                                    setActiveTab(val);
+                                    dispatch(setActiveTab(val));
                                 }, 100);
 
                                 setTimeout(() => {
