@@ -11,12 +11,16 @@ import {
 } from '../../redux/slices/detailTabSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
+//hooks
+import { useModal } from 'hooks/useModal';
+
 // Components
 import Header from './components/Header/Header';
 import ContentHeader from './components/ContentHeader/ContentHeader';
 import RightPanelBlock from './components/RightPanelBlock/RightPanelBlock';
 import HistoryBlock from './components/HistoryBlock/HistoryBlock';
 import TabsButtons from './ui/TabsButtons/TabsButtons';
+import DetailLoader from './ui/DetailLoader/DetailLoader';
 
 // Tabs
 import General from './TABS/General/General';
@@ -29,7 +33,6 @@ import Objects from './TABS/Objects/Objects';
 
 // Styles
 import s from './Detail.module.scss';
-import DetailLoader from './ui/DetailLoader/DetailLoader';
 
 const TABS = [
     { value: 'general', label: 'Общее' },
@@ -46,10 +49,13 @@ const Detail = () => {
     const { id } = useParams();
     const [anim, setAnim] = useState(false);
     const dispatch = useDispatch();
+    const { showModal } = useModal();
 
     const activeTab = useSelector((state) => state.detailTab.activeTab);
+    const hasUnsavedChanges = useSelector(
+        (state) => state.detailChanges.hasUnsavedChanges
+    );
 
-    // const [activeTab, setActiveTab] = useState('general');
     const controlRef = useRef(null);
     const segmentRefs = useRef(TABS.map(() => React.createRef()));
 
@@ -88,6 +94,28 @@ const Detail = () => {
         };
     }, [dispatch]);
 
+    const handleTabChange = (val) => {
+        if (hasUnsavedChanges) {
+            showModal('UNSAVED_CHANGES', {
+                nextTab: val,
+                currentTab: TABS.find((tab) => tab.value === activeTab).label,
+                companyId: id,
+            });
+        } else {
+            performTabChange(val);
+        }
+    };
+
+    const performTabChange = (val) => {
+        setAnim(false);
+        setTimeout(() => {
+            dispatch(setActiveTab(val));
+        }, 100);
+        setTimeout(() => {
+            setAnim(true);
+        }, 150);
+    };
+
     return (
         <div className={s.overlay}>
             <DetailLoader isLoading={isLoading} />
@@ -109,16 +137,7 @@ const Detail = () => {
                         <TabsButtons
                             segments={segmentsWithRef}
                             value={activeTab}
-                            callback={(val) => {
-                                setAnim(false);
-                                setTimeout(() => {
-                                    dispatch(setActiveTab(val));
-                                }, 100);
-
-                                setTimeout(() => {
-                                    setAnim(true);
-                                }, 150);
-                            }}
+                            callback={handleTabChange}
                             controlRef={controlRef}
                         />
                         <div
@@ -190,7 +209,7 @@ const Detail = () => {
                             title="Документы"
                             list={last_documents}
                         />
-                        <HistoryBlock />
+                        {/* <HistoryBlock /> */}
                     </div>
                 </div>
             </div>

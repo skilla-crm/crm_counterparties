@@ -54,7 +54,6 @@ const Contacts = ({ data = [], counterpartyId }) => {
 export default Contacts;
 
 const ContactRow = ({ contact, counterpartyId }) => {
-    console.log(contact);
     const { showModal } = useModal();
     const { showToast } = useToast();
     const [isActive, setIsActive] = useState(false);

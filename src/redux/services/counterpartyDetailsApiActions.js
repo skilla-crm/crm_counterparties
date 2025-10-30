@@ -184,6 +184,16 @@ export const counterpartyDetailsApiActions = createApi({
             }),
             invalidatesTags: ['counterparty'],
         }),
+
+        //ВКЛАДКА ДРУГОЕ
+        updateOther: build.mutation({
+            query: ({ companyId, data }) => ({
+                url: `${COUNTERPARTIES_URL}/${companyId}/others`,
+                method: 'PUT',
+                body: data,
+            }),
+            invalidatesTags: ['counterparty'],
+        }),
     }),
 });
 
@@ -222,4 +232,7 @@ export const {
     // ВКЛАДКА ОБЪЕКТЫ
     useSwitchObjectStatusMutation,
     useCreateObjectMutation,
+
+    // ВКЛАДКА ДРУГОЕ
+    useUpdateOtherMutation,
 } = counterpartyDetailsApiActions;

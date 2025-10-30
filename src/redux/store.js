@@ -7,12 +7,16 @@ import { counterpartiesListApiActions } from './services/counterpartiesListApiAc
 import sortSlice from './sorting/sortSlice';
 import modalReducer from './modalManager/modalSlice';
 import detailTabReducer from './slices/detailTabSlice';
+import detailChangesSlice from './slices/detailChangesSlice';
+import otherDataSlice from './slices/otherDataSlice';
 
 export const store = configureStore({
     reducer: {
         sort: sortSlice,
         modal: modalReducer,
         detailTab: detailTabReducer,
+        detailChanges: detailChangesSlice,
+        otherData: otherDataSlice,
 
         [counterpartyDetailsApiActions.reducerPath]:
             counterpartyDetailsApiActions.reducer,

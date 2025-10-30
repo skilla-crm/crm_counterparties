@@ -2,8 +2,14 @@
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 
+// Redux
+import { useUpdateOtherMutation } from '../../../../redux/services/counterpartyDetailsApiActions';
+import { useSelector, useDispatch } from 'react-redux';
+import { resetHasUnsavedChanges } from '../../../../redux/slices/detailChangesSlice';
+
 // Hooks
 import { useModal } from 'hooks/useModal';
+import useToast from 'hooks/useToast';
 
 // Components
 import UniButton from 'components/General/UniButton/UniButton';
@@ -20,6 +26,12 @@ import s from './Header.module.scss';
 const Header = ({ isChecked, tab = 'general', counterpartyId }) => {
     const navigate = useNavigate();
     const { showModal } = useModal();
+    const dispatch = useDispatch();
+    const { showToast } = useToast();
+    const { draftDebt, draftMinSum, draftActivity } = useSelector(
+        (state) => state.otherData
+    );
+    const [updateOther, { isLoading }] = useUpdateOtherMutation();
 
     //GENERAL HANDLERS
 
@@ -48,9 +60,26 @@ const Header = ({ isChecked, tab = 'general', counterpartyId }) => {
     };
 
     // //OTHER HANDLERS
-    // const handleUpdateOther = () => {
 
-    // }
+    const handleUpdateOther = async () => {
+        try {
+            const res = await updateOther({
+                companyId: counterpartyId,
+                data: {
+                    only_repayment: draftActivity === true ? 1 : 0,
+                    debt_threshold: draftDebt,
+                    min_acc_sum: draftMinSum,
+                },
+            }).unwrap();
+
+            if (res?.success) {
+                dispatch(resetHasUnsavedChanges());
+                showToast('Изменения сохранены', 'success');
+            }
+        } catch {
+            showToast('Произошла ошибка', 'error');
+        }
+    };
     const renderBtns = (tab) => {
         switch (tab) {
             case 'general':
@@ -104,16 +133,16 @@ const Header = ({ isChecked, tab = 'general', counterpartyId }) => {
                         />
                     </div>
                 );
-            // case 'other':
-            //     return (
-            //         <div className={classNames(s.headerBtns)}>
-            //             <UniButton
-            //                 text="Сохранить изменения"
-            //                 icon={IconDone}
-            //                 onClick={handleUpdateOther}
-            //             />
-            //         </div>
-            //     );
+            case 'other':
+                return (
+                    <div className={classNames(s.headerBtns)}>
+                        <UniButton
+                            text="Сохранить изменения"
+                            icon={IconDone}
+                            onClick={handleUpdateOther}
+                        />
+                    </div>
+                );
 
             default:
                 return <div className={classNames(s.headerBtns)}></div>;
