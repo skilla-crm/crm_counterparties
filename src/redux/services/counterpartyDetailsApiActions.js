@@ -163,7 +163,7 @@ export const counterpartyDetailsApiActions = createApi({
         }),
         deleteBankAccount: build.mutation({
             query: ({ accountId }) => ({
-                url: `/companies/account/${accountId}/delete`,
+                url: `/companies/accounts/${accountId}/delete`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['counterparty'],

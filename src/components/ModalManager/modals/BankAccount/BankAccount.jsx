@@ -104,7 +104,7 @@ const BankAccount = () => {
         try {
             const res = await mutation(params).unwrap();
             if (res?.success) hideModal();
-            showToast('Изменеия сохранены', 'success');
+            showToast('Изменения сохранены', 'success');
         } catch {
             showToast('Произошла ошибка', 'error');
         }

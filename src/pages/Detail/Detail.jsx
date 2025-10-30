@@ -63,12 +63,6 @@ const Detail = () => {
         others,
     } = counterparty || {};
 
-    //   useEffect(() => {
-    //     setTimeout(() => {
-    //       setAnim(true);
-    //       document.title = "";
-    //     });
-    //   }, []);
     useEffect(() => {
         if (!isLoading) {
             setTimeout(() => {
