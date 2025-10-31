@@ -60,7 +60,7 @@ const UniButton = ({
           })}
         >
           {renderIcon()}
-          <span>{text}</span>
+          {text && <span className={s.text}>{text}</span>}
         </div>
       )}
     </button>
