@@ -1,47 +1,49 @@
-import { useEffect, useState, useRef } from "react";
-import Tooltip2 from "components/General/Tooltip2/Tooltip2";
-import s from "./EllipsisWithTooltip.module.scss";
+import { useEffect, useState, useRef } from 'react';
+import Tooltip2 from 'components/General/Tooltip2/Tooltip2';
+import s from './EllipsisWithTooltip.module.scss';
+import { wrap } from 'lodash';
 
-const EllipsisWithTooltip = ({ text, className }) => {
-  const textRef = useRef(null);
-  const [isOverflowed, setIsOverflowed] = useState(false);
-  const [tooltipOpen, setTooltipOpen] = useState(false);
+const EllipsisWithTooltip = ({ text, className, textStyle, wrapperStyle }) => {
+    const textRef = useRef(null);
+    const [isOverflowed, setIsOverflowed] = useState(false);
+    const [tooltipOpen, setTooltipOpen] = useState(false);
 
-  useEffect(() => {
-    const checkOverflow = () => {
-      const el = textRef.current;
-      if (el) {
-        setIsOverflowed(el.scrollWidth > el.clientWidth);
-      }
-    };
+    useEffect(() => {
+        const checkOverflow = () => {
+            const el = textRef.current;
+            if (el) {
+                setIsOverflowed(el.scrollWidth > el.clientWidth);
+            }
+        };
 
-    checkOverflow();
-    window.addEventListener("resize", checkOverflow);
-    return () => window.removeEventListener("resize", checkOverflow);
-  }, [text]);
+        checkOverflow();
+        window.addEventListener('resize', checkOverflow);
+        return () => window.removeEventListener('resize', checkOverflow);
+    }, [text]);
 
-  return (
-    <div
-      className={`${s.root} ${className || ""}`}
-      onMouseEnter={() => isOverflowed && setTooltipOpen(true)}
-      onMouseLeave={() => setTooltipOpen(false)}
-    >
-      <p ref={textRef} className={s.text}>
-        {text}
-      </p>
+    return (
+        <div
+            className={`${s.root} ${className || ''}`}
+            onMouseEnter={() => isOverflowed && setTooltipOpen(true)}
+            onMouseLeave={() => setTooltipOpen(false)}
+            style={wrapperStyle}
+        >
+            <p ref={textRef} className={s.text} style={textStyle}>
+                {text}
+            </p>
 
-      {isOverflowed && (
-        <Tooltip2
-          open={tooltipOpen}
-          text={text}
-          maxWidth={textRef.current?.offsetWidth}
-          left={false}
-          bottom={false}
-          anchorRef={textRef}
-        />
-      )}
-    </div>
-  );
+            {isOverflowed && (
+                <Tooltip2
+                    open={tooltipOpen}
+                    text={text}
+                    maxWidth={textRef.current?.offsetWidth}
+                    left={false}
+                    bottom={false}
+                    anchorRef={textRef}
+                />
+            )}
+        </div>
+    );
 };
 
 export default EllipsisWithTooltip;

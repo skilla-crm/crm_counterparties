@@ -1,0 +1,86 @@
+.container_tooltip {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    svg {
+        cursor: pointer;
+    }
+}
+
+.tooltip {
+    width: fit-content;
+    position: absolute;
+    z-index: 2;
+    top: 20px;
+    left: -160px;
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.15s ease-in-out;
+    padding: 3px 12px 8px 12px;
+    background-color: #1f3345e6;
+    border-radius: 4px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 32, 51, 0.1);
+
+    svg {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+        top: -8px;
+    }
+
+    p {
+        text-wrap: nowrap;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 140%;
+    }
+
+    &_open {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    &_pay {
+        left: -286px;
+
+        svg {
+            left: 88%;
+        }
+    }
+
+    &_progress {
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: fit-content;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    &_status {
+        top: 38px;
+        right: 20px;
+        left: auto;
+        transform: none;
+        padding-top: 8px;
+        /*  left: 74%;
+        transform: translateX(-74%); */
+        svg {
+            display: none;
+        }
+    }
+
+    &_last {
+        top: auto;
+        bottom: 110%;
+
+        svg {
+            display: none;
+        }
+    }
+}

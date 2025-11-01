@@ -1,13 +1,13 @@
 .root {
-    position: relative;
-    width: 100%;
-    min-width: 0;
+    display: inline-block;
+    max-width: 100%;
+    align-items: center;
 }
-
 .text {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    display: block;
     width: 100%;
     min-width: 0;
     cursor: default;

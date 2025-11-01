@@ -1,3 +1,4 @@
+import EllipsisWithTooltip from '../EllipsisWithTooltip/EllipsisWithTooltip';
 import s from './Label.module.scss';
 
 const Label = ({ label, background, width }) => {
@@ -9,7 +10,7 @@ const Label = ({ label, background, width }) => {
                 width: width ? `${width}px` : 'auto',
             }}
         >
-            {label}
+            <EllipsisWithTooltip text={label} />
         </div>
     );
 };

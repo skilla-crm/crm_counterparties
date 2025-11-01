@@ -1,0 +1,68 @@
+.progress {
+    overflow: visible !important;
+    position: relative;
+}
+
+.button {
+    width: 40px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.15s;
+
+    svg path {
+        transition: all 0.15s;
+    }
+
+    &:hover {
+        svg path {
+            fill: #0024cb;
+        }
+    }
+
+    &_vis {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+.lable {
+    height: 24px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    background-color: #f1f4f9;
+    border-radius: 4px;
+
+    span {
+        color: #71869d;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 18px;
+    }
+}
+
+.line {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    position: relative;
+}
+
+.bar {
+    width: 24px;
+    height: 6px;
+    border-radius: 100px;
+    background-color: #dfe5ef;
+    position: relative;
+    pointer-events: none;
+
+    &_active {
+        pointer-events: all;
+        cursor: pointer;
+        background-color: #28a879;
+    }
+}

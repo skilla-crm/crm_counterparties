@@ -1,0 +1,36 @@
+.status {
+    display: flex;
+    height: 24px;
+    box-sizing: border-box;
+    padding: 3px 6px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: fit-content;
+    flex-shrink: 0;
+    border-radius: 4px;
+    border: 1px solid #adbfdf;
+    color: #adbfdf;
+    /*  position: relative; */
+    pointer-events: none;
+
+    p {
+        line-height: 18px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    &_1 {
+        border-color: #002cfb;
+        color: #002cfb;
+        pointer-events: all;
+    }
+
+    &_2 {
+        color: #fff;
+        border-color: #002cfb;
+        background-color: #002cfb;
+        pointer-events: all;
+    }
+}
