@@ -1,0 +1,29 @@
+.root {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    padding: 20px 24px;
+}
+.content {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+.leftCol,
+.rightCol {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.leftCol {
+    width: 100%;
+}
+.mainInfo {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 24px;
+    gap: 20px;
+    width: 100%;
+    border-radius: 8px;
+    background: #fff;
+}

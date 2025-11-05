@@ -1,6 +1,8 @@
 // External
 import { useEffect, useState } from 'react';
 import classNames from 'classnames';
+import { useNavigate } from 'react-router-dom';
+import { useRef } from 'react';
 
 // Hooks
 import { useModal } from 'hooks/useModal';
@@ -13,6 +15,7 @@ import EllipsisWithTooltip from 'components/General/EllipsisWithTooltip/Ellipsis
 import UniButton from 'components/General/UniButton/UniButton';
 import Progress from './COMPONENTS/Progress';
 import Status from './COMPONENTS/Status';
+import Label from 'components/General/Label/Label';
 
 // Icons
 import { ReactComponent as IconAttach } from 'assets/icons/iconAttachGrey.svg';
@@ -20,42 +23,8 @@ import { ReactComponent as IconKebab } from 'assets/icons/iconKebab.svg';
 
 // Styles
 import s from './Contracts.module.scss';
-import Label from 'components/General/Label/Label';
-import { useRef } from 'react';
-
-const mockContract = {
-    id: 3084,
-    name: 'ООО "УК "АССО-Строй"',
-    bank: 'АО "ТИНЬКОФФ БАНК"',
-    bank_rs_zipped: '*0968',
-    label: 'Действует',
-    contract_template_name: 'Договор поставки №45/П',
-    number: '45/П',
-    prefix: 'П',
-    date: '2024-12-10',
-    dop_doc_count: 3,
-    progress: {
-        first: {
-            date: '2025-10-15 19:52:29',
-            person: {
-                name: 'Иннокентий',
-                surname: '',
-                position: 'accountant',
-            },
-        },
-        second: {
-            date: null,
-            person: null,
-        },
-        third: {
-            date: null,
-        },
-    },
-    exchange: null,
-};
 
 const Contracts = ({ counterpartyId, data }) => {
-    console.log(data);
     return (
         <div className={s.root}>
             <div className={s.infoTitle}></div>
@@ -93,8 +62,8 @@ export default Contracts;
 
 const ContractRow = ({ contract, counterpartyId, lastLines }) => {
     const { showModal } = useModal();
-    const [openMenu, setOpenMenu] = useState(false);
-    const optionsRef = useRef(null);
+    // const [openMenu, setOpenMenu] = useState(false);
+    // const optionsRef = useRef(null);
     const {
         id,
         name,
@@ -109,71 +78,76 @@ const ContractRow = ({ contract, counterpartyId, lastLines }) => {
         exchange,
         progress,
         risk,
-    } = mockContract;
-
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (optionsRef.current && !optionsRef.current.contains(e.target)) {
-                setOpenMenu(false);
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
-    const handleOpenOptions = (e) => {
-        e.stopPropagation();
-        setOpenMenu(!openMenu);
-    };
-    const handleMarkSent = () => {
-        console.log('Отметка об отправке оригиналов');
-        setOpenMenu(false);
+        is_archived,
+    } = contract;
+    const navigate = useNavigate();
+    const hadleOpenContract = () => {
+        navigate(`/details/contract/${id}`);
     };
 
-    const handleMarkSigned = () => {
-        console.log('Отметка о подписании');
-        setOpenMenu(false);
-    };
+    // useEffect(() => {
+    //     const handleClickOutside = (e) => {
+    //         if (optionsRef.current && !optionsRef.current.contains(e.target)) {
+    //             setOpenMenu(false);
+    //         }
+    //     };
 
-    const handleSendEmail = () => {
-        console.log('Отправить по e-mail');
-        setOpenMenu(false);
-    };
+    //     document.addEventListener('mousedown', handleClickOutside);
 
-    const handleDownloadPDF = () => {
-        console.log('Скачать PDF');
-        setOpenMenu(false);
-    };
+    //     return () => {
+    //         document.removeEventListener('mousedown', handleClickOutside);
+    //     };
+    // }, []);
+    // const handleOpenOptions = (e) => {
+    //     e.stopPropagation();
+    //     setOpenMenu(!openMenu);
+    // };
+    // const handleMarkSent = () => {
+    //     console.log('Отметка об отправке оригиналов');
+    //     setOpenMenu(false);
+    // };
 
-    const handleDownloadWord = () => {
-        console.log('Скачать WORD');
-        setOpenMenu(false);
-    };
+    // const handleMarkSigned = () => {
+    //     console.log('Отметка о подписании');
+    //     setOpenMenu(false);
+    // };
 
-    const handlePrintPDF = () => {
-        console.log('Печать PDF');
-        setOpenMenu(false);
-    };
+    // const handleSendEmail = () => {
+    //     console.log('Отправить по e-mail');
+    //     setOpenMenu(false);
+    // };
 
-    const handlePrintWord = () => {
-        console.log('Печать WORD');
-        setOpenMenu(false);
-    };
-    const operations = [
-        { label: 'Отметка об отправке оригиналов', handler: handleMarkSent },
-        { label: 'Отметка о подписании', handler: handleMarkSigned },
-        { label: 'Отправить по e-mail', handler: handleSendEmail },
-        { label: 'Скачать PDF', handler: handleDownloadPDF },
-        { label: 'Скачать WORD', handler: handleDownloadWord },
-        { label: 'Печать PDF', handler: handlePrintPDF },
-        { label: 'Печать WORD', handler: handlePrintWord },
-    ];
+    // const handleDownloadPDF = () => {
+    //     console.log('Скачать PDF');
+    //     setOpenMenu(false);
+    // };
+
+    // const handleDownloadWord = () => {
+    //     console.log('Скачать WORD');
+    //     setOpenMenu(false);
+    // };
+
+    // const handlePrintPDF = () => {
+    //     console.log('Печать PDF');
+    //     setOpenMenu(false);
+    // };
+
+    // const handlePrintWord = () => {
+    //     console.log('Печать WORD');
+    //     setOpenMenu(false);
+    // };
+    // const operations = [
+    //     { label: 'Отметка об отправке оригиналов', handler: handleMarkSent },
+    //     { label: 'Отметка о подписании', handler: handleMarkSigned },
+    //     { label: 'Отправить по e-mail', handler: handleSendEmail },
+    //     { label: 'Скачать PDF', handler: handleDownloadPDF },
+    //     { label: 'Скачать WORD', handler: handleDownloadWord },
+    //     { label: 'Печать PDF', handler: handlePrintPDF },
+    //     { label: 'Печать WORD', handler: handlePrintWord },
+    // ];
 
     return (
-        <div className={classNames(s.gridRow)}>
+        <div className={classNames(s.gridRow)} onClick={hadleOpenContract}>
             <div className={s.flexCell}>
                 <div className={s.companyInfo}>
                     <EllipsisWithTooltip text={name} />
@@ -187,7 +161,8 @@ const ContractRow = ({ contract, counterpartyId, lastLines }) => {
                     {/* <span className={s.grayText}></span> */}
                     <Label label={label} />
                 </div>
-                {Boolean(true) && (
+                {/* КНОПКА РИСК */}
+                {/* {Boolean(true) && (
                     <UniButton
                         text="Риск"
                         type="danger"
@@ -197,7 +172,7 @@ const ContractRow = ({ contract, counterpartyId, lastLines }) => {
                             showModal('REMOVE_RISK_BADGE', { id });
                         }}
                     />
-                )}
+                )} */}
             </div>
 
             <div className={s.flexCell}>
@@ -219,9 +194,13 @@ const ContractRow = ({ contract, counterpartyId, lastLines }) => {
             </div>
             <div className={s.exchange}>
                 {' '}
-                <Status lastLines={lastLines} exchange={exchange} />
+                {is_archived ? (
+                    <span style={{ color: '#71869D' }}>Архив</span>
+                ) : (
+                    <Status lastLines={lastLines} exchange={exchange} />
+                )}
             </div>
-            <div
+            {/* <div
                 className={s.optionsBtn}
                 onClick={handleOpenOptions}
                 ref={optionsRef}
@@ -240,7 +219,7 @@ const ContractRow = ({ contract, counterpartyId, lastLines }) => {
                         ))}
                     </div>
                 )}
-            </div>
+            </div> */}
         </div>
     );
 };

@@ -62,7 +62,8 @@ const TableRow = ({ row, type }) => {
                     </div>
                 </div>
                 <div>
-                    {Boolean(is_hidden) && (
+                    {/* КНОПКА РИСК */}
+                    {/* {Boolean(is_hidden) && (
                         <UniButton
                             text="Риск"
                             type="danger"
@@ -72,7 +73,7 @@ const TableRow = ({ row, type }) => {
                                 showModal('REMOVE_RISK_BADGE', { id });
                             }}
                         />
-                    )}
+                    )} */}
                 </div>
                 <div className={classNames(s.gridCell)}>{okved}</div>
 

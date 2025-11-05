@@ -1,0 +1,154 @@
+.item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    user-select: none;
+    overflow: hidden;
+    transition: all 0.25s ease-in-out;
+
+    p {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 148%;
+        color: #002CFB;
+        transition: all 0.15s;
+    }
+
+    &:hover {
+        p {
+            color: #0024CB;
+        }
+    }
+
+    &_hidden {
+        margin-top: -20px;
+        height: 0;
+    }
+}
+
+.block {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &_inner {
+        margin: 20px 0 0;
+    }
+}
+
+.container {
+    overflow: hidden;
+    max-height: 0;
+    height: fit-content;
+    opacity: 0;
+    transition: all 0.25s ease-in-out;
+
+    &_1 {
+        opacity: 1;
+        max-height: 472px;
+        overflow: visible;
+    }
+
+    &_2 {
+        opacity: 1;
+        max-height: 346px;
+        overflow: visible;
+    }
+
+    &_3 {
+        opacity: 1;
+        max-height: 170px;
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h3 {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+}
+
+.close {
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}
+
+.address {
+    height: 0;
+    margin-top: -20px;
+    transition: all 0.15s ease-in-out;
+    overflow: hidden;
+    opacity: 0;
+
+
+    &_open {
+        margin-top: 0;
+        height: 66px;
+        opacity: 1;
+    }
+}
+
+.button {
+    width: 100%;
+    max-width: 700px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    background-color: #002CFB;
+    color: #FFF;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 140%;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+
+    @media(max-width: 1900px) {
+        max-width: 450px;
+    }
+
+
+    p {
+        margin-left: -14px;
+    }
+
+    &:hover {
+        background-color: #0024CB;
+    }
+
+    &_red {
+        background-color: #E10D0D;
+        color: #FFF;
+
+        &:hover {
+            background-color: #CC0101;
+        }
+    }
+}
+
+.loader {
+    position: relative;
+    left: -20px;
+    opacity: 0;
+    transition: all 0.15s;
+
+    &_vis {
+        opacity: 1;
+    }
+}

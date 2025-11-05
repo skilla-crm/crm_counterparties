@@ -3,6 +3,7 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import { counterpartyDetailsApiActions } from './services/counterpartyDetailsApiActions';
 import { dadataApiActions } from './services/dadataApiActions';
 import { counterpartiesListApiActions } from './services/counterpartiesListApiActions';
+import { contractApiActions } from './services/contractApiActions';
 
 import sortSlice from './sorting/sortSlice';
 import modalReducer from './modalManager/modalSlice';
@@ -23,6 +24,7 @@ export const store = configureStore({
         [counterpartiesListApiActions.reducerPath]:
             counterpartiesListApiActions.reducer,
         dadataApiActions: dadataApiActions.reducer,
+        [contractApiActions.reducerPath]: contractApiActions.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
@@ -31,7 +33,8 @@ export const store = configureStore({
         })
             .concat(counterpartyDetailsApiActions.middleware)
             .concat(counterpartiesListApiActions.middleware)
-            .concat(dadataApiActions.middleware),
+            .concat(dadataApiActions.middleware)
+            .concat(contractApiActions.middleware),
 });
 
 setupListeners(store.dispatch);
