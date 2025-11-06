@@ -1,53 +1,50 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import classNames from 'classnames';
 
-//icons
+// icons
 import { ReactComponent as IconChevron } from 'assets/icons/iconChewron.svg';
 
-//styles
+// styles
 import s from './Dropdown.module.scss';
 
 const Dropdown = ({
-    className = '',
     options = [],
     value = '',
     onChange = () => {},
-    style = {},
-    placeholder = 'Выберите категорию',
-    label,
+    placeholder = '',
+    sub,
+    disabled = false,
+    renderOption,
+    width,
 }) => {
     const [isOpen, setIsOpen] = useState(false);
-
     const wrapperRef = useRef(null);
-    s;
+
+    const hasOptions = options.length > 0;
+
+    const toggleDropdown = () => {
+        if (!disabled && hasOptions) setIsOpen((prev) => !prev);
+    };
 
     const handleOptionClick = (option) => {
         onChange(option);
         setIsOpen(false);
     };
 
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (
-                wrapperRef.current &&
-                !wrapperRef.current.contains(event.target)
-            ) {
-                setIsOpen(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () =>
-            document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+    const wrapperStyle =
+        width && typeof width === 'number' ? { width: `${width}px` } : {};
 
     return (
-        <div className={classNames(s.wrapper)} ref={wrapperRef}>
-            {label && <span className={s.label}>{label}</span>}
+        <div className={s.root} ref={wrapperRef} style={wrapperStyle}>
+            {sub && <span className={s.sub}>{sub}</span>}
+
             <div
-                className={s.selectBox}
-                onClick={() => setIsOpen((prev) => !prev)}
-                tabIndex={0}
-                style={style}
+                className={classNames(
+                    s.field,
+                    disabled && s.field_disabled,
+                    disabled && s.field_disabledover
+                )}
+                onClick={toggleDropdown}
             >
                 <span
                     className={classNames({
@@ -58,20 +55,38 @@ const Dropdown = ({
                     {value || placeholder}
                 </span>
 
-                <IconChevron className={`${s.icon} ${isOpen ? s.open : ''}`} />
+                {hasOptions && !disabled && (
+                    <IconChevron
+                        className={classNames(
+                            s.chewron,
+                            isOpen && s.chewron_open
+                        )}
+                    />
+                )}
             </div>
 
-            {isOpen && (
-                <ul className={s.dropdownList}>
-                    {options.map((option) => (
-                        <li
-                            key={option}
-                            className={`${s.option} ${option === value ? s.selected : ''}`}
-                            onClick={() => handleOptionClick(option)}
-                        >
-                            {option}
-                        </li>
-                    ))}
+            {hasOptions && isOpen && (
+                <ul
+                    className={classNames(
+                        s.block,
+                        isOpen && s.block_open,
+                        options.length > 6 && s.block_scroll
+                    )}
+                    style={wrapperStyle}
+                >
+                    <div className={s.list}>
+                        {options.map((option, i) => (
+                            <div
+                                key={i}
+                                className={classNames(s.option, {
+                                    [s.selected]: option === value,
+                                })}
+                                onClick={() => handleOptionClick(option)}
+                            >
+                                {renderOption ? renderOption(option) : option}
+                            </div>
+                        ))}
+                    </div>
                 </ul>
             )}
         </div>

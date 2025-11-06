@@ -163,7 +163,10 @@ const Detail = () => {
                             )}
                             {activeTab === 'contracts' && (
                                 <div className={s.tabPanel}>
-                                    <Contracts data={contracts} />
+                                    <Contracts
+                                        data={contracts}
+                                        counterparty={counterparty}
+                                    />
                                 </div>
                             )}
                             {activeTab === 'contacts' && (

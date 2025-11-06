@@ -1,96 +1,144 @@
-.wrapper {
-  position: relative;
+.root {
+    width: 100%;
+    min-width: 300px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-.selectBox {
-  height: 40px;
-  border: 1px solid rgba(216, 228, 251, 0.55);
-
-  padding: 10px 40px 10px 12px;
-  border-radius: 4px;
-  background-color: #fff;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  transition: border 0.2s;
-
-  overflow: hidden;
-  color: var(--Text-Primary, #121922);
-  text-overflow: ellipsis;
-
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 14px;
-
-  &:hover {
-    border-color: #002cfb;
-  }
-
-  &:focus {
-    border-color: #002cfb;
-    outline: none;
-  }
-}
-.selectBox .value {
-  color: black;
+.sub {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    color: #71869d;
 }
 
-.placeholder {
-  color: #98a0af;
+.field {
+    width: 100%;
+    height: 41px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    border-radius: 4px;
+    border: 1px solid rgba(216, 228, 251, 0.55);
+    background: #fff;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.25s ease-in-out;
+
+    input {
+        width: 100%;
+        height: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: #1c1e21;
+        font-size: 15px;
+        cursor: inherit;
+
+        &::placeholder {
+            color: #9aa6b8;
+        }
+
+        &:disabled {
+            color: #71869d;
+        }
+    }
+
+    &_disabled {
+        cursor: default;
+
+        svg {
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+
+    &_disabledover {
+        background-color: rgba(212, 223, 243, 0.17);
+    }
+
+    &_error {
+        border: 1px solid #e10d0d;
+    }
 }
 
-.icon {
-  position: absolute;
-  right: 12px;
-  width: 16px;
-  height: 16px;
-  pointer-events: none;
-  transition: transform 0.3s ease;
+.chewron {
+    cursor: pointer;
+    margin-left: auto;
+    transition: all 0.25s ease-in-out;
 
-  &.open {
-    transform: rotate(180deg);
-  }
+    &_open {
+        transform: rotate(180deg);
+    }
 }
 
-.dropdownList {
-  margin-top: 4px;
-  position: absolute;
-  z-index: 1000;
-  width: 100%;
-  background-color: #fff;
-  border: 1px solid rgba(216, 228, 251, 0.55);
-  border-radius: 4px;
-  max-height: 200px;
-  overflow-y: auto;
-  box-shadow: 0px 0px 10px 0px rgba(0, 32, 51, 0.1);
+.block {
+    position: absolute;
+    top: 46px;
+    left: 0;
+    width: 100%;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0px 10px 30px 4px rgba(0, 0, 0, 0);
+    height: fit-content;
+    overflow: hidden;
+    max-height: 0;
+    transition: all 0.25s ease-in-out;
+    z-index: 10;
+
+    &_open {
+        box-shadow: 0px 10px 30px 4px rgba(0, 0, 0, 0.1);
+        max-height: 350px;
+    }
+
+    &_scroll {
+        overflow-y: auto;
+    }
+}
+
+.list {
+    padding: 8px 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .option {
-  padding: 10px 12px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 16px;
-  height: 40px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 
-  &:hover {
-    background-color: #f0f4ff;
-  }
+    &:hover {
+        background: #f3f6fc;
+    }
 
-  &.selected {
-    background-color: rgba(212, 223, 243, 0.17);
-    color: black;
-    font-size: 14px;
-  }
+    &.selected {
+        background: #e6efff;
+        font-weight: 500;
+    }
 }
-.label {
-  color: #71869d;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 14px;
-  margin-bottom: 6px;
+
+.notfound {
+    padding: 10px 12px;
+    color: #71869d;
+    font-size: 14px;
+}
+
+.error {
+    opacity: 0;
+    height: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 14px;
+    color: #e10d0d;
+    transition: all 0.2s ease-in-out;
+    margin-top: -6px;
+
+    &_vis {
+        margin-top: 0;
+        opacity: 1;
+        height: 20px;
+    }
 }

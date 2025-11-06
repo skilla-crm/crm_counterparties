@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 
 dayjs.locale('ru');
+
 function getDateLabel(dateString) {
     const date = dayjs(dateString);
     const today = dayjs();
@@ -18,10 +19,22 @@ function getDateLabel(dateString) {
 const History = ({ history = [] }) => {
     const [isOpen, setIsOpen] = useState(false);
 
+    // Сортируем события по дате создания, новые сверху
+    const sortedHistory = useMemo(() => {
+        return [...history].sort(
+            (a, b) => dayjs(b.created_at).unix() - dayjs(a.created_at).unix()
+        );
+    }, [history]);
+
+    // Ограничиваем количество событий, если isOpen = false
+    const displayedHistory = isOpen
+        ? sortedHistory
+        : sortedHistory.slice(0, 10);
+
+    // Группировка по дате
     const groupedHistory = useMemo(() => {
         const groups = {};
-
-        history.forEach((item) => {
+        displayedHistory.forEach((item) => {
             const date = dayjs(item.created_at).format('YYYY-MM-DD');
             if (!groups[date]) groups[date] = [];
             groups[date].push(item);
@@ -36,30 +49,28 @@ const History = ({ history = [] }) => {
             label: getDateLabel(date),
             items: groups[date],
         }));
-    }, [history]);
-
-    const displayedGroups = isOpen
-        ? groupedHistory
-        : groupedHistory.slice(0, 2);
+    }, [displayedHistory]);
 
     return (
-        <div className={s.root}>
+        <div className={`${s.root} ${isOpen ? s.root_open : ''}`}>
             <h3>История изменений</h3>
 
             <div className={s.list}>
-                {displayedGroups.map((group) => (
+                {groupedHistory.map((group) => (
                     <div key={group.date} className={s.group}>
                         <div className={s.groupDate}>{group.label}</div>
-                        {group.items.map((elem) => (
-                            <HistoryItem key={elem.id} elem={elem} />
-                        ))}
+                        <div className={s.items}>
+                            {group.items.map((elem) => (
+                                <HistoryItem key={elem.id} elem={elem} />
+                            ))}
+                        </div>
                     </div>
                 ))}
             </div>
 
-            {groupedHistory.length > 6 && (
+            {history.length > 10 && (
                 <div
-                    className={`${s.openBtn} ${isOpen ? s.active : ''}`}
+                    className={`${s.openBtn} ${isOpen ? 'active' : ''}`}
                     onClick={() => setIsOpen(!isOpen)}
                 >
                     {isOpen ? 'Свернуть' : 'Развернуть'}
@@ -72,14 +83,9 @@ const History = ({ history = [] }) => {
 
 export default History;
 
-const HistoryItem = ({ elem }) => {
-    console.log('elem', elem);
-    return (
-        <div className={s.item}>
-            <div className={s.time}>
-                {dayjs(elem.created_at).format('HH:mm')}
-            </div>
-            <div className={s.text}>{elem.description}</div>
-        </div>
-    );
-};
+const HistoryItem = ({ elem }) => (
+    <div className={s.item}>
+        <div className={s.description}>{elem.short_description}</div>
+        <div className={s.time}>{dayjs(elem.created_at).format('HH:mm')}</div>
+    </div>
+);

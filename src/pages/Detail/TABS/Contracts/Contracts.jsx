@@ -24,7 +24,7 @@ import { ReactComponent as IconKebab } from 'assets/icons/iconKebab.svg';
 // Styles
 import s from './Contracts.module.scss';
 
-const Contracts = ({ counterpartyId, data }) => {
+const Contracts = ({ counterparty, data }) => {
     return (
         <div className={s.root}>
             <div className={s.infoTitle}></div>
@@ -45,7 +45,7 @@ const Contracts = ({ counterpartyId, data }) => {
                         <ContractRow
                             key={contract.id}
                             contract={contract}
-                            counterpartyId={counterpartyId}
+                            counterparty={counterparty}
                             lastLines={data?.length - i < 2}
                         />
                     ))
@@ -60,7 +60,7 @@ const Contracts = ({ counterpartyId, data }) => {
 };
 export default Contracts;
 
-const ContractRow = ({ contract, counterpartyId, lastLines }) => {
+const ContractRow = ({ contract, counterparty, lastLines }) => {
     const { showModal } = useModal();
     // const [openMenu, setOpenMenu] = useState(false);
     // const optionsRef = useRef(null);
@@ -82,7 +82,9 @@ const ContractRow = ({ contract, counterpartyId, lastLines }) => {
     } = contract;
     const navigate = useNavigate();
     const hadleOpenContract = () => {
-        navigate(`/details/contract/${id}`);
+        navigate(`/details/contract/${id}`, {
+            state: { counterparty: counterparty },
+        });
     };
 
     // useEffect(() => {
