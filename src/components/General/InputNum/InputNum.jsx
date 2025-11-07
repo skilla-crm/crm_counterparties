@@ -1,13 +1,14 @@
 import { ReactComponent as IconRuble } from 'assets/icons/IconRuble.svg';
 
 import s from './InputNum.module.scss';
-
-const InputNum = ({ num, setNum, width, maxLength }) => {
+const InputNum = ({ num, setNum, width, maxLength, disabled = false }) => {
     const formatNum = (value) => {
         if (!value && value !== 0) return '';
         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     };
+
     const handleNum = (e) => {
+        if (disabled) return;
         const value = e.currentTarget.value.replace(/[^\d]/g, '');
         setNum(Number(value));
     };
@@ -23,6 +24,7 @@ const InputNum = ({ num, setNum, width, maxLength }) => {
                 onChange={handleNum}
                 value={formatNum(num) || ''}
                 style={{ textAlign: 'right' }}
+                disabled={disabled}
             />
             <span className={s.currency}>
                 <IconRuble />

@@ -6,6 +6,7 @@ import MistakeReport from './MistakeReport/MistakeReport';
 import DeleteCounterpaty from './DeleteCounterparty/DeleteCounterparty';
 import BankAccount from './BankAccount/BankAccount';
 import UnsavedChanges from './UnsavedChanges/UnsavedChanges';
+import DeleteDocFromContract from './DeleteDocFromContract/DeleteDocFromContract';
 
 export const MODALS = {
     REMOVE_RISK_BADGE: RemoveRiskBadgeModal,
@@ -16,4 +17,5 @@ export const MODALS = {
     DELETE_COUNTERPARTY: DeleteCounterpaty,
     BANK_ACCOUNT: BankAccount,
     UNSAVED_CHANGES: UnsavedChanges,
+    DELETE_DOC_FROM_CONTRACT: DeleteDocFromContract,
 };

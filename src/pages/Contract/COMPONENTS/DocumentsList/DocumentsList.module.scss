@@ -10,6 +10,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 }
 .tableHeader {
     &:hover {
@@ -41,7 +42,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: 24px;
-    cursor: pointer;
+
     column-gap: 20px;
     &:hover {
         background: #eaf0fa;
@@ -137,6 +138,10 @@
     box-shadow: 0 10px 30px 4px rgba(0, 0, 0, 0.1);
 }
 .dropDownItem {
+    width: 250px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     padding: 8px 12px;
     cursor: pointer;
     font-size: 14px;
@@ -145,4 +150,7 @@
     &:hover {
         background-color: #f1f4f9;
     }
+}
+.delete {
+    color: #e10d0d;
 }

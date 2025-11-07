@@ -1,93 +1,92 @@
-import ContractHeader from './COMPONENTS/ContractHeader';
-import s from './Contract.module.scss';
+// React
+import { useContractForm } from 'hooks/useContractForm';
+import { useEffect, useState } from 'react';
+
+//libs
+import dayjs from 'dayjs';
+
+// Router
+import { useLocation, useParams } from 'react-router-dom';
+
+// API
 import {
     useGetContractQuery,
     useCreateContractMutation,
-    useDeleteContractMutation,
-    useUnmarkOriginalContractMutation,
-    useSignOriginalContractMutation,
-    useSendOriginalContractMutation,
-    useSendByEmailContractMutation,
-    useSendAttachmentsMutation,
-    useDownloadContractMutation,
-    useDownloadAttachmentMutation,
-    useDeleteAttachmentMutation,
+    useUpdateContractMutation,
+    useGetSettingsQuery,
 } from '../../redux/services/contractApiActions';
-import { useLocation, useParams } from 'react-router-dom';
-import InputData from 'components/General/InputData/InputData';
 
-import History from './COMPONENTS/History/History';
-import Dropdown from 'components/General/Dropdown/Dropdown';
-import Switch from 'components/General/Switch/Switch';
-import Field from 'components/General/Field/Field';
-import InputText from 'components/General/InputText/InputText';
-import InputNum from 'components/General/InputNum/InputNum';
+// Components
+import ContractHeader from './COMPONENTS/ContractHeader';
+import ContractMainInfo from './COMPONENTS/ContractMainInfo';
+import DocumentFlow from './COMPONENTS/DocumentFlow/DocumentFlow';
 import DocumentsList from './COMPONENTS/DocumentsList/DocumentsList';
+import History from './COMPONENTS/History/History';
+
+// Styles
+import s from './Contract.module.scss';
+
 export const Contract = () => {
     const { id } = useParams();
     const location = useLocation();
     const { counterparty } = location.state || {};
+    const [isEditMode, setIsEditMode] = useState(false);
+    const [isCreateMode, setIsCreateMode] = useState(false);
+    const { form, setField } = useContractForm();
     const { data } = useGetContractQuery({ contractId: id });
-    console.log(data);
+    const { data: settings } = useGetSettingsQuery({
+        companyId: counterparty?.general.company_id,
+    });
+
+    useEffect(() => {
+        if (!data || isCreateMode) return;
+
+        const normalizeDate = (value) => {
+            if (!value) return '';
+            if (typeof value === 'string' && value.startsWith('-000001'))
+                return '';
+            return dayjs(value).isValid()
+                ? dayjs(value).format('YYYY-MM-DD')
+                : '';
+        };
+        const fields = {
+            id: data.id || '',
+            company_id: data.company_id || '',
+            company_details_id: data.company_details_id || '',
+            partnership_id: data.partnership_id || '',
+            partnership_details_id: data.partnership_details_id || '',
+            contract_template: data.contract_template || '',
+            without_template: data.without_template || 0,
+            number: data.number || '',
+            prefix: data.prefix || '',
+            date: normalizeDate(data.date),
+            expired_date: normalizeDate(data.expired_date),
+            company_signature_id: data.company_signature_id || '',
+            partnership_signature_id: data.partnership_signature_id || null,
+            label: data.label || '',
+        };
+        Object.entries(fields).forEach(([key, value]) => setField(key, value));
+    }, [data]);
 
     return (
         <div className={s.root}>
-            <ContractHeader contract={data} />
+            <ContractHeader
+                contract={data}
+                isEditMode={isEditMode}
+                setIsEditMode={setIsEditMode}
+            />
             <div className={s.content}>
                 <div className={s.leftCol}>
-                    <div className={s.mainInfo}>
-                        <h3>Основная информация</h3>
-                        <div className={s.row}>
-                            <Dropdown sub="Заказчик" width={600} />{' '}
-                            <Dropdown sub="Счет заказчика" width={312} />
-                        </div>
-                        <div className={s.row}>
-                            <Dropdown sub="Поставщик" width={600} />{' '}
-                            <Dropdown sub="Счет поставщика" width={312} />
-                        </div>
-                        <div className={s.row}>
-                            <Dropdown sub="Тип договора" width={312} />{' '}
-                            <div className={s.switch}>
-                                <Switch text="Нетиповой" />
-                            </div>
-                        </div>
-                        <div className={s.row}>
-                            <Field text="Номер">
-                                <InputText width={150} />
-                            </Field>
-                            <InputData
-                                sub={'Дата'}
-                                nosub={true}
-                                setDate={(data) => {}}
-                                date={null}
-                                disabled={false}
-                                s
-                            />
-                            <InputData
-                                sub={'Срок действия'}
-                                nosub={true}
-                                setDate={(data) => {}}
-                                date={null}
-                                disabled={false}
-                            />
-                            <Field
-                                width={300}
-                                text="Номер"
-                                info="Используется для договоров с лимитом по сумме актов. Ты получишь уведомление, когда сумма актов достигнет заданного лимита и договор потребуется перезаключить."
-                            >
-                                <InputNum
-                                    num={0}
-                                    setNum={(num) => {}}
-                                    width={150}
-                                />
-                            </Field>
-                        </div>
-                        <Dropdown sub="Подписант заказчика" width={500} />{' '}
-                        <Dropdown sub="Подписант поставщика" width={500} />{' '}
-                    </div>
+                    <ContractMainInfo
+                        form={form}
+                        setField={setField}
+                        counterparty={counterparty}
+                        settings={settings}
+                    />
                     <DocumentsList data={data?.docs} />
                 </div>
                 <div className={s.rightCol}>
+                    <DocumentFlow id={id} exchange={data?.exchange} />
                     <History history={data?.history} />
                 </div>
             </div>

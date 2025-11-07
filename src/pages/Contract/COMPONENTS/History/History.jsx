@@ -1,8 +1,15 @@
+// React
 import { useState, useMemo } from 'react';
-import s from './History.module.scss';
-import { ReactComponent as IconChewron } from 'assets/icons/iconChewron.svg';
+
+// Libs
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
+
+// Icons
+import { ReactComponent as IconChewron } from 'assets/icons/iconChewron.svg';
+
+// Styles
+import s from './History.module.scss';
 
 dayjs.locale('ru');
 
@@ -19,7 +26,7 @@ function getDateLabel(dateString) {
 const History = ({ history = [] }) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    // Сортируем события по дате создания, новые сверху
+    // сортировака по дате создания, новые сверху
     const sortedHistory = useMemo(() => {
         return [...history].sort(
             (a, b) => dayjs(b.created_at).unix() - dayjs(a.created_at).unix()

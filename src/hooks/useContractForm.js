@@ -4,116 +4,59 @@ import dayjs from 'dayjs';
 export const useContractForm = () => {
     const [form, setForm] = useState({
         // Основная информация
-        name: '',
-        inn: '',
-        kpp: '',
-        ogrn: '',
-        logo: null,
-        site: '',
-        is_percent: '',
-
-        // Адрес
-        address: '',
-        ur_address: '',
-
-        //Электронный документооборот
-        edo_id: '',
-        edo_region: '',
-        edo_index: '',
-        edo_city: '',
-        edo_street: '',
-        edo_home: '',
-        edo_k: '',
-        edo_a: '',
-
-        //Лицо, имеющее право действовать без доверенности
-        director: '',
-        director_position: '',
-        director_rod: '',
-
-        contacts: {
-            name: '',
-            surname: '',
-            position: '',
-            phone: '',
-            dob: '',
-            e_mail: '',
-        },
-
-        //Дополнительный подписант (объект)
-        signatory: {
-            full_name: '',
-            powers: '',
-            doc_validity_period: '',
-        },
+        id: '', // id договора
+        company_id: '', // id заказчика
+        company_details_id: '', // банковские реквизиты заказчика
+        partnership_id: '', // id поствщика
+        partnership_details_id: '', // банковские реквизиты поставщика,
+        contract_template: '', //  id шаблона (из параметров)
+        without_template: 0, //типовой или нет
+        number: '', // номер договора
+        prefix: '', // префикс договора
+        date: '', // дата договора
+        expired_date: '', // дата окончания договора
+        company_signature_id: '', // подписант заказчика
+        partnership_signature_id: null, //
+        label: '', // ярлык
     });
-    const [errors, setErrors] = useState({});
-    const setError = useCallback((key, value) => {
-        setErrors((prev) => ({ ...prev, [key]: value }));
-    }, []);
-    const getErrors = useCallback(() => errors, [errors]);
-    const hasErrors = useCallback(() => {
-        return Object.values(errors).some((err) => err === false);
-    }, [errors]);
+    // const [errors, setErrors] = useState({});
+    // const setError = useCallback((key, value) => {
+    //     setErrors((prev) => ({ ...prev, [key]: value }));
+    // }, []);
+    // const getErrors = useCallback(() => errors, [errors]);
+    // const hasErrors = useCallback(() => {
+    //     return Object.values(errors).some((err) => err === false);
+    // }, [errors]);
     const setField = useCallback((key, value) => {
         setForm((prev) => ({ ...prev, [key]: value }));
     }, []);
 
-    const setAdditionalSignatureField = useCallback((subKey, value) => {
-        setForm((prev) => ({
-            ...prev,
-            signatory: {
-                ...prev.signatory,
-                [subKey]: value,
-            },
-        }));
-    }, []);
+    const getFormData = useCallback(() => {
+        const cleaned = Object.entries(form).reduce((acc, [key, value]) => {
+            if (value !== '' && value !== null && value !== undefined) {
+                acc[key] = value;
+            }
+            return acc;
+        }, {});
 
-    const setContactsField = useCallback((subKey, value) => {
-        setForm((prev) => ({
-            ...prev,
-            contacts: {
-                ...prev.contacts,
-                [subKey]: value,
-            },
-        }));
-    }, []);
+        if (cleaned.date) {
+            cleaned.date = dayjs(cleaned.date).format('YYYY-MM-DD');
+        }
+        if (cleaned.expired_date) {
+            cleaned.expired_date = dayjs(cleaned.expired_date).format(
+                'YYYY-MM-DD'
+            );
+        }
 
-    const getFormData = useCallback(
-        (excludeKeys = []) => {
-            const fd = new FormData();
-
-            Object.entries(form).forEach(([key, value]) => {
-                if (excludeKeys.includes(key)) return;
-
-                if (key === 'logo') {
-                    if (value instanceof File) {
-                        fd.append('logo', value);
-                    } else if (typeof value === 'string') {
-                        fd.append('logo', value);
-                    }
-                } else if (typeof value === 'object' && value !== null) {
-                    Object.entries(value).forEach(([subKey, subValue]) => {
-                        fd.append(`${key}[${subKey}]`, subValue ?? '');
-                    });
-                } else {
-                    fd.append(key, value ?? '');
-                }
-            });
-
-            return fd;
-        },
-        [form]
-    );
+        return cleaned;
+    }, [form]);
 
     return {
         form,
         setField,
-        setAdditionalSignatureField,
-        setContactsField,
         getFormData,
-        hasErrors,
-        getErrors,
-        setError,
+        // hasErrors,
+        // getErrors,
+        // setError,
     };
 };

@@ -8,22 +8,24 @@ import { useRef } from 'react';
 import { useModal } from 'hooks/useModal';
 
 // Redux
-import { useSwitchObjectStatusMutation } from '../../../../redux/services/counterpartyDetailsApiActions';
+import { useDownloadAttachmentMutation } from '../../../../redux/services/contractApiActions';
 
 // Components
-import EllipsisWithTooltip from 'components/General/EllipsisWithTooltip/EllipsisWithTooltip';
 import UniButton from 'components/General/UniButton/UniButton';
-
 import Label from 'components/General/Label/Label';
 
 // Icons
-import { ReactComponent as IconAttach } from 'assets/icons/iconAttachGrey.svg';
 import { ReactComponent as IconKebab } from 'assets/icons/iconKebab.svg';
 import { ReactComponent as IconPlus } from 'assets/icons/iconPlusBlue.svg';
+import { ReactComponent as IconEmail } from 'assets/icons/IconMailBlack.svg';
+import { ReactComponent as IconDownload } from 'assets/icons/iconDownloadBlack.svg';
+import { ReactComponent as IconPrint } from 'assets/icons/IconPrintBlack.svg';
+import { ReactComponent as IconDelete } from 'assets/icons/iconCloseRed.svg';
 
 // Styles
 import s from './DocumentsList.module.scss';
 import dayjs from 'dayjs';
+import useToast from 'hooks/useToast';
 const mockDocuments = [
     {
         id: 1,
@@ -71,27 +73,30 @@ const DocumentsList = ({ data = [] }) => {
         <div className={s.root}>
             <div className={s.header}>
                 <h3>Документы</h3>
+                <div style={{ color: 'red' }}>МОКОВЫЕ ДОГОВОРА!!!</div>
                 <UniButton text="Добавить" icon={IconPlus} type="outline" />
             </div>
-            <div className={s.objects}>
-                <div className={classNames(s.gridRow, s.tableHeader)}>
-                    <div>Название</div>
-                    <div>Категория</div>
-                    <div>Добавлен</div>
-                    <div>Кем добавлен </div>
-                    <div></div>
-                </div>
-
-                {mockDocuments.length > 0 ? (
-                    mockDocuments.map((doc, i) => (
-                        <DocumentRow key={doc.id} doc={doc} />
-                    ))
-                ) : (
-                    <div className={s.empty}>
-                        Пока не добавлен ни один документ
+            {mockDocuments.length > 0 && (
+                <div className={s.objects}>
+                    <div className={classNames(s.gridRow, s.tableHeader)}>
+                        <div>Название</div>
+                        <div>Категория</div>
+                        <div>Добавлен</div>
+                        <div>Кем добавлен </div>
+                        <div></div>
                     </div>
-                )}
-            </div>
+
+                    {mockDocuments.length > 0 ? (
+                        mockDocuments.map((doc, i) => (
+                            <DocumentRow key={doc.id} doc={doc} />
+                        ))
+                    ) : (
+                        <div className={s.empty}>
+                            Пока не добавлен ни один документ
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
@@ -99,9 +104,11 @@ export default DocumentsList;
 
 const DocumentRow = ({ doc }) => {
     const { showModal } = useModal();
+    const { showToast } = useToast();
     const [openMenu, setOpenMenu] = useState(false);
     const optionsRef = useRef(null);
     const { id, contract_id, name, type_id, date_add, person_id, file } = doc;
+    const [downloadAttachment] = useDownloadAttachmentMutation();
     // const {} = documnet;
     const navigate = useNavigate();
     const hadleOpenContract = () => {
@@ -131,21 +138,67 @@ const DocumentRow = ({ doc }) => {
     const handleSendEmail = () => {
         showModal('sendEmail', { id });
     };
-    const handleDownload = () => {
-        showModal('download', { id });
+    const handleDownload = async (id, name) => {
+        try {
+            const blob = await downloadAttachment({
+                attachmentId: id,
+            }).unwrap();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = name || 'file';
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (e) {
+            showToast('Ошибка при скачивании файла', 'error');
+        }
     };
-    const handlePrint = () => {
-        showModal('print', { id });
+    const handlePrint = async (id) => {
+        try {
+            const blob = await downloadAttachment({
+                attachmentId: id,
+            }).unwrap();
+            const url = window.URL.createObjectURL(blob);
+
+            const printWindow = window.open(url);
+
+            printWindow.onload = () => {
+                printWindow.focus();
+                printWindow.print();
+            };
+        } catch (e) {
+            showToast('Ошибка при подготовке печати', 'error');
+        }
     };
+
     const handleDelete = () => {
-        showModal('delete', { id });
+        showModal('DELETE_DOC_FROM_CONTRACT', { id });
     };
     const operations = [
-        { label: 'Отправить по e-mail', handler: handleSendEmail },
-        { label: 'Скачать', handler: handleDownload },
-        { label: 'Печать', handler: handlePrint },
-        { label: 'Удалить', handler: handleDelete },
+        {
+            label: 'Отправить по e-mail',
+            handler: () => handleSendEmail(),
+            icon: <IconEmail />,
+        },
+        {
+            label: 'Скачать',
+            handler: () => handleDownload(id, file.name),
+            icon: <IconDownload />,
+        },
+        {
+            label: 'Печать',
+            handler: () => handlePrint(id),
+            icon: <IconPrint />,
+        },
+        {
+            label: 'Удалить',
+            handler: () => handleDelete(),
+            icon: <IconDelete />,
+        },
     ];
+
     return (
         <div className={classNames(s.gridRow)} onClick={hadleOpenContract}>
             <div className={s.flexCell}>{file.name}</div>
@@ -165,9 +218,13 @@ const DocumentRow = ({ doc }) => {
                         {operations.map((operation) => (
                             <div
                                 key={operation.label}
-                                className={s.dropDownItem}
+                                className={classNames(
+                                    s.dropDownItem,
+                                    operation.label === 'Удалить' && s.delete
+                                )}
                                 onClick={operation.handler}
                             >
+                                {operation.icon}
                                 {operation.label}
                             </div>
                         ))}

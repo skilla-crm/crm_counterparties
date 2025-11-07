@@ -35,6 +35,15 @@ export const contractApiActions = createApi({
                 body: data,
             }),
         }),
+
+        //РЕДАКТИРОВАНИЕ ДОГОВОРА
+        updateContract: build.mutation({
+            query: ({ contractId, data }) => ({
+                url: `${CONTRACT_URL}/${contractId}`,
+                method: 'POST',
+                body: data,
+            }),
+        }),
         // УДАЛЕНИЕ ДОГОВОРА
         deleteContract: build.mutation({
             query: ({ contractId }) => ({
@@ -90,6 +99,7 @@ export const contractApiActions = createApi({
             query: ({ contractId }) => ({
                 url: `${CONTRACT_URL}/download/${contractId}`,
                 method: 'GET',
+                responseHandler: (response) => response.blob(),
             }),
         }),
 
@@ -98,6 +108,7 @@ export const contractApiActions = createApi({
             query: ({ attachmentId }) => ({
                 url: `${CONTRACT_URL}/docs/${attachmentId}`,
                 method: 'GET',
+                responseHandler: (response) => response.blob(),
             }),
         }),
         //УДАЛЕНИЕ ДОКУМЕНТА ПРИЛОЖЕННОГО К ДОГОВОРУ
@@ -107,11 +118,21 @@ export const contractApiActions = createApi({
                 method: 'DELETE',
             }),
         }),
+
+        //НАСТРОЙКИ
+        getSettings: build.query({
+            query: ({ companyId }) => ({
+                url: `/counterparties/parameters/${companyId}`,
+                method: 'GET',
+            }),
+            transformResponse: (response) => response.data,
+        }),
     }),
 });
 
 export const {
     useGetContractQuery,
+    useUpdateContractMutation,
     useCreateContractMutation,
     useDeleteContractMutation,
     useUnmarkOriginalContractMutation,
@@ -122,4 +143,5 @@ export const {
     useDownloadContractMutation,
     useDownloadAttachmentMutation,
     useDeleteAttachmentMutation,
+    useGetSettingsQuery,
 } = contractApiActions;
