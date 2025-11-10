@@ -40,7 +40,7 @@ const Header = ({ isChecked, tab = "general", counterpartyId }) => {
 
   //DETAILS HANDLERS
   const handleEditDetails = () => {
-    navigate(`/create/${counterpartyId}`);
+    navigate(`/create/${counterpartyId}`, { state: { counterpartyId } });
   };
 
   //CONTRACTS HANDLERS

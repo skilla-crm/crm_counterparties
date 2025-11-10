@@ -24,6 +24,7 @@ import CounterpartyRepresentative from "./Components/CounterpartyRepresentative"
 
 // Styles
 import s from "./CreateCounterparty.module.scss";
+import { add } from "lodash";
 
 const CreateCounterparty = () => {
   const location = useLocation();
@@ -64,9 +65,13 @@ const CreateCounterparty = () => {
   // const [isContractor, setIsContractor] = useState(false);
 
   useEffect(() => {
-    setIsAdditionalSignature(Object.values(!!counterparty?.signatory) > 0);
+    setIsAdditionalSignature(
+      counterparty?.signatory &&
+        Object.values(counterparty.signatory).length > 0
+    );
     setIsPercent(!!counterparty?.is_percent);
   }, [counterparty]);
+
   useEffect(() => {
     !isLoading && setAnim(true);
   }, [isLoading]);
@@ -95,7 +100,7 @@ const CreateCounterparty = () => {
       kpp: counterparty.kpp || "",
       ogrn: counterparty.ogrn || "",
       address: counterparty.address || "",
-      ur_address: counterparty.ur_adress || "",
+      ur_address: counterparty.ur_address || "",
       is_percent: counterparty.is_percent || "",
       director: counterparty.director || "",
       director_position: counterparty.director_position || "",
