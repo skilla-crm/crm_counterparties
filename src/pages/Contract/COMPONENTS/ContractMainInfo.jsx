@@ -1,6 +1,6 @@
 //components
 import InputData from 'components/General/InputData/InputData';
-import Dropdown from 'components/General/Dropdown/Dropdown';
+import Dropdown from './Dropdown/Dropdown';
 import Switch from 'components/General/Switch/Switch';
 import Field from 'components/General/Field/Field';
 import InputText from 'components/General/InputText/InputText';
@@ -15,11 +15,13 @@ const ContractMainInfo = ({
     settings,
     isEditMode,
 }) => {
-    // const selectedType = settings.doc_types.find(
-    //     (item) => item.id === form.contract_template
-    // );
-
-    console.log('settings', settings);
+    const { partnerships, contract_templates } = settings;
+    const selectedCompany = partnerships.find(
+        (company) => company.id === form.partnership_id
+    );
+    const companyAccounts = selectedCompany?.details || [];
+    console.log('companyAccounts', companyAccounts);
+    console.log('selectedCompany', selectedCompany);
     return (
         <div className={s.mainInfo}>
             <h3>Основная информация</h3>
@@ -27,29 +29,42 @@ const ContractMainInfo = ({
                 <Dropdown
                     sub="Заказчик"
                     width={600}
-                    value={form.partnership_id}
+                    value={form.company_id}
+                    onChange={(v) => setField('company_id', v?.id)}
+                    options={settings.partnerships}
                     disabled={!isEditMode}
+                    type="company"
                 />
                 <Dropdown
                     sub="Счет заказчика"
                     width={312}
-                    options={counterparty}
-                    value={form.partnership_details_id}
+                    value={form.company_details_id}
+                    onChange={(v) => setField('company_details_id', v?.id)}
                     disabled={!isEditMode}
+                    type="account"
                 />
             </div>
             <div className={s.row}>
                 <Dropdown
                     sub="Поставщик"
                     width={600}
-                    value={form.company_id}
+                    value={partnerships.find(
+                        (p) => p.id === form.partnership_id
+                    )}
                     disabled={!isEditMode}
-                />{' '}
+                    onChange={(v) => setField('partnership_id', v?.id)}
+                    options={partnerships}
+                />
                 <Dropdown
                     sub="Счет поставщика"
                     width={312}
-                    vakue={form.company_details_id}
+                    value={companyAccounts.find(
+                        (a) => a.id === form.company_details_id
+                    )}
+                    onChange={(v) => setField('company_details_id', v?.id)}
                     disabled={!isEditMode}
+                    options={companyAccounts}
+                    type="account"
                 />
             </div>
             <div className={s.row}>

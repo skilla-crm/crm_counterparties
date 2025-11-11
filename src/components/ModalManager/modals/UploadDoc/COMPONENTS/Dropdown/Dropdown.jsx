@@ -9,9 +9,9 @@ import s from './Dropdown.module.scss';
 
 const Dropdown = ({
     options = [],
-    value = '',
+    value = null, // объект или id
     onChange = () => {},
-    placeholder = '',
+    placeholder = 'Выберите...',
     sub,
     disabled = false,
     renderOption,
@@ -31,8 +31,25 @@ const Dropdown = ({
         setIsOpen(false);
     };
 
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+                setIsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () =>
+            document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
     const wrapperStyle =
         width && typeof width === 'number' ? { width: `${width}px` } : {};
+
+    const selectedName = value
+        ? typeof value === 'object'
+            ? value.name
+            : options.find((opt) => opt.id === value)?.name
+        : '';
 
     return (
         <div className={s.root} ref={wrapperRef} style={wrapperStyle}>
@@ -48,11 +65,11 @@ const Dropdown = ({
             >
                 <span
                     className={classNames({
-                        [s.value]: value,
-                        [s.placeholder]: !value,
+                        [s.value]: selectedName,
+                        [s.placeholder]: !selectedName,
                     })}
                 >
-                    {value || placeholder}
+                    {selectedName || placeholder}
                 </span>
 
                 {hasOptions && !disabled && (
@@ -75,15 +92,20 @@ const Dropdown = ({
                     style={wrapperStyle}
                 >
                     <div className={s.list}>
-                        {options.map((option, i) => (
+                        {options.map((option) => (
                             <div
-                                key={i}
+                                key={option.id}
                                 className={classNames(s.option, {
-                                    [s.selected]: option === value,
+                                    [s.selected]:
+                                        value &&
+                                        (value.id === option.id ||
+                                            value === option.id),
                                 })}
                                 onClick={() => handleOptionClick(option)}
                             >
-                                {renderOption ? renderOption(option) : option}
+                                {renderOption
+                                    ? renderOption(option)
+                                    : option.name}
                             </div>
                         ))}
                     </div>

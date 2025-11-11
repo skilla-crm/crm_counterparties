@@ -10,6 +10,7 @@ import useToast from 'hooks/useToast';
 // Redux
 import { useSwitchContactStatusMutation } from '../../../../redux/services/counterpartyDetailsApiActions';
 
+
 // Utils
 import formatPhoneNumber from 'utils/formatPhoneNumber';
 
@@ -60,6 +61,7 @@ const ContactRow = ({ contact, counterpartyId }) => {
     const { showModal } = useModal();
     const { showToast } = useToast();
     const [isActive, setIsActive] = useState(false);
+
     const [switchContactStatus] = useSwitchContactStatusMutation();
 
     useEffect(() => {

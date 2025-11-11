@@ -6,13 +6,16 @@
     width: 500px;
     border-radius: 8px;
     background: #fff;
-    // height: 356px;
+
     overflow: hidden;
+}
+.list {
+    height: 270px;
+    transition: all 0.25s ease-in-out;
     &_open {
-        height: auto;
+        height: 630px;
     }
 }
-
 .openBtn {
     margin-top: 12px;
 
@@ -31,13 +34,15 @@
     }
 
     .icon {
-        transition: transform 0.2s;
+        transition: transform 0.25s ease-in-out;
     }
-
-    &.active .icon {
-        transform: rotate(180deg);
+    &_active {
+        .icon {
+            transform: rotate(180deg);
+        }
     }
 }
+
 .groupDate {
     padding-top: 12px;
     padding-bottom: 12px;

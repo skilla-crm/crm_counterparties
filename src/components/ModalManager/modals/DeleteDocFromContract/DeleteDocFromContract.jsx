@@ -27,14 +27,14 @@ const DeleteDocFromContract = () => {
     const { showToast } = useToast();
     const dispatch = useDispatch();
     const { modalProps, hideModal } = useModal();
-    const { documentId } = modalProps;
+    const { id } = modalProps;
 
     const [deleteAttachment, { isLoading }] = useDeleteAttachmentMutation();
 
     const handleDelete = async () => {
         try {
             const res = await deleteAttachment({
-                attachmentId: documentId,
+                attachmentId: id,
             }).unwrap();
 
             if (res?.success) {

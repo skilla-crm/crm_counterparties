@@ -1,206 +1,207 @@
 .modal {
-  width: 350px;
-  padding: 20px 24px;
-  color: #121922;
-  text-align: center;
-  font-family: "Inter";
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 18px;
-  display: flex;
-  flex-direction: column;
-
-  &_header {
-    position: relative;
+    width: 350px;
+    padding: 20px 24px;
+    color: #121922;
+    text-align: center;
+    font-family: 'Inter';
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
+    // gap: 12px;
+    flex-direction: column;
 
-  .title {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 20px;
-    font-weight: 600;
-  }
+    &_header {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
 
-  .close {
-    position: absolute;
-    top: 25%;
-    right: 0;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
+    .title {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .close {
+        position: absolute;
+        top: 25%;
+        right: 0;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
 }
 
 .dropzone {
-  width: 300px;
-  height: 164px;
-  border: 2px dashed #dce1e7;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  opacity: 1;
-  overflow: hidden;
-  transition: all 0.2s ease-in-out;
-  &.dropzone_vis {
-    opacity: 0;
-    height: 0;
-    margin-bottom: 0;
-    pointer-events: none;
-  }
+    width: 300px;
+    height: 164px;
+    border: 2px dashed #dce1e7;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    opacity: 1;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+    &.dropzone_vis {
+        opacity: 0;
+        height: 0;
+        margin-bottom: 0;
+        pointer-events: none;
+    }
 }
 
 .uploadLabel {
-  display: block;
-  font-size: 14px;
-  color: #000;
-  cursor: pointer;
+    display: block;
+    font-size: 14px;
+    color: #000;
+    cursor: pointer;
 
-  .uploadLink {
-    margin-left: 4px;
-    color: #0044ff;
-    text-decoration: underline;
-  }
+    .uploadLink {
+        margin-left: 4px;
+        color: #0044ff;
+        text-decoration: underline;
+    }
 }
 
 .fileInput {
-  display: none;
+    display: none;
 }
 
 .sizeInfo {
-  margin-top: 2px;
-  font-size: 14px;
-  color: #71869d;
+    margin-top: 2px;
+    font-size: 14px;
+    color: #71869d;
 }
 
 .submit {
-  width: 100%;
-  padding: 12px;
-  height: 40px;
-  border-radius: 4px;
-  background: #002cfb;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  cursor: pointer;
+    width: 100%;
+    padding: 12px;
+    height: 40px;
+    border-radius: 4px;
+    background: #002cfb;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
 
-  &_disabled {
-    background-color: #f0f2f5;
-    color: #98a0af;
-    font-size: 14px;
-    border: none;
-    border-radius: 8px;
-    cursor: not-allowed;
-  }
+    &_disabled {
+        background-color: #f0f2f5;
+        color: #98a0af;
+        font-size: 14px;
+        border: none;
+        border-radius: 8px;
+        cursor: not-allowed;
+    }
 }
 .dropTitle {
-  color: #002cfb;
-  &_hover {
-    color: #0044ff;
-  }
+    color: #002cfb;
+    &_hover {
+        color: #0044ff;
+    }
 }
 .file_info {
-  // position: absolute;
-  top: 64px;
-  width: calc(100%);
-  border-radius: 8px;
-  border: 1px solid #ecf2fc;
-  background: #f8fafd;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: all 0.2s ease-in-out;
-  &_vis {
-    opacity: 1;
-    padding-top: 6px;
-    height: 70px;
-    margin-bottom: 20px;
-    padding: 20px;
-  }
+    // position: absolute;
+    top: 64px;
+    width: calc(100%);
+    border-radius: 8px;
+    border: 1px solid #ecf2fc;
+    background: #f8fafd;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+    &_vis {
+        opacity: 1;
+        padding-top: 6px;
+        height: 70px;
+        margin-bottom: 20px;
+        padding: 20px;
+    }
 }
 
 .file {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
 }
 .postErrorContainer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 .fileName {
-  margin: 0;
-  color: #121922;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 18px;
-  word-break: break-word;
+    margin: 0;
+    color: #121922;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    word-break: break-word;
 }
 
 .postMsg {
-  color: #e10d0d;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 18px;
-  &.success {
-    color: green;
-  }
+    color: #e10d0d;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    &.success {
+        color: green;
+    }
 }
 
 .error {
-  padding-bottom: 20px;
-  color: #e10d0d;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 18px;
+    padding-bottom: 20px;
+    color: #e10d0d;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
 }
 
 .delete {
-  cursor: pointer;
+    cursor: pointer;
 }
 .loader {
-  position: absolute;
-  background-color: inherit;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.15s;
+    position: absolute;
+    background-color: inherit;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.15s;
 
-  &_vis {
-    opacity: 1;
-    visibility: visible;
-  }
+    &_vis {
+        opacity: 1;
+        visibility: visible;
+    }
 }
 .buttonsWrapper {
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
 }
 .textWrapper {
-  padding-left: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  align-items: flex-start;
+    padding-left: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
 }

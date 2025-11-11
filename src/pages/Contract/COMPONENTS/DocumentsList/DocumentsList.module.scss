@@ -32,7 +32,7 @@
 .gridRow {
     height: 50px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 40px;
+    grid-template-columns: 1fr 150px 80px 1fr 40px;
     column-gap: 20px;
     align-items: center;
     padding-right: 20px;
@@ -153,4 +153,9 @@
 }
 .delete {
     color: #e10d0d;
+}
+.personCell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }

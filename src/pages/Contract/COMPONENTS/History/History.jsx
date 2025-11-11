@@ -35,7 +35,7 @@ const History = ({ history = [] }) => {
 
     // Ограничиваем количество событий, если isOpen = false
     const displayedHistory = isOpen
-        ? sortedHistory
+        ? sortedHistory.slice(0, 25)
         : sortedHistory.slice(0, 10);
 
     // Группировка по дате
@@ -62,7 +62,7 @@ const History = ({ history = [] }) => {
         <div className={`${s.root} ${isOpen ? s.root_open : ''}`}>
             <h3>История изменений</h3>
 
-            <div className={s.list}>
+            <div className={`${s.list} ${isOpen ? s.list_open : ''}`}>
                 {groupedHistory.map((group) => (
                     <div key={group.date} className={s.group}>
                         <div className={s.groupDate}>{group.label}</div>

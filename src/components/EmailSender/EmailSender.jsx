@@ -72,7 +72,7 @@ const EmailSender = ({
             .map((item) => {
                 return { ...item, e_mail: item.e_mail };
             });
-        console.log(result);
+
         setEmails(result);
     }, [contacts]);
 
@@ -91,8 +91,6 @@ const EmailSender = ({
             return;
         }
     }, [emailError]);
-
-    console.log(contacts, emails);
 
     const handleSendEmail = async () => {
         const { format, sign } = formatMap[formatDoc] || {
@@ -224,7 +222,6 @@ const EmailSender = ({
     };
 
     const handleAddEmail = (el) => {
-        console.log(el);
         const uniq = handleUniqEmail(el?.e_mail);
         uniq &&
             setEmails((prevState) => [
