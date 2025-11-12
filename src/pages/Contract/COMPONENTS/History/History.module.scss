@@ -1,81 +1,89 @@
 .root {
-    display: flex;
-    flex-direction: column;
-    padding: 20px 24px;
-    // gap: 20px;
-    width: 500px;
-    border-radius: 8px;
-    background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px;
+  // gap: 20px;
+  width: 500px;
+  border-radius: 8px;
+  background: #fff;
 
-    overflow: hidden;
+  overflow: hidden;
 }
 .list {
-    height: 270px;
-    transition: all 0.25s ease-in-out;
-    &_open {
-        height: 630px;
-    }
+  max-height: 290px;
+  height: fit-content;
+  overflow: hidden;
+  transition: all 0.25s ease-in-out;
+  scrollbar-gutter: stable;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  &_open {
+    max-height: 488px;
+    overflow: auto;
+  }
 }
 .openBtn {
-    margin-top: 12px;
+  margin-top: 12px;
 
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    color: #002cfb;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 140%;
-    transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: #002cfb;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 140%;
+  transition: color 0.2s;
 
-    &:hover {
-        color: #0024cb;
-    }
+  &:hover {
+    color: #0024cb;
+  }
 
+  .icon {
+    transition: transform 0.25s ease-in-out;
+  }
+  &_active {
     .icon {
-        transition: transform 0.25s ease-in-out;
+      transform: rotate(180deg);
     }
-    &_active {
-        .icon {
-            transform: rotate(180deg);
-        }
-    }
+  }
 }
 
 .groupDate {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    color: #71869d;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  color: #71869d;
 
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 16px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
 }
 .items {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 .item {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .description {
-    color: var(--Text-Primary, #121922);
-    font-family: Inter;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 16px;
+  color: var(--Text-Primary, #121922);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
 }
 
 .time {
-    color: var(--Text-Secondary, #71869d);
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 16px;
+  color: var(--Text-Secondary, #71869d);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
 }
