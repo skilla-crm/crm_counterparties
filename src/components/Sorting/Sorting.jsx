@@ -18,18 +18,19 @@ import { ReactComponent as IconDoneBlue } from '../../assets/icons/iconDoneBlue.
 const sortingList = [
     {
         id: 1,
-        text: 'По умолчанию',
+        text: 'По убыванию доли от моей выручки',
         type: 'share_of_partnership_revenue',
         dir: 'asc',
     },
-    { id: 2, text: 'По алфавиту с A', type: 'name', dir: 'asc' },
-    { id: 3, text: 'По алфавиту с Я', type: 'name', dir: 'desc' },
     {
-        id: 4,
+        id: 2,
         text: 'По возрастанию доли от моей выручки',
         type: 'share_of_partnership_revenue',
         dir: 'desc',
     },
+    { id: 3, text: 'По алфавиту с A', type: 'name', dir: 'asc' },
+    { id: 4, text: 'По алфавиту с Я', type: 'name', dir: 'desc' },
+
     {
         id: 5,
         text: 'По убыванию выручки',

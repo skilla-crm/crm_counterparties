@@ -65,7 +65,7 @@ const ListHeader = ({
                         setTimeout(() => {
                             setActiveTab(val);
                             setCounterpartiesType(0);
-                        }, 100);
+                        }, 150);
 
                         setTimeout(() => {
                             setAnim(true);

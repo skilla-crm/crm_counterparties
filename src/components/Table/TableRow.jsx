@@ -1,5 +1,5 @@
 // External
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 // Hooks
@@ -22,8 +22,7 @@ import { ReactComponent as SmileYellow } from 'assets/icons/cardFilling/yellowSm
 import s from './Table.module.scss';
 
 const TableRow = ({ row, type }) => {
-    const navigate = useNavigate();
-    const { showModal } = useModal();
+    // const { showModal } = useModal();
 
     const {
         employee_count,
@@ -35,91 +34,71 @@ const TableRow = ({ row, type }) => {
         kpp,
         notes,
         okved,
-        is_hidden,
+
         revenue,
         share_of_partnership_revenue,
     } = row;
 
-    const handleOpenDetails = (id) => {
-        navigate(`/details/${id}`);
-    };
-    const renderApproved = () => {
-        return (
-            <div
-                className={classNames(s.gridRow, s.approved)}
-                onClick={() => {
-                    handleOpenDetails(id);
-                }}
-            >
-                <div className={classNames(s.gridCell, s.columnCell)}>
-                    <div className={classNames(s.nameWrapper, s.labelBadge)}>
-                        <EllipsisWithTooltip text={name} />
-                        <CompanyLabelBadge label={label} />
-                    </div>{' '}
-                    <div className={s.inn}>
-                        <div> {inn && `ИНН ${inn}`}</div>
-                        <div> {kpp && `КПП${kpp}`}</div>
-                    </div>
+    const renderApproved = () => (
+        <Link
+            to={`/details/${id}`}
+            className={classNames(s.gridRow, s.approved)}
+        >
+            <div className={classNames(s.gridCell, s.columnCell)}>
+                <div className={classNames(s.nameWrapper, s.labelBadge)}>
+                    <EllipsisWithTooltip text={name || ''} />
+                    <CompanyLabelBadge label={label || ''} />
                 </div>
-                <div>
-                    {/* КНОПКА РИСК */}
-                    {/* {Boolean(is_hidden) && (
-                        <UniButton
-                            text="Риск"
-                            type="danger"
-                            width={44}
-                            style={{ height: '24px' }}
-                            onClick={(id) => {
-                                showModal('REMOVE_RISK_BADGE', { id });
-                            }}
-                        />
-                    )} */}
+                <div className={s.inn}>
+                    {inn && inn.trim() && inn !== '0' && (
+                        <div>{`ИНН ${inn}`}</div>
+                    )}
+                    {kpp && kpp.trim() && kpp !== '0' && (
+                        <div>{`КПП ${kpp}`}</div>
+                    )}
                 </div>
-                <div className={classNames(s.gridCell)}>{okved}</div>
-
-                <div className={classNames(s.gridCell, s.right)}>
-                    {share_of_partnership_revenue}
-                </div>
-                <div className={classNames(s.gridCell, s.right)}>
-                    {formatNumWithSpace(revenue)}
-                </div>
-                <div className={classNames(s.gridCell, s.right)}>
-                    {formatNumWithSpace(employee_count)}
-                </div>
-                <div className={classNames(s.gridCell)}>
-                    <Badge status={status} />
-                </div>
-
-                <div className={classNames(s.gridCell)}>
-                    <EllipsisWithTooltip text={notes} />
-                </div>
-                {/* <div className={classNames(s.gridCell, s.center)}>
-                        <CardFilling filling={filling} />
-                    </div> */}
+                {/* КНОПКА РИСК */}{' '}
+                {/* {Boolean(is_hidden) && ( <UniButton text="Риск" type="danger" width={44} style={{ height: '24px' }} onClick={(id) => { showModal('REMOVE_RISK_BADGE', { id }); }} /> )} */}
             </div>
-        );
-    };
+
+            <div className={classNames(s.gridCell)}>{okved || ''}</div>
+
+            <div className={classNames(s.gridCell, s.right)}>
+                {share_of_partnership_revenue || ''}
+            </div>
+            <div className={classNames(s.gridCell, s.right)}>
+                {formatNumWithSpace(revenue || '')}
+            </div>
+            <div className={classNames(s.gridCell, s.right)}>
+                {formatNumWithSpace(employee_count || '')}
+            </div>
+            <div className={classNames(s.gridCell)}>
+                {Boolean(status) && <Badge status={status} />}
+            </div>
+            <div className={classNames(s.gridCell)}>
+                <EllipsisWithTooltip text={notes || ''} />
+            </div>
+        </Link>
+    );
 
     const renderNotApproved = () => {
-        const { id, sum, name, label, notes } = row;
+        const { id, name, label, notes } = row;
 
         return (
-            <div
+            <Link
+                to={`/details/${id}`}
                 className={classNames(s.gridRow, s.notApproved)}
-                onClick={() => {
-                    handleOpenDetails(id);
-                }}
             >
                 <div className={classNames(s.gridCell, s.labelBadge)}>
                     <div>
-                        <EllipsisWithTooltip text={name} />{' '}
+                        <EllipsisWithTooltip text={name || ''} />{' '}
                     </div>
-                    <CompanyLabelBadge label={label} />
+                    <CompanyLabelBadge label={label || ''} />
                 </div>
                 <div className={classNames(s.gridCell, s.gray)}>
-                    <EllipsisWithTooltip text={notes} />{' '}
+                    <EllipsisWithTooltip text={notes || ''} />{' '}
                 </div>
-            </div>
+            </Link>
         );
     };
 

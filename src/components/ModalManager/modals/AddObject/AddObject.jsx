@@ -7,7 +7,10 @@ import { useModal } from 'hooks/useModal';
 import useToast from 'hooks/useToast';
 
 // Redux
-import { useCreateObjectMutation } from '../../../../redux/services/counterpartyDetailsApiActions';
+import {
+    useCreateObjectMutation,
+    useUpdateObjectMutation,
+} from '../../../../redux/services/counterpartyDetailsApiActions';
 
 // Components
 import Modal from 'components/General/Modal/Modal';

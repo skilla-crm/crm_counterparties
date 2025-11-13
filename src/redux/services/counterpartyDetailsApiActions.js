@@ -170,16 +170,18 @@ export const counterpartyDetailsApiActions = createApi({
         }),
 
         //ВКЛАДКА ОБЪЕКТЫ
-        switchObjectStatus: build.mutation({
-            query: ({ companyId, objectId }) => ({
-                url: `/companies/${companyId}/objects/${objectId}/change-active`,
-                method: 'PATCH',
-            }),
-        }),
         createObject: build.mutation({
             query: ({ companyId, data }) => ({
-                url: `/companies/${companyId}/objects/create`,
+                url: `/companies/${companyId}/create_enterprise`,
                 method: 'POST',
+                body: data,
+            }),
+            invalidatesTags: ['counterparty'],
+        }),
+        updateObject: build.mutation({
+            query: ({ companyId, objectId, data }) => ({
+                url: `/companies/${companyId}/enterprises/${objectId}/update`,
+                method: 'PUT',
                 body: data,
             }),
             invalidatesTags: ['counterparty'],
@@ -230,8 +232,8 @@ export const {
     useDeleteBankAccountMutation,
 
     // ВКЛАДКА ОБЪЕКТЫ
-    useSwitchObjectStatusMutation,
     useCreateObjectMutation,
+    useUpdateObjectMutation,
 
     // ВКЛАДКА ДРУГОЕ
     useUpdateOtherMutation,

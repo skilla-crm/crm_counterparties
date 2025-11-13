@@ -1,12 +1,12 @@
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 40px;
 }
 .headerButtons {
-  display: flex;
-  gap: 8px;
-  flex-direction: row;
-  // align-items: center;
+    display: flex;
+    gap: 8px;
+    flex-direction: row;
+    // align-items: center;
 }

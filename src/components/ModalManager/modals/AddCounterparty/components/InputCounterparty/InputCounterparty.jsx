@@ -13,6 +13,7 @@ import CompanyListInn from './CompanyList/CompanyListInn';
 
 // Styles
 import s from './InputCounterparty.module.scss';
+import idObj from 'identity-obj-proxy';
 
 const InputCounterparty = ({
     value,
@@ -33,7 +34,7 @@ const InputCounterparty = ({
     const [displayAsName, setDisplayAsName] = useState(false);
 
     const inputRef = useRef();
-    const debouncedValue = useDebounce(value, 500);
+    const debouncedValue = useDebounce(value, 300);
 
     const [getCompanyInfo] = useGetCompanyInfoMutation();
 
@@ -50,27 +51,31 @@ const InputCounterparty = ({
             setFieldFocus(false);
         }
     }, [withInn]);
-
     useEffect(() => {
+        // очистка ошибки
         if (!debouncedValue) {
             setError('');
-            return;
-        }
-
-        if (debouncedValue.length !== 10 && debouncedValue.length !== 12) {
-            setError('ИНН должен содержать 10 или 12 цифр');
-
             setSuggestions([]);
             setNoFind(false);
             setOpenList(false);
             return;
         }
 
+        // длина ИНН должна быть 10 или 12
+        if (debouncedValue.length !== 10 && debouncedValue.length !== 12) {
+            setError('ИНН должен содержать 10 или 12 цифр');
+            setSuggestions([]);
+            setNoFind(false);
+            setOpenList(false);
+            return;
+        }
+
+        // если длина корректная то
         setError('');
 
-        const fetchData = async () => {
-            if (error) return;
+        const fetchAndCheck = async () => {
             try {
+                // делаем параллельно запрос подсказок
                 const res = await getCompanyInfo({
                     query: debouncedValue,
                 }).unwrap();
@@ -78,13 +83,27 @@ const InputCounterparty = ({
                 setSuggestions(res.suggestions);
                 setNoFind(res.suggestions.length === 0 && fieldFocus);
                 setOpenList(res.suggestions.length > 0 && fieldFocus);
+
+                // если подсказок нет, запускаем checker
+                if (res.suggestions.length === 0) {
+                    await handleCheck(debouncedValue);
+                }
             } catch (err) {
                 console.error(err);
             }
         };
 
-        fetchData();
+        fetchAndCheck();
     }, [debouncedValue, getCompanyInfo, fieldFocus]);
+    useEffect(() => {
+        const checkInn = async () => {
+            if (debouncedValue.length === 10 || debouncedValue.length === 12) {
+                setError('');
+                await handleCheck(debouncedValue);
+            }
+        };
+        checkInn();
+    }, [debouncedValue]);
 
     const handleChoose = useCallback(
         (company) => {
@@ -127,7 +146,7 @@ const InputCounterparty = ({
         if (suggestions.length > 0) setOpenList(true);
     };
     const handleCheck = async (inn) => {
-        if (!inn || error) return;
+        // if (!inn || error) return;
         try {
             const res = await checker({ inn, kpp: null }).unwrap();
             if (res.success) {

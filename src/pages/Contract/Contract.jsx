@@ -17,7 +17,7 @@ import {
     useGetContractQuery,
     useCreateContractMutation,
     useUpdateContractMutation,
-    // useGetSettingsQuery,
+    useGetSettingsQuery,
 } from '../../redux/services/contractApiActions';
 
 // Components
@@ -30,7 +30,6 @@ import History from './COMPONENTS/History/History';
 // Styles
 import s from './Contract.module.scss';
 import classNames from 'classnames';
-import { identity } from 'lodash';
 
 const normalizeDate = (value) => {
     if (!value) return '';
@@ -43,14 +42,15 @@ export const Contract = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { showToast } = useToast();
-    const { counterparty = {}, settings = {} } = location.state || {};
+    const { counterparty = {} } = location.state || {};
     const [isEditMode, setIsEditMode] = useState(false);
     const isCreateMode = !id;
     const { form, setField, getFormData } = useContractForm();
     const { data } = useGetContractQuery({ contractId: id }, { skip: !id });
-    // const { data: settings, isLoading: isLoadingSettings } = useGetSettingsQuery({
-    //   companyId: counterpartyId,
-    // });
+    const { data: settings, isLoading: isLoadingSettings } =
+        useGetSettingsQuery({
+            companyId: id,
+        });
 
     useEffect(() => {
         if (id) return;

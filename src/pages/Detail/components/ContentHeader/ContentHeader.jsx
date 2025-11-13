@@ -24,7 +24,8 @@ import { ReactComponent as IconEdit } from 'assets/icons/iconEdit.svg';
 
 // Styles
 import s from './ContentHeader.module.scss';
-import Field from 'components/General/Field/Field';
+
+const isValidValue = (val) => val && val.trim() !== '' && val !== '0';
 
 const ContentHeader = ({ data, companyId }) => {
     const { showModal } = useModal();
@@ -75,7 +76,7 @@ const ContentHeader = ({ data, companyId }) => {
     };
     return (
         <div className={classNames(s.contentHeader)}>
-            <div className={classNames(s.logo)}>
+            {/* <div className={classNames(s.logo)}>
                 {Boolean(verified_id) ? (
                     counterparyLogo ? (
                         <img
@@ -105,7 +106,7 @@ const ContentHeader = ({ data, companyId }) => {
                         setLogo={handleUploadLogo}
                     />
                 )}
-            </div>
+            </div> */}
             <div className={s.section}>
                 <div className={s.flexRow}>
                     <Label label={label} />
@@ -124,10 +125,11 @@ const ContentHeader = ({ data, companyId }) => {
                 </div>
                 <h3>{name}</h3>
                 <div className={s.flexRow}>
-                    {inn && <p>{`ИНН ${inn}`}</p>}
-                    {kpp && <p>{`КПП ${kpp}`}</p>}
-                    {ogrn && <p>{`ОГРН ${ogrn}`}</p>}
+                    {isValidValue(inn) && <p>{`ИНН ${inn}`}</p>}
+                    {isValidValue(kpp) && <p>{`КПП ${kpp}`}</p>}
+                    {isValidValue(ogrn) && <p>{`ОГРН ${ogrn}`}</p>}
                 </div>
+
                 <div className={s.description}>{okved_name}</div>
                 {Boolean(verified_id) && (
                     <div className={s.flexRow}>
