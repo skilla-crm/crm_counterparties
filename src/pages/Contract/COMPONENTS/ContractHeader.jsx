@@ -50,7 +50,6 @@ const ContractHeader = ({
     contract = {},
     contacts = [],
 }) => {
-    console.log('contract', contract);
     const parameters = [];
 
     const params1 = {

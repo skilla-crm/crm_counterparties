@@ -65,10 +65,13 @@ const Detail = () => {
         ...tab,
         ref: segmentRefs.current[i],
     }));
+
     const { data: settings } = useGetSettingsQuery({
         companyId: id,
     });
-    const { data: counterparty, isLoading } = useGetCounterpartyInfoQuery(id);
+    const { data: counterparty, isLoading } = useGetCounterpartyInfoQuery({
+        counterpartyId: id,
+    });
 
     const {
         last_documents,

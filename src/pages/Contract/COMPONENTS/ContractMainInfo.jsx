@@ -7,7 +7,6 @@ import InputText from 'components/General/InputText/InputText';
 import InputNum from 'components/General/InputNum/InputNum';
 //styles
 import s from './ContractMainInfo.module.scss';
-import { set } from 'lodash';
 
 const ContractMainInfo = ({
     form,
@@ -16,36 +15,38 @@ const ContractMainInfo = ({
     settings,
     isEditMode,
 }) => {
-    const { partnerships, contract_templates } = settings;
+    const { partnerships = [], contract_templates = [] } = settings || {};
 
     //заказчик
     const company = {
-        id: counterparty.general.company_id,
-        name: counterparty.general.name,
-        inn: counterparty.general.inn,
-        kpp: counterparty.general.kpp,
+        id: counterparty?.general?.company_id,
+        name: counterparty?.general?.name,
+        inn: counterparty?.general?.inn,
+        kpp: counterparty?.general?.kpp,
     };
     //счета заказчика
-    const companyAccounts = counterparty.bank_accounts;
+    const companyAccounts = counterparty?.bank_accounts || [];
 
     //подписанты заказчика
-    const companySignPersons = [
-        {
-            id: counterparty.requisites.signatory.id,
-            name: counterparty.requisites.signatory.full_name,
-        },
-    ];
+    const companySignPersons = counterparty?.requisites?.signatory
+        ? [
+              {
+                  id: counterparty.requisites.signatory.id,
+                  name: counterparty.requisites.signatory.full_name,
+              },
+          ]
+        : [];
 
     //подписанты поставщика
-    const partnershipSignPersons = counterparty.contacts;
+    const partnershipSignPersons = counterparty?.contacts || [];
     //список поставщиков
-    const notArchivedPartnerships = partnerships.filter(
-        (p) => p.is_archive !== 1
-    );
+    const notArchivedPartnerships =
+        (partnerships || []).filter((p) => p.is_archive !== 1) || [];
     //выбранный поставщик
-    const selectedPartnership = notArchivedPartnerships.find(
-        (company) => company.id === form.partnership_id
-    );
+    const selectedPartnership =
+        (notArchivedPartnerships || []).find(
+            (company) => company.id === form.partnership_id
+        ) || [];
     //счета выбранного поставщика
     const partnershipAccounts = selectedPartnership?.details || [];
 
@@ -64,7 +65,7 @@ const ContractMainInfo = ({
                 <Dropdown
                     sub="Счет заказчика"
                     width={312}
-                    value={counterparty.bank_accounts.find(
+                    value={(counterparty?.bank_accounts || []).find(
                         (a) => a.id === form.company_details_id
                     )}
                     onChange={(v) => setField('company_details_id', v?.id)}

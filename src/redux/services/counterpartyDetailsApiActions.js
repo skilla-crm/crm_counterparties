@@ -20,8 +20,8 @@ export const counterpartyDetailsApiActions = createApi({
     endpoints: (build) => ({
         //ДЕТАЛКА КОНТРАГЕНТА
         getCounterpartyInfo: build.query({
-            query: (id) => ({
-                url: `${COUNTERPARTIES_URL}/${id}/details`,
+            query: ({ counterpartyId }) => ({
+                url: `${COUNTERPARTIES_URL}/${counterpartyId}/details`,
                 method: 'GET',
             }),
             transformResponse: (response) => response.data,

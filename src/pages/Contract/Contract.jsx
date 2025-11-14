@@ -1,9 +1,9 @@
 // React
 import { useContractForm } from 'hooks/useContractForm';
 import { use, useEffect, useState } from 'react';
+import classNames from 'classnames';
 
 // Hooks
-import { useModal } from 'hooks/useModal';
 import useToast from 'hooks/useToast';
 
 //libs
@@ -19,6 +19,7 @@ import {
     useUpdateContractMutation,
     useGetSettingsQuery,
 } from '../../redux/services/contractApiActions';
+import { useGetCounterpartyInfoQuery } from '../../redux/services/counterpartyDetailsApiActions';
 
 // Components
 import ContractHeader from './COMPONENTS/ContractHeader';
@@ -29,7 +30,6 @@ import History from './COMPONENTS/History/History';
 
 // Styles
 import s from './Contract.module.scss';
-import classNames from 'classnames';
 
 const normalizeDate = (value) => {
     if (!value) return '';
@@ -39,18 +39,33 @@ const normalizeDate = (value) => {
 
 export const Contract = () => {
     const { id } = useParams();
-    const location = useLocation();
     const navigate = useNavigate();
     const { showToast } = useToast();
-    const { counterparty = {} } = location.state || {};
+    const location = useLocation();
+    const { counterparty: locationCounterparty, settings: locationSettings } =
+        location.state || {};
+
     const [isEditMode, setIsEditMode] = useState(false);
     const isCreateMode = !id;
     const { form, setField, getFormData } = useContractForm();
-    const { data } = useGetContractQuery({ contractId: id }, { skip: !id });
+
+    //данные контракта
+    const { data: contractData } = useGetContractQuery(
+        { contractId: id },
+        { skip: !id }
+    );
+    //данные контрагента
+    const { data: counterparty, isLoading: isLoadingCounterparty } =
+        useGetCounterpartyInfoQuery(
+            { counterpartyId: contractData?.company_id?.toString() },
+            { skip: !contractData?.company_id }
+        );
+    //данные настроек
     const { data: settings, isLoading: isLoadingSettings } =
-        useGetSettingsQuery({
-            companyId: id,
-        });
+        useGetSettingsQuery(
+            { companyId: contractData?.company_id?.toString() },
+            { skip: !contractData?.company_id }
+        );
 
     useEffect(() => {
         if (id) return;
@@ -72,34 +87,37 @@ export const Contract = () => {
 
     //заполнение формы при создании
     useEffect(() => {
-        if (data || !isCreateMode) return;
+        if (contractData || !isCreateMode) return;
+        console.log('locationCounterparty', locationCounterparty);
+
         const fields = {
-            company_id: counterparty.general.company_id || '',
-            company_details_id: counterparty.bank_accounts[0].id || '',
+            company_id: locationCounterparty.general.company_id || '',
+            company_details_id: locationCounterparty.bank_accounts[0].id || '',
         };
         Object.entries(fields).forEach(([key, value]) => setField(key, value));
     }, []);
 
     //заполнение формы при редактировании
     useEffect(() => {
-        if (!data || isCreateMode) return;
+        if (!contractData || isCreateMode) return;
 
         const fields = {
-            company_id: data.company_id || '',
-            company_details_id: data.company_details_id || '',
-            partnership_id: data.partnership_id || '',
-            partnership_details_id: data.partnership_details_id || '',
-            contract_template_id: data.contract_template_id || '',
-            without_template: data.without_template || 0,
-            number: data.number || '',
-            date: normalizeDate(data.date),
-            expired_date: normalizeDate(data.expired_date),
-            company_signature_id: data.company_signature_id || '',
-            partnership_signature_id: data.partnership_signature_id || '',
+            company_id: contractData.company_id || '',
+            company_details_id: contractData.company_details_id || '',
+            partnership_id: contractData.partnership_id || '',
+            partnership_details_id: contractData.partnership_details_id || '',
+            contract_template_id: contractData.contract_template_id || '',
+            without_template: contractData.without_template || 0,
+            number: contractData.number || '',
+            date: normalizeDate(contractData.date),
+            expired_date: normalizeDate(contractData.expired_date),
+            company_signature_id: contractData.company_signature_id || '',
+            partnership_signature_id:
+                contractData.partnership_signature_id || '',
             // label: data.label || "",
         };
         Object.entries(fields).forEach(([key, value]) => setField(key, value));
-    }, [data]);
+    }, [contractData]);
 
     const handleCreateContract = async () => {
         // if (!form.number) return showToast("Введите номер договора", "error");
@@ -142,9 +160,9 @@ export const Contract = () => {
     return (
         <div className={s.root}>
             <ContractHeader
-                settings={settings}
+                settings={isCreateMode ? locationSettings : settings}
                 isLoading={isCreateLoading || isUpdateLoading}
-                contract={data}
+                contract={contractData}
                 contractId={id}
                 isEditMode={isEditMode}
                 isCreateMode={isCreateMode}
@@ -158,16 +176,23 @@ export const Contract = () => {
                     <ContractMainInfo
                         form={form}
                         setField={setField}
-                        counterparty={counterparty}
-                        settings={settings}
+                        counterparty={
+                            isCreateMode ? locationCounterparty : counterparty
+                        }
+                        settings={isCreateMode ? locationSettings : settings}
                         isEditMode={isEditMode}
                     />
+
                     {!isCreateMode && (
                         <DocumentsList
-                            data={data?.docs}
+                            data={contractData?.docs}
                             contractId={id}
-                            contract={data}
-                            docTypes={settings?.doc_types}
+                            contract={contractData}
+                            docTypes={
+                                isCreateMode
+                                    ? locationSettings?.doc_types
+                                    : settings?.doc_types
+                            }
                             contacts={CONTACTS_MAILS}
                         />
                     )}
@@ -179,8 +204,8 @@ export const Contract = () => {
                         (isCreateMode || isEditMode) && s.rightColHidden
                     )}
                 >
-                    <DocumentFlow id={id} exchange={data?.exchange} />
-                    <History history={data?.history} />
+                    <DocumentFlow id={id} exchange={contractData?.exchange} />
+                    <History history={contractData?.history} />
                 </div>
             </div>
         </div>

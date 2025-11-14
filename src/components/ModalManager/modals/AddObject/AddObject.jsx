@@ -26,15 +26,14 @@ import { ReactComponent as IconDoneWhite } from 'assets/icons/iconDoneWhite.svg'
 
 // Styles
 import s from './AddObject.module.scss';
+import Address from 'components/General/Address/Address';
 
 const AddObject = () => {
     const { showToast } = useToast();
     const { modalProps, hideModal } = useModal();
     const { companyId } = modalProps;
-
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
-
     const [activity, setActivity] = useState(0);
 
     const [createObject, { isLoading }] = useCreateObjectMutation();
@@ -82,13 +81,14 @@ const AddObject = () => {
                             setText={(v) => setName(v)}
                         />
                     </Field>
-                    <Field text="Адрес">
+                    {/* <Field text="Адрес">
                         <InputText
                             width={300}
                             text={address}
                             setText={(v) => setAddress(v)}
                         />
-                    </Field>
+                    </Field> */}
+                    <Address address={address} setAddress={setAddress} />
 
                     <Switch
                         text="Назначить основным"
