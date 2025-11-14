@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import DeleteCounterpaty from 'components/ModalManager/modals/DeleteCounterparty/DeleteCounterparty';
 
 const token = document
     .getElementById('root_counterparties')
@@ -172,17 +171,24 @@ export const counterpartyDetailsApiActions = createApi({
         //ВКЛАДКА ОБЪЕКТЫ
         createObject: build.mutation({
             query: ({ companyId, data }) => ({
-                url: `/companies/${companyId}/create_enterprise`,
+                url: `counterparties/${companyId}/create_enterprise`,
                 method: 'POST',
                 body: data,
             }),
             invalidatesTags: ['counterparty'],
         }),
         updateObject: build.mutation({
-            query: ({ companyId, objectId, data }) => ({
-                url: `/companies/${companyId}/enterprises/${objectId}/update`,
+            query: ({ objectId, data }) => ({
+                url: `counterparties/update_enterprise/${objectId}`,
                 method: 'PUT',
                 body: data,
+            }),
+            invalidatesTags: ['counterparty'],
+        }),
+        deleteObject: build.mutation({
+            query: ({ objectId }) => ({
+                url: `counterparties/delete_enterprise/${objectId}`,
+                method: 'DELETE',
             }),
             invalidatesTags: ['counterparty'],
         }),
@@ -234,6 +240,7 @@ export const {
     // ВКЛАДКА ОБЪЕКТЫ
     useCreateObjectMutation,
     useUpdateObjectMutation,
+    useDeleteObjectMutation,
 
     // ВКЛАДКА ДРУГОЕ
     useUpdateOtherMutation,

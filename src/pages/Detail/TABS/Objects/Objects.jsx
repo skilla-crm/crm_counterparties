@@ -8,17 +8,12 @@ import { useModal } from 'hooks/useModal';
 import EllipsisWithTooltip from 'components/General/EllipsisWithTooltip/EllipsisWithTooltip';
 
 // Icons
-
 import { ReactComponent as IconDoneGrey } from 'assets/icons/iconDoneGrey.svg';
 
 // Styles
 import s from './Objects.module.scss';
 
 const Objects = ({ data, counterpartyId }) => {
-    const { showModal } = useModal();
-    const handleOpenAddObject = (data) => {
-        showModal('ADD_OBJECT', { companyId: counterpartyId, data });
-    };
     return (
         <div className={s.root}>
             {data.length > 0 ? (
@@ -31,7 +26,6 @@ const Objects = ({ data, counterpartyId }) => {
                     </div>
                     {data.map((object) => (
                         <ObjectsRow
-                            onClick={() => handleOpenAddObject(object)}
                             key={object.id}
                             object={object}
                             counterpartyId={counterpartyId}
@@ -46,10 +40,17 @@ const Objects = ({ data, counterpartyId }) => {
 };
 export default Objects;
 
-const ObjectsRow = ({ object }) => {
+const ObjectsRow = ({ object, counterpartyId }) => {
+    const { showModal } = useModal();
     const { is_default, name, street, home, city } = object;
+    const handleOpenAddObject = (object) => {
+        showModal('ADD_OBJECT', { companyId: counterpartyId, object });
+    };
     return (
-        <div className={classNames(s.gridRow)}>
+        <div
+            className={classNames(s.gridRow)}
+            onClick={() => handleOpenAddObject(object)}
+        >
             <div>
                 <EllipsisWithTooltip text={name || ''} />
             </div>

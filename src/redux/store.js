@@ -4,6 +4,7 @@ import { counterpartyDetailsApiActions } from './services/counterpartyDetailsApi
 import { dadataApiActions } from './services/dadataApiActions';
 import { counterpartiesListApiActions } from './services/counterpartiesListApiActions';
 import { contractApiActions } from './services/contractApiActions';
+import { yandexApi } from './services/yandexApi';
 
 import sortSlice from './sorting/sortSlice';
 import modalReducer from './modalManager/modalSlice';
@@ -25,6 +26,7 @@ export const store = configureStore({
             counterpartiesListApiActions.reducer,
         dadataApiActions: dadataApiActions.reducer,
         [contractApiActions.reducerPath]: contractApiActions.reducer,
+        [yandexApi.reducerPath]: yandexApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
@@ -34,7 +36,8 @@ export const store = configureStore({
             .concat(counterpartyDetailsApiActions.middleware)
             .concat(counterpartiesListApiActions.middleware)
             .concat(dadataApiActions.middleware)
-            .concat(contractApiActions.middleware),
+            .concat(contractApiActions.middleware)
+            .concat(yandexApi.middleware),
 });
 
 setupListeners(store.dispatch);

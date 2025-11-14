@@ -4,7 +4,7 @@ import { ReactComponent as IconInfo } from './assets/iconinfo.svg';
 //components
 import Tooltip from './Tooltip/Tooltip';
 
-const Field = ({ text, info, width, children }) => {
+const Field = ({ text, info, containerWidth, width, children }) => {
     const [hover, setHover] = useState(false);
 
     const handleHover = () => {
@@ -16,7 +16,7 @@ const Field = ({ text, info, width, children }) => {
     };
 
     return (
-        <div className={s.root}>
+        <div className={s.root} style={{ width: `${containerWidth}px` }}>
             <div className={s.block}>
                 <p className={s.text}>{text}</p>
                 {info && (

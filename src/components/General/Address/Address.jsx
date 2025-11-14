@@ -3,23 +3,28 @@ import s from './Address.module.scss';
 
 import {
     useGetAddressSuggestQuery,
-    useGetAddressExactQuery,
+    useLazyGetAddressExactQuery,
 } from '../../../redux/services/yandexApi';
 import { addressUtility } from 'utils/AdressUtility';
 
-const Address = ({ defaultCordinate, address, setAddress }) => {
-    const [query, setQuery] = useState('');
+const Address = ({
+    defaultCordinate,
+    address,
+    setAddress,
+    query,
+    setQuery,
+}) => {
     const [openList, setOpenList] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
 
     const listRef = useRef();
 
-    const { data: suggestData, isFetching: isSuggestLoading } =
-        useGetAddressSuggestQuery(
-            { query, defaultCordinate },
-            { skip: query.trim().length === 0 }
-        );
+    const { data: suggestData } = useGetAddressSuggestQuery(
+        { query, defaultCordinate },
+        { skip: query.trim().length === 0 }
+    );
 
-    const [getExactAddress] = useGetAddressExactQuery();
+    const [getExactAddress] = useLazyGetAddressExactQuery();
 
     const suggestions = suggestData?.results || [];
 
@@ -43,7 +48,6 @@ const Address = ({ defaultCordinate, address, setAddress }) => {
         );
 
         const geocodeString = `${city} ${street} ${house}`;
-
         const res = await getExactAddress(geocodeString);
 
         const point =
@@ -68,6 +72,7 @@ const Address = ({ defaultCordinate, address, setAddress }) => {
     const closeList = (e) => {
         if (listRef.current && !listRef.current.contains(e.target)) {
             setOpenList(false);
+            setIsFocused(false);
         }
     };
 
@@ -78,18 +83,25 @@ const Address = ({ defaultCordinate, address, setAddress }) => {
 
     return (
         <div className={s.container}>
-            <div ref={listRef} className={s.field}>
+            <div
+                ref={listRef}
+                className={`${s.field} ${isFocused ? s.field_focus : ''}`}
+            >
                 <input
                     value={query}
                     onChange={handleAddress}
-                    onFocus={() => suggestions.length > 0 && setOpenList(true)}
-                    placeholder="Введите адрес"
+                    onFocus={() => {
+                        setIsFocused(true);
+                        if (suggestions.length > 0) setOpenList(true);
+                    }}
+                    // placeholder="Введите адрес"
                 />
 
                 {openList && suggestions.length > 0 && (
                     <ul className={`${s.list} ${s.list_open}`}>
                         {suggestions.map((el) => (
                             <li
+                                className={s.item}
                                 key={el.uri}
                                 onClick={() => handleSelectAddress(el)}
                             >
