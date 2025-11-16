@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import classNames from 'classnames';
 import s from './SegmentButtons.module.scss';
 
@@ -14,6 +14,8 @@ const SegmentButtons = ({
 }) => {
     const [activeIndex, setActiveIndex] = useState(defaultIndex);
     const componentReady = useRef();
+    const controlsRef = useRef();
+    const updatePositionRef = useRef();
 
     useEffect(() => {
         componentReady.current = true;
@@ -26,16 +28,51 @@ const SegmentButtons = ({
         }
     }, [value, segments]);
 
-    useEffect(() => {
-        if (!controlRef?.current || !segments[activeIndex]?.ref?.current)
+    const updatePosition = (targetIndex = activeIndex) => {
+        if (
+            !controlRef?.current ||
+            !segments[targetIndex]?.ref?.current ||
+            !controlsRef.current
+        )
             return;
 
-        const activeSegmentRef = segments[activeIndex].ref.current;
-        const { offsetWidth, offsetLeft } = activeSegmentRef;
+        const activeSegmentRef = segments[targetIndex].ref.current;
+        const controlsElement = controlsRef.current;
+
+        if (!activeSegmentRef || !controlsElement) return;
+
+        void activeSegmentRef.offsetWidth;
+        void controlsElement.offsetWidth;
+
+        const { offsetWidth } = activeSegmentRef;
+
+        const segmentRect = activeSegmentRef.getBoundingClientRect();
+        const controlsRect = controlsElement.getBoundingClientRect();
+        const offsetLeft = segmentRect.left - controlsRect.left;
+
         const { style: cssStyle } = controlRef.current;
 
         cssStyle.setProperty('--highlight-width', `${offsetWidth}px`);
         cssStyle.setProperty('--highlight-x-pos', `${offsetLeft}px`);
+    };
+
+    updatePositionRef.current = updatePosition;
+
+    useLayoutEffect(() => {
+        updatePosition();
+    }, [activeIndex, controlRef, segments]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            requestAnimationFrame(() => {
+                updatePosition();
+            });
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
     }, [activeIndex, controlRef, segments]);
 
     const onInputChange = (val, index) => {
@@ -46,6 +83,7 @@ const SegmentButtons = ({
     return (
         <div className={s.container} ref={controlRef}>
             <div
+                ref={controlsRef}
                 className={classNames(
                     s.controls,
                     style === 2 && s.controls_2,

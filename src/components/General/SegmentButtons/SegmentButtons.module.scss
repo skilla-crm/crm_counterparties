@@ -101,8 +101,9 @@
     left: 0;
     z-index: 0;
     transition:
-        transform 0.3s ease,
-        width 0.3s ease;
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, width;
 }
 
 .controls_2::before {
@@ -118,8 +119,9 @@
     left: 0;
     z-index: 0;
     transition:
-        transform 0.3s ease,
-        width 0.3s ease;
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, width;
 }
 sup {
     color: #71869d;
