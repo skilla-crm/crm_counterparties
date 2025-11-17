@@ -1,196 +1,181 @@
 // External
-import { useNavigate, Link } from 'react-router-dom';
-import classNames from 'classnames';
+import { useNavigate, Link } from "react-router-dom";
+import classNames from "classnames";
 
 // Hooks
-import { useModal } from 'hooks/useModal';
+import { useModal } from "hooks/useModal";
 
 // Utils
-import formatNumWithSpace from 'utils/formatNumWithSpace';
+import formatNumWithSpace from "utils/formatNumWithSpace";
 
 // Components
-import CompanyLabelBadge from 'components/General/CompanyLabelBadge/CompanyLabelBadge';
-import UniButton from 'components/General/UniButton/UniButton';
-import EllipsisWithTooltip from 'components/General/EllipsisWithTooltip/EllipsisWithTooltip';
+import CompanyLabelBadge from "components/General/CompanyLabelBadge/CompanyLabelBadge";
+import UniButton from "components/General/UniButton/UniButton";
+import EllipsisWithTooltip from "components/General/EllipsisWithTooltip/EllipsisWithTooltip";
 
 // Icons
-import { ReactComponent as SmileRed } from 'assets/icons/cardFilling/redSmile.svg';
-import { ReactComponent as SmileGreen } from 'assets/icons/cardFilling/greenSmile.svg';
-import { ReactComponent as SmileYellow } from 'assets/icons/cardFilling/yellowSmile.svg';
+import { ReactComponent as SmileRed } from "assets/icons/cardFilling/redSmile.svg";
+import { ReactComponent as SmileGreen } from "assets/icons/cardFilling/greenSmile.svg";
+import { ReactComponent as SmileYellow } from "assets/icons/cardFilling/yellowSmile.svg";
 
 // Styles
-import s from './Table.module.scss';
+import s from "./Table.module.scss";
 
 const TableRow = ({ row, type }) => {
-    // const { showModal } = useModal();
+  // const { showModal } = useModal();
 
-    const {
-        employee_count,
-        status,
-        id,
-        name,
-        label,
-        inn,
-        kpp,
-        notes,
-        okved,
+  const {
+    employee_count,
+    status,
+    id,
+    name,
+    label,
+    inn,
+    kpp,
+    notes,
+    okved,
 
-        revenue,
-        share_of_partnership_revenue,
-    } = row;
+    revenue,
+    share_of_partnership_revenue,
+  } = row;
 
-    const renderApproved = () => (
-        <Link
-            to={`/details/${id}`}
-            className={classNames(s.gridRow, s.approved)}
-        >
-            <div className={classNames(s.gridCell, s.columnCell)}>
-                <div className={classNames(s.nameWrapper, s.labelBadge)}>
-                    <EllipsisWithTooltip text={name || ''} />
-                    <CompanyLabelBadge label={label || ''} />
-                </div>
-                <div className={s.inn}>
-                    {inn && inn.trim() && inn !== '0' && (
-                        <div>{`ИНН ${inn}`}</div>
-                    )}
-                    {kpp && kpp.trim() && kpp !== '0' && (
-                        <div>{`КПП ${kpp}`}</div>
-                    )}
-                </div>
-                {/* КНОПКА РИСК */}{' '}
-                {/* {Boolean(is_hidden) && ( <UniButton text="Риск" type="danger" width={44} style={{ height: '24px' }} onClick={(id) => { showModal('REMOVE_RISK_BADGE', { id }); }} /> )} */}
-            </div>
+  const renderApproved = () => (
+    <Link to={`/details/${id}`} className={classNames(s.gridRow, s.approved)}>
+      <div className={classNames(s.gridCell, s.columnCell)}>
+        <div className={classNames(s.nameWrapper, s.labelBadge)}>
+          <EllipsisWithTooltip text={name || ""} />
+          <CompanyLabelBadge label={label || ""} />
+        </div>
+        <div className={s.inn}>
+          {inn && inn.trim() && inn !== "0" && <div>{`ИНН ${inn}`}</div>}
+          {kpp && kpp.trim() && kpp !== "0" && <div>{`КПП ${kpp}`}</div>}
+        </div>
+        {/* КНОПКА РИСК */}{" "}
+        {/* {Boolean(is_hidden) && ( <UniButton text="Риск" type="danger" width={44} style={{ height: '24px' }} onClick={(id) => { showModal('REMOVE_RISK_BADGE', { id }); }} /> )} */}
+      </div>
 
-            <div className={classNames(s.gridCell)}>{okved || ''}</div>
+      <div className={classNames(s.gridCell)}>{okved || ""}</div>
 
-            <div className={classNames(s.gridCell, s.right)}>
-                {share_of_partnership_revenue || ''}
-            </div>
-            <div className={classNames(s.gridCell, s.right)}>
-                {formatNumWithSpace(revenue || '')}
-            </div>
-            <div className={classNames(s.gridCell, s.right)}>
-                {formatNumWithSpace(employee_count || '')}
-            </div>
-            <div className={classNames(s.gridCell)}>
-                {Boolean(status) && <Badge status={status} />}
-            </div>
-            <div className={classNames(s.gridCell)}>
-                <EllipsisWithTooltip text={notes || ''} />
-            </div>
-        </Link>
+      <div className={classNames(s.gridCell, s.right)}>
+        {share_of_partnership_revenue || ""}
+      </div>
+      <div className={classNames(s.gridCell, s.right)}>
+        {formatNumWithSpace(revenue || "")}
+      </div>
+      <div className={classNames(s.gridCell, s.right)}>
+        {formatNumWithSpace(employee_count || "")}
+      </div>
+      <div className={classNames(s.gridCell)}>
+        {Boolean(status) && <Badge status={status} />}
+      </div>
+      <div className={classNames(s.gridCell)}>
+        <EllipsisWithTooltip text={notes || ""} />
+      </div>
+    </Link>
+  );
+
+  const renderNotApproved = () => {
+    const { id, name, label, notes } = row;
+
+    return (
+      <Link
+        to={`/details/${id}`}
+        className={classNames(s.gridRow, s.notApproved)}
+      >
+        <div className={classNames(s.gridCell, s.labelBadge)}>
+          <div>
+            <EllipsisWithTooltip text={name || ""} />{" "}
+          </div>
+          <CompanyLabelBadge label={label || ""} />
+        </div>
+        <div className={classNames(s.gridCell, s.gray)}>
+          <EllipsisWithTooltip text={notes || ""} />{" "}
+        </div>
+      </Link>
     );
+  };
 
-    const renderNotApproved = () => {
-        const { id, name, label, notes } = row;
+  if (type === "approved") return renderApproved();
+  if (type === "notApproved") return renderNotApproved();
 
-        return (
-            <Link
-                to={`/details/${id}`}
-                className={classNames(s.gridRow, s.notApproved)}
-            >
-                <div className={classNames(s.gridCell, s.labelBadge)}>
-                    <div>
-                        <EllipsisWithTooltip text={name || ''} />{' '}
-                    </div>
-                    <CompanyLabelBadge label={label || ''} />
-                </div>
-                <div className={classNames(s.gridCell, s.gray)}>
-                    <EllipsisWithTooltip text={notes || ''} />{' '}
-                </div>
-            </Link>
-        );
-    };
-
-    if (type === 'approved') return renderApproved();
-    if (type === 'notApproved') return renderNotApproved();
-
-    return null;
+  return null;
 };
 
 export default TableRow;
 
 const CardFilling = ({ filling }) => {
-    let state;
+  let state;
 
-    if (filling >= 80) {
-        state = 1;
-    } else if (filling >= 60) {
-        state = 2;
-    } else {
-        state = 3;
-    }
+  if (filling >= 80) {
+    state = 1;
+  } else if (filling >= 60) {
+    state = 2;
+  } else {
+    state = 3;
+  }
 
-    switch (state) {
-        case 1:
-            return <SmileGreen />;
-        case 2:
-            return <SmileYellow />;
-        case 3:
-            return <SmileRed />;
-        default:
-            return null;
-    }
+  switch (state) {
+    case 1:
+      return <SmileGreen />;
+    case 2:
+      return <SmileYellow />;
+    case 3:
+      return <SmileRed />;
+    default:
+      return null;
+  }
 };
 
 const Badge = ({ status }) => {
-    switch (status) {
-        case 'ACTIVE':
-            return (
-                <div className={classNames(s.badge, s.badge_green)}>
-                    Действующий
-                </div>
-            );
-        case 'LIQUIDATING':
-            return (
-                <div className={classNames(s.badge, s.badge_yellow)}>
-                    Ликвидация
-                </div>
-            );
-        case 'REORGANIZING':
-            return (
-                <div className={classNames(s.badge, s.badge_yellow)}>
-                    Реорганизация
-                </div>
-            );
-        case 4:
-            return (
-                <div className={classNames(s.badge, s.badge_red)}>
-                    Исключен из ЕГРЮЛ
-                </div>
-            );
+  switch (status) {
+    case "ACTIVE":
+      return (
+        <div className={classNames(s.badge, s.badge_green)}>Действующий</div>
+      );
+    case "LIQUIDATING":
+      return (
+        <div className={classNames(s.badge, s.badge_yellow)}>Ликвидация</div>
+      );
+    case "REORGANIZING":
+      return (
+        <div className={classNames(s.badge, s.badge_yellow)}>Реорганизация</div>
+      );
+    case 4:
+      return (
+        <div className={classNames(s.badge, s.badge_red)}>
+          Исключен из ЕГРЮЛ
+        </div>
+      );
 
-        case 'LIQUIDATED':
-            return (
-                <div className={classNames(s.badge, s.badge_red)}>
-                    Ликвидирован
-                </div>
-            );
-        case 6:
-            return (
-                <div className={classNames(s.badge, s.badge_red)}>
-                    Прекратил деятельность
-                </div>
-            );
-        case 'BANKRUPT':
-            return (
-                <div className={classNames(s.badge, s.badge_red)}>
-                    Исключается из ЕГРЮЛ
-                </div>
-            );
-        case 7:
-            return (
-                <div className={classNames(s.badge, s.badge_red)}>
-                    Недейств. регистрация
-                </div>
-            );
-        // case 'BANKRUPT':
-        //     return (
-        //         <div className={classNames(s.badge, s.badge_red)}>
-        //             Банкротство
-        //         </div>
-        //     );
-        default:
-            return null;
-    }
+    case "LIQUIDATED":
+      return (
+        <div className={classNames(s.badge, s.badge_red)}>Ликвидирован</div>
+      );
+    case 6:
+      return (
+        <div className={classNames(s.badge, s.badge_red)}>
+          Прекратил деятельность
+        </div>
+      );
+    case "BANKRUPT":
+      return (
+        <div className={classNames(s.badge, s.badge_red)}>
+          Исключается из ЕГРЮЛ
+        </div>
+      );
+    case 7:
+      return (
+        <div className={classNames(s.badge, s.badge_red)}>
+          Недейств. регистрация
+        </div>
+      );
+    // case 'BANKRUPT':
+    //     return (
+    //         <div className={classNames(s.badge, s.badge_red)}>
+    //             Банкротство
+    //         </div>
+    //     );
+    default:
+      return null;
+  }
 };

@@ -55,14 +55,14 @@
 
   &.approved {
     grid-template-columns: minmax(350px, 1fr) // Наименование
-      minmax(60px, 60px) // Риск
+      // minmax(60px, 60px) // Риск
       minmax(140px, 140px) // Оквед
-      minmax(200px, 200px) // доля выручки
-      minmax(140px, 140px) // выручка ЕГРЮЛ
-      minmax(90px, 90px) // ССч
-      minmax(200px, 200px) // Статус ЕГРюл
-      minmax(140px, 2fr); //Примечание
-    // minmax(70px, 70px); //Карточка
+      minmax(200px, 200px) // Доля выручки
+      minmax(140px, 140px) // Выручка ЕГРЮЛ
+      minmax(100px, 100px) // ССч
+      minmax(200px, 200px) // Статус
+      minmax(200px, 1fr); // Примечание
+
     transition: all 0.15s;
     cursor: pointer;
 

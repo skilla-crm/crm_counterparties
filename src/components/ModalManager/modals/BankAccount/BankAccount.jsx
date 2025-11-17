@@ -37,8 +37,9 @@ import s from "./BankAccount.module.scss";
 const BankAccount = () => {
   const { showToast } = useToast();
   const { modalProps, hideModal } = useModal();
-  const { companyId, bankAccount = {} } = modalProps;
-  const isCreateMode = Object.keys(bankAccount).length === 0;
+  const safeModalProps = modalProps || {};
+  const { companyId, bankAccount = {} } = safeModalProps;
+  const isCreateMode = !bankAccount || Object.keys(bankAccount).length === 0;
 
   const [bik, setBik] = useState("");
   const [bank, setBank] = useState("");
@@ -61,6 +62,7 @@ const BankAccount = () => {
   );
 
   useEffect(() => {
+    if (!bankAccount) return;
     if (bankAccount.id) {
       setBank(bankAccount.bank || "");
       setBik(bankAccount.bik || "");
@@ -135,12 +137,14 @@ const BankAccount = () => {
           <Field text="БИК">
             <InputBik account={bik} setAccount={setBik} width={300} />
           </Field>
-
-          {Object.keys(dadata).length > 0 && (
-            <button onClick={handleFillByBik} className={s.fillBtn}>
-              Заполнить по БИК
-            </button>
-          )}
+          {dadata &&
+            typeof dadata === "object" &&
+            !Array.isArray(dadata) &&
+            Object.keys(dadata).length > 0 && (
+              <button onClick={handleFillByBik} className={s.fillBtn}>
+                Заполнить по БИК
+              </button>
+            )}
 
           <Field text="Банк">
             <InputText width={300} text={bank} setText={setBank} />
