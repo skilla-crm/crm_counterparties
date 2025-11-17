@@ -27,31 +27,32 @@ import s from "./Contracts.module.scss";
 const Contracts = ({ data }) => {
   return (
     <div className={s.root}>
-      <div className={s.infoTitle}></div>
-      <div className={s.objects}>
-        <div className={classNames(s.gridRow, s.header)}>
-          <div>Компания</div>
-          <div>Тип</div>
-          <div className={s.switchContainer}>Номер</div>
-          <div>Дата</div>
-          <div className={s.docCount}>Вложения</div>
-          <div>Прогресс</div>
-          <div>Обмен оригиналом</div>
-          <div></div>
-        </div>
+      {/* <div className={s.infoTitle}></div> */}
+      {data.length > 0 ? (
+        <div className={s.objects}>
+          <div className={classNames(s.gridRow, s.header)}>
+            <div>Компания</div>
+            <div>Тип</div>
+            <div className={s.switchContainer}>Номер</div>
+            <div>Дата</div>
+            <div className={s.docCount}>Вложения</div>
+            <div>Прогресс</div>
+            <div>Обмен оригиналом</div>
+            <div></div>
+          </div>
 
-        {data.length > 0 ? (
-          data.map((contract, i) => (
-            <ContractRow
-              key={contract.id}
-              contract={contract}
-              lastLines={data?.length - i < 2}
-            />
-          ))
-        ) : (
-          <div className={s.empty}>Пока не добавлен ни один договор</div>
-        )}
-      </div>
+          {data.length > 0 &&
+            data.map((contract, i) => (
+              <ContractRow
+                key={contract.id}
+                contract={contract}
+                lastLines={data?.length - i < 2}
+              />
+            ))}
+        </div>
+      ) : (
+        <div className={s.empty}>Пока не добавлен ни один договор</div>
+      )}
     </div>
   );
 };

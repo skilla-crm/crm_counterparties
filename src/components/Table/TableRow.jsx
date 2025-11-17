@@ -169,12 +169,10 @@ const Badge = ({ status }) => {
           Недейств. регистрация
         </div>
       );
-    // case 'BANKRUPT':
-    //     return (
-    //         <div className={classNames(s.badge, s.badge_red)}>
-    //             Банкротство
-    //         </div>
-    //     );
+    case "BANKRUPT":
+      return (
+        <div className={classNames(s.badge, s.badge_red)}>Банкротство</div>
+      );
     default:
       return null;
   }

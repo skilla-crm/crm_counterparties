@@ -372,10 +372,11 @@ const EmailSender = ({
           <div className={s.block}>
             <span>Прикрепленные документы</span>
             <div className={s.switches}>
-              {docs?.map((el, i) => (
+              {/* пока только один документ (основной) для выбора документов убрать slice */}
+              {docs?.slice(0, 1).map((el) => (
                 <Switch
                   text={el.name}
-                  disabled={i === 0}
+                  disabled
                   key={el.id}
                   switchState={selectedDocs.includes(el.id)}
                   handleSwitch={() => handleToggleDoc(el.id)}

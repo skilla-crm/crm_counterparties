@@ -40,6 +40,7 @@ const BankAccount = () => {
   const safeModalProps = modalProps || {};
   const { companyId, bankAccount = {} } = safeModalProps;
   const isCreateMode = !bankAccount || Object.keys(bankAccount).length === 0;
+  console.log("bankAccount", bankAccount);
 
   const [bik, setBik] = useState("");
   const [bank, setBank] = useState("");
@@ -68,7 +69,8 @@ const BankAccount = () => {
       setBik(bankAccount.bik || "");
       setKs(bankAccount.ks || "");
       setRs(bankAccount.rs || "");
-      setIsDefault(bankAccount.is_active || 0);
+
+      setIsDefault(bankAccount.is_default);
     }
   }, [bankAccount]);
 
@@ -104,7 +106,7 @@ const BankAccount = () => {
     try {
       const res = await mutation(params).unwrap();
       if (res?.success) hideModal();
-      showToast("Изменения сохранены", "success");
+      showToast(isCreateMode ? "Счет добавлен" : "Счет обновлен", "success");
     } catch {
       showToast("Произошла ошибка", "error");
     }
@@ -162,12 +164,16 @@ const BankAccount = () => {
             text="Назначить основным"
             switchState={isDefault}
             handleSwitch={() => setIsDefault((prev) => (prev === 0 ? 1 : 0))}
+            disabled={bankAccount?.is_default === 1}
           />
 
           {!isCreateMode && Boolean(bankAccount?.is_default) && (
             <div className={s.warning}>
-              <Label label="Основной счет" color="green" width={120} />
-              <Field info="Этот счет используется по умолчанию, его нельзя удалить. Чтобы назначить другой счет в качестве основного, перейди в его карточку." />
+              <Label label="Основной счет" width={120} />
+              <Field
+                info="Этот счет используется по умолчанию, его нельзя удалить. Чтобы назначить другой счет в качестве основного, перейди в его карточку."
+                width={300}
+              />
             </div>
           )}
         </div>
@@ -193,9 +199,10 @@ const BankAccount = () => {
               text="Удалить"
               onClick={handleDeleteAccount}
               type="danger"
-              icon={IconDelete}
+              icon={bankAccount?.is_default === 1 ? null : IconDelete}
               width={300}
-              disabled={isDeleting}
+              isLoading={isDeleting}
+              disabled={bankAccount.is_default === 1}
             />
           )}
         </div>

@@ -28,6 +28,12 @@ import { ReactComponent as IconDelete } from "assets/icons/iconCloseRed.svg";
 // Styles
 import s from "./DocumentsList.module.scss";
 
+const ROLES_LIST = {
+  accountant: "Бухгалтер",
+  director: "Директор",
+  operator: "Менеджер",
+};
+
 const DocumentsList = ({
   data = [],
   contractId,
@@ -199,7 +205,7 @@ const DocumentRow = ({ doc, contacts, contractId, contract }) => {
       <div>{dayjs(date_add).format("DD.MM.YYYY")}</div>
       <div className={s.personCell}>
         <div>{`${person_name || ""} ${person_surname || ""}`}</div>
-        <div className={s.grayText}>{position}</div>
+        <div className={s.grayText}>{ROLES_LIST[position]}</div>
       </div>
 
       <div

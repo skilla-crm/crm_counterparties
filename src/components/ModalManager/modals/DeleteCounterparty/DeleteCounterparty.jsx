@@ -1,6 +1,7 @@
 // External
 import { use, useEffect, useState } from "react";
 import "dayjs/locale/ru";
+import { Navigate, useNavigate } from "react-router-dom";
 
 // Hooks
 import { useModal } from "hooks/useModal";
@@ -26,11 +27,12 @@ import { ReactComponent as EyeHide } from "assets/icons/EyeHide.svg";
 
 // Styles
 import s from "./DeleteCounterparty.module.scss";
-import { set } from "lodash";
+
 import classNames from "classnames";
 
 const DeleteCounterpaty = () => {
   const { showToast } = useToast();
+  const navigate = useNavigate();
   const { modalProps, hideModal } = useModal();
   const { companyId } = modalProps;
   const [isDelete, setIsDelete] = useState(0);
@@ -46,7 +48,7 @@ const DeleteCounterpaty = () => {
 
   useEffect(() => {
     if (!checkDeleteResult) return;
-    setIsDelete(checkDeleteResult?.isDeletable === 1);
+    setIsDelete(checkDeleteResult?.data?.isDeletable === 1);
   }, [checkDeleteResult]);
 
   const handleDeleteCounterpaty = async () => {
@@ -57,6 +59,7 @@ const DeleteCounterpaty = () => {
       .then((res) => {
         if (res.success) {
           showToast("Контрагент удален", "success");
+          navigate(-1);
           hideModal();
         }
       })
@@ -72,6 +75,7 @@ const DeleteCounterpaty = () => {
       .then((res) => {
         if (res.success) {
           showToast("Контрагент скрыт", "success");
+          navigate(-1);
           hideModal();
         }
       })
@@ -94,21 +98,22 @@ const DeleteCounterpaty = () => {
           </div>
         </div>
 
-        <div className={s.content}>
-          {isDelete ? (
-            <span className={s.info}>
-              Все данные контрагента будут удалены без возможности
-              восстановления.
-            </span>
-          ) : (
-            <span className={s.info}>
-              На данного контрагента уже созданы бухгалтерские документы,
-              удаление невозможно. <br />
-              Вы можете скрыть этого контрагента из списка, при этом его
-              бухгалтерские документы и данные в отчетах останутся.
-            </span>
-          )}
-        </div>
+        {!isChecking && (
+          <div className={s.content}>
+            {isDelete ? (
+              <span className={s.info}>
+                Все данные контрагента будут удалены без возможности
+                восстановления.
+              </span>
+            ) : (
+              <span className={s.info}>
+                На данного контрагента уже созданы бухгалтерские документы,
+                удаление невозможно. <br />
+                Вы можете скрыть этого контрагента из списка...
+              </span>
+            )}
+          </div>
+        )}
 
         <div className={classNames(s.btns, !isChecking && s.btns_vis)}>
           <UniButton
@@ -124,7 +129,7 @@ const DeleteCounterpaty = () => {
             iconPosition="right"
             text={isDelete ? "Безвозвратно удалить" : "Скрыть"}
             onClick={isDelete ? handleDeleteCounterpaty : handleHideCounterpaty}
-            isLoading={isLoadingDelete}
+            isLoading={isDelete ? isLoadingDelete : isLoadingHide}
             icon={isDelete ? IconDelete : EyeHide}
             width={340}
           />

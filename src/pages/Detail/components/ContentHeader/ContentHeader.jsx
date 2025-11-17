@@ -137,7 +137,9 @@ const ContentHeader = ({ data, companyId }) => {
           {isValidValue(ogrn) && <p>{`ОГРН ${ogrn}`}</p>}
         </div>
 
-        <div className={s.description}>{okved_name}</div>
+        {Boolean(okved_name) && (
+          <div className={s.description}>{okved_name}</div>
+        )}
         {Boolean(verified_id) && (
           <div className={s.flexRow}>
             <div className={s.verified}>

@@ -29,6 +29,7 @@ import { ReactComponent as IconDelete } from "assets/icons/iconDeleteWhite.svg";
 
 // Styles
 import s from "./AddObject.module.scss";
+import Label from "components/General/Label/Label";
 
 const AddObject = () => {
   const { showToast } = useToast();
@@ -167,7 +168,17 @@ const AddObject = () => {
             text="Назначить основным"
             switchState={activity}
             handleSwitch={() => setActivity(!activity)}
+            disabled={object?.is_default}
           />
+          {!isCreateMode && Boolean(object?.is_default) && (
+            <div className={s.warning}>
+              <Label label="Основной объект" width={140} />
+              <Field
+                info="Этот объект используется по умолчанию, его нельзя удалить. Чтобы назначить другой объект в качестве основного, перейди в его карточку."
+                width={300}
+              />
+            </div>
+          )}
         </div>
         <div className={s.btns}>
           {!isCreateMode && (
@@ -197,7 +208,9 @@ const AddObject = () => {
               text={"Удалить объект"}
               onClick={handleDeleteObject}
               isLoading={isLoadingDelete}
-              icon={IconDelete}
+              width={object?.is_default ? 175 : ""}
+              icon={object?.is_default ? null : IconDelete}
+              disabled={object?.is_default}
             />
           )}
         </div>

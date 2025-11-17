@@ -120,11 +120,11 @@ const ContractHeader = ({
     useDownloadContractMutation();
   const handleDelete = async () => {
     try {
-      const res = await deleteContract(contractId).unwrap();
+      const res = await deleteContract({ contractId }).unwrap();
 
       if (res.success) {
         showToast("Договор удален", "success");
-        navigate("/details");
+        navigate(-1);
       } else {
         showToast("Не удалось удалить договор", "error");
       }
@@ -207,6 +207,8 @@ const ContractHeader = ({
             icon={IconDelete}
             width={40}
             onClick={handleDelete}
+            isLoading={isLoadingDelete}
+            loaderColor="red"
           />
           <UniButton
             text="Редактировать"
