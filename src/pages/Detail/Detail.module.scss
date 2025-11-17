@@ -6,16 +6,16 @@
 }
 
 .root {
-  opacity: 0;
+  opacity: 1;
   transition: all 0.15s ease-in-out;
   scroll-behavior: smooth;
   display: flex;
   gap: 20px;
   flex-direction: column;
 
-  &_fetch {
+ /*  &_fetch {
     opacity: 0;
-  }
+  } */
 
   &_anim {
     opacity: 1;
