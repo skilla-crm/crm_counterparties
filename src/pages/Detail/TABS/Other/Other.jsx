@@ -48,7 +48,7 @@ const Other = ({ data }) => {
         <div className={s.root}>
             <div className={s.content}>
                 <Switch
-                    text="Назначить основным"
+                    text="Заказы только по предоплате"
                     switchState={draftActivity}
                     handleSwitch={() =>
                         dispatch(setDraftActivity(!draftActivity))

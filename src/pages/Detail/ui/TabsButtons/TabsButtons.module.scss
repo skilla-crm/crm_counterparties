@@ -66,8 +66,9 @@
     z-index: 0;
     border-bottom: 2px solid #002cfb;
     width: var(--highlight-width);
-    transform: translateX(var(--highlight-x-pos));
+    transform: translate3d(var(--highlight-x-pos), 0, 0);
     transition:
-        transform 0.3s ease,
-        width 0.3s ease;
+        transform 0.2s ease,
+        width 0.2s ease;
+    will-change: transform, width;
 }

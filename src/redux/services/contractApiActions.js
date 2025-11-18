@@ -109,14 +109,14 @@ export const contractApiActions = createApi({
 
     //СКАЧИВАНИЕ ДОГОВОРА ДОКУМЕНТОМ
     downloadContract: build.mutation({
-      query: ({ contractId, queryArgs }) => ({
+      query: ({ contractId, data }) => ({
         url: `${CONTRACT_URL}/download/${contractId}`,
-        params: queryArgs,
-        method: "GET",
+        method: "POST",
+        body: data,
         responseHandler: (response) => response.blob(),
       }),
     }),
-
+    
     //СКАЧИВАНИЕ ДОКУМЕНТА ПРИЛОЖЕННОГО К ДОГОВОРУ
     downloadAttachment: build.mutation({
       query: ({ attachmentId }) => ({
@@ -126,12 +126,13 @@ export const contractApiActions = createApi({
       }),
     }),
     //УДАЛЕНИЕ ДОКУМЕНТА ПРИЛОЖЕННОГО К ДОГОВОРУ
-    deleteAttachment: build.mutation({
-      query: ({ attachmentId }) => ({
-        url: `${CONTRACT_URL}/docs/${attachmentId}`,
-        method: "DELETE",
+    downloadContract: build.mutation({
+      query: ({ contractId, data }) => ({
+        url: `${CONTRACT_URL}/download/${contractId}`,
+        method: "POST",
+        body: { ...data },
+        responseHandler: (response) => response.blob(),
       }),
-      invalidatesTags: ["contract"],
     }),
 
     //НАСТРОЙКИ

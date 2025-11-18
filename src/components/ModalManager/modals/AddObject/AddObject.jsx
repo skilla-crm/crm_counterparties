@@ -164,12 +164,12 @@ const AddObject = () => {
             />
           </Field>
 
-          <Switch
+          {Boolean(object?.is_default) === false  && <Switch
             text="Назначить основным"
             switchState={activity}
             handleSwitch={() => setActivity(!activity)}
             disabled={object?.is_default}
-          />
+          />}
           {!isCreateMode && Boolean(object?.is_default) && (
             <div className={s.warning}>
               <Label label="Основной объект" width={140} />

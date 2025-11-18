@@ -38,7 +38,11 @@ const Progress = ({ lastLines, progress }) => {
                     lastLines={lastLines}
                     open={openTooltip === 1}
                     firstString={`Создан ${dayjs(progress?.first?.date).format('DD.MM.YY в HH:mm')}`}
-                    secondString={`${progress?.first?.person?.position === 'director' ? 'Руководитель' : 'Бухгалтер'} ${progress?.first?.person?.name} ${progress?.first?.person?.surname}`}
+                    secondString={
+                        progress?.first?.person?.name || progress?.first?.person?.surname
+                            ? `${progress?.first?.person?.position === 'director' ? 'Руководитель' : 'Бухгалтер'} ${progress?.first?.person?.name || ''} ${progress?.first?.person?.surname || ''}`
+                            : ''
+                    }
                 />
             </div>
             <div
@@ -55,7 +59,11 @@ const Progress = ({ lastLines, progress }) => {
                     lastLines={lastLines}
                     open={openTooltip === 2}
                     firstString={`Отправлен на e-mail ${dayjs(progress?.second?.date).format('DD.MM.YY в HH:mm')}`}
-                    secondString={`${progress?.second?.person?.position === 'director' ? 'Руководитель' : 'Бухгалтер'} ${progress?.second?.person?.name} ${progress?.second?.person?.surname}`}
+                    secondString={
+                        progress?.second?.person?.name || progress?.second?.person?.surname
+                            ? `${progress?.second?.person?.position === 'director' ? 'Руководитель' : 'Бухгалтер'} ${progress?.second?.person?.name || ''} ${progress?.second?.person?.surname || ''}`
+                            : ''
+                    }
                 />
             </div>
             <div

@@ -38,9 +38,9 @@ const BankAccount = () => {
   const { showToast } = useToast();
   const { modalProps, hideModal } = useModal();
   const safeModalProps = modalProps || {};
-  const { companyId, bankAccount = {} } = safeModalProps;
+  const { companyId, bankAccount = {}, onSuccess } = safeModalProps;
   const isCreateMode = !bankAccount || Object.keys(bankAccount).length === 0;
-  console.log("bankAccount", bankAccount);
+
 
   const [bik, setBik] = useState("");
   const [bank, setBank] = useState("");
@@ -105,7 +105,10 @@ const BankAccount = () => {
 
     try {
       const res = await mutation(params).unwrap();
-      if (res?.success) hideModal();
+      if (res?.success) {
+        onSuccess?.();
+        hideModal();
+      }
       showToast(isCreateMode ? "Счет добавлен" : "Счет обновлен", "success");
     } catch {
       showToast("Произошла ошибка", "error");
@@ -115,6 +118,7 @@ const BankAccount = () => {
   const handleDeleteAccount = async () => {
     try {
       await deleteBankAccount({ accountId: bankAccount.id }).unwrap();
+      onSuccess?.();
       hideModal();
       showToast("Счет удален", "success");
     } catch {
@@ -160,12 +164,12 @@ const BankAccount = () => {
             <InputBankAccount account={rs} setAccount={setRs} width={300} />
           </Field>
 
-          <Switch
+          {Boolean(bankAccount?.is_default) === false && <Switch
             text="Назначить основным"
             switchState={isDefault}
             handleSwitch={() => setIsDefault((prev) => (prev === 0 ? 1 : 0))}
             disabled={bankAccount?.is_default === 1}
-          />
+          />}
 
           {!isCreateMode && Boolean(bankAccount?.is_default) && (
             <div className={s.warning}>

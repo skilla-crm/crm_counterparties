@@ -54,12 +54,18 @@ export const Contract = () => {
         { contractId: id },
         { skip: !id }
     );
+    const counterpartyIdForQuery =
+        contractData?.company_id?.toString() ||
+        locationCounterparty?.general?.company_id?.toString();
     //данные контрагента
-    const { data: counterparty, isLoading: isLoadingCounterparty } =
-        useGetCounterpartyInfoQuery(
-            { counterpartyId: contractData?.company_id?.toString() },
-            { skip: !contractData?.company_id }
-        );
+    const {
+        data: counterparty,
+        isLoading: isLoadingCounterparty,
+        refetch: refetchCounterparty,
+    } = useGetCounterpartyInfoQuery(
+        { counterpartyId: counterpartyIdForQuery },
+        { skip: !counterpartyIdForQuery }
+    );
     //данные настроек
     const { data: settings, isLoading: isLoadingSettings } =
         useGetSettingsQuery(
@@ -72,11 +78,11 @@ export const Contract = () => {
         setIsEditMode(isCreateMode);
     }, []);
 
-    const CONTACTS_MAILS = Array.isArray(counterparty?.contacts)
-        ? counterparty.contacts
-              .map((item) => item.e_mail)
+    const CONTACTS_MAILS = Array.isArray(settings?.company_contacts)
+        ? settings?.company_contacts
+              .map((item) => ({ e_mail: item.e_mail, name: `${item.name || ''} ${item.surname || ''}` }))
               .filter((email) => email)
-              .map((email) => ({ e_mail: email }))
+              .map((email) => ({ e_mail: email.e_mail, name: `${email.name || ''} ${email.surname || ''}` }))
         : [];
 
     const [createContract, { isLoading: isCreateLoading }] =
@@ -88,14 +94,41 @@ export const Contract = () => {
     //заполнение формы при создании
     useEffect(() => {
         if (contractData || !isCreateMode) return;
-        console.log('locationCounterparty', locationCounterparty);
+        if (!locationCounterparty && !locationSettings) return;
+
+        const scopedSettings = locationSettings || settings || {};
+
+        const buildNumber = () => {
+            const parts = [
+                scopedSettings?.prefix ?? '',
+                scopedSettings?.contract_num ?? '',
+            ].filter((part) => part !== '');
+
+            return parts.join('');
+        };
 
         const fields = {
-            company_id: locationCounterparty.general.company_id || '',
-            company_details_id: locationCounterparty.bank_accounts[0].id || '',
+            company_id: locationCounterparty?.general?.company_id || '',
+            company_details_id:
+                locationCounterparty?.bank_accounts?.[0]?.id || '',
+            number: buildNumber(),
+            contract_template_id: scopedSettings?.contract_templates?.[0]?.id || '',
+
         };
-        Object.entries(fields).forEach(([key, value]) => setField(key, value));
-    }, []);
+
+        Object.entries(fields).forEach(([key, value]) => {
+            if (value !== undefined) {
+                setField(key, value);
+            }
+        });
+    }, [
+        contractData,
+        isCreateMode,
+        locationCounterparty,
+        locationSettings,
+        settings,
+        setField,
+    ]);
 
     //заполнение формы при редактировании
     useEffect(() => {
@@ -120,15 +153,15 @@ export const Contract = () => {
     }, [contractData]);
 
     const handleCreateContract = async () => {
-        // if (!form.number) return showToast("Введите номер договора", "error");
-        // if (!form.company_id) return showToast("Выберите заказчика", "error");
-        // if (!form.partnership_id) return showToast("Выберите исполнителя", "error");
-        // if (!form.contract_template_id && !form.without_template)
-        //   return showToast("Выберите шаблон договора", "error");
-        // if (!form.partnership_signature_id)
-        //   return showToast("Выберите подписанта поставщика", "error");
-        // if (!form.company_signature_id)
-        //   return showToast("Выберите подписанта заказчика", "error");
+        if (!form.number) return showToast("Введите номер договора", "error");
+        if (!form.company_id) return showToast("Выберите заказчика", "error");
+        if (!form.partnership_id) return showToast("Выберите исполнителя", "error");
+        if (!form.contract_template_id && !form.without_template)
+          return showToast("Выберите шаблон договора", "error");
+        if (!form.partnership_signature_id)
+          return showToast("Выберите подписанта поставщика", "error");
+        if (!form.company_signature_id)
+          return showToast("Выберите подписанта заказчика", "error");
         try {
             const fd = getFormData();
             const res = await createContract({ data: fd }).unwrap();
@@ -170,17 +203,17 @@ export const Contract = () => {
                 handleSave={handleSaveChanges}
                 handleCreate={handleCreateContract}
                 contacts={CONTACTS_MAILS}
+                isDeletableContract={counterparty?.contracts?.length > 1 ? true : false}
             />
             <div className={s.content}>
                 <div className={s.leftCol}>
                     <ContractMainInfo
                         form={form}
                         setField={setField}
-                        counterparty={
-                            isCreateMode ? locationCounterparty : counterparty
-                        }
+                    counterparty={counterparty || locationCounterparty}
                         settings={isCreateMode ? locationSettings : settings}
                         isEditMode={isEditMode}
+                    onBankAccountChange={refetchCounterparty}
                     />
 
                     {!isCreateMode && (

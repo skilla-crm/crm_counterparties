@@ -1,5 +1,5 @@
 // External
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import classNames from 'classnames';
 
 // Styles
@@ -26,15 +26,21 @@ const TabsButtons = ({
         }
     }, [value, segments, activeIndex]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         const activeRef = segments[activeIndex]?.ref?.current;
         const container = controlRef?.current;
         if (!activeRef || !container) return;
 
-        const { offsetWidth, offsetLeft } = activeRef;
-        const style = container.style;
-        style.setProperty('--highlight-width', `${offsetWidth}px`);
-        style.setProperty('--highlight-x-pos', `${offsetLeft}px`);
+        const parent = container.querySelector(`.${s.controls}`);
+        if (!parent) return;
+
+        const { width } = activeRef.getBoundingClientRect();
+        const { left: parentLeft } = parent.getBoundingClientRect();
+        const { left } = activeRef.getBoundingClientRect();
+        const offsetX = left - parentLeft;
+
+        container.style.setProperty('--highlight-width', `${width}px`);
+        container.style.setProperty('--highlight-x-pos', `${offsetX}px`);
     }, [activeIndex, controlRef, segments]);
 
     const handleSelect = (val, index) => {
