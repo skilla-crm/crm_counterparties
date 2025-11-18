@@ -64,9 +64,9 @@ const Requisites = ({ general = {}, requisites = {} }) => {
         <div className={s.row}>
           <p>Подписант по доверенности</p>
           <div>
-            <span> {formatValue(signatory?.full_name)}</span>
-            {isValidValue(signatory?.doc_validity_period) && (
-              <p>{`действует до ${dayjs(signatory.doc_validity_period).format("DD.MM.YYYY")}`}</p>
+            <span> {signatory?.full_name || "-"}</span>
+            {Boolean(Object.keys(signatory || {}).length) && (
+              <p>{`действует до ${dayjs(signatory?.doc_validity_period).format("DD.MM.YYYY")}`}</p>
             )}
           </div>
         </div>
