@@ -151,7 +151,7 @@ const ContractHeader = ({
     try {
       const blob = await downloadContract({
         contractId,
-        data: { ...params }, // params = { sign, format, и любые другие данные }
+        data: { ...params },
       }).unwrap();
   
       const url = URL.createObjectURL(blob);
@@ -161,8 +161,7 @@ const ContractHeader = ({
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-  
-      URL.revokeObjectURL(url); // освобождаем память
+
     } catch (e) {
       showToast("Ошибка при скачивании документа", "error");
     }
@@ -170,13 +169,15 @@ const ContractHeader = ({
   
   const handlePrint = async (params) => {
     setIsPrinting(true);
+    let url = null; 
+  
     try {
       const blob = await downloadContract({
         contractId,
         data: { ...params },
       }).unwrap();
   
-      const url = URL.createObjectURL(blob);
+      url = URL.createObjectURL(blob);
       const win = window.open(url);
   
       if (win) {
@@ -191,9 +192,10 @@ const ContractHeader = ({
       showToast("Ошибка при подготовке печати", "error");
     } finally {
       setIsPrinting(false);
-      URL.revokeObjectURL(url); // освобождаем память
+      if (url) URL.revokeObjectURL(url);
     }
   };
+  
   
   
 
