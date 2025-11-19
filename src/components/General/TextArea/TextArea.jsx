@@ -1,22 +1,19 @@
-import s from './TextArea.module.scss';
+import s from "./TextArea.module.scss";
 
-const TextArea = ({ value, setValue, rows }) => {
+const TextArea = ({ value, setValue, rows, ...props }) => {
+  const handleTextValue = (e) => {
+    setValue(e.currentTarget.value);
+  };
 
-    const handleTextValue = (e) => {
-        const value = e.currentTarget.value;
-        setValue(value)
-    }
-
-    return (
-        <textarea
-            className={s.area}
-            value={value || ''}
-            onChange={handleTextValue}
-            type='text'
-            rows={rows}
-
-        ></textarea>
-    )
+  return (
+    <textarea
+      className={s.area}
+      value={value || ""}
+      onChange={handleTextValue}
+      rows={rows}
+      {...props}
+    />
+  );
 };
 
 export default TextArea;

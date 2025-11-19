@@ -10,7 +10,7 @@ const isValidValue = (value) => {
 const formatValue = (value) => (isValidValue(value) ? value : "-");
 
 const Requisites = ({ general = {}, requisites = {} }) => {
-  const { name, inn, kpp, ogrn, is_percent, date_add } = general;
+  const { name, inn, kpp, ogrn, date_add } = general;
 
   const {
     director,
@@ -20,6 +20,7 @@ const Requisites = ({ general = {}, requisites = {} }) => {
     address,
     ur_address,
     edo_id,
+    is_percent,
   } = requisites;
 
   return (

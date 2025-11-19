@@ -212,7 +212,7 @@ const Detail = () => {
           </div>
 
           <div
-            className={classNames( 
+            className={classNames(
               s.rightPannel,
 
               isVisibleRightPanel && s.rightPannel_vis

@@ -13,6 +13,7 @@ export const contractApiActions = createApi({
     baseUrl: process.env.REACT_APP_BASE_URL,
     prepareHeaders: (headers) => {
       if (token) headers.set("Authorization", token);
+      headers.set("Accept", "application/json");
       return headers;
     },
   }),
@@ -116,7 +117,7 @@ export const contractApiActions = createApi({
         responseHandler: (response) => response.blob(),
       }),
     }),
-    
+
     //СКАЧИВАНИЕ ДОКУМЕНТА ПРИЛОЖЕННОГО К ДОГОВОРУ
     downloadAttachment: build.mutation({
       query: ({ attachmentId }) => ({

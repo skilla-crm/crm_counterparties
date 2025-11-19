@@ -49,6 +49,7 @@ const ContractHeader = ({
   contractId,
   contract = {},
   contacts = [],
+  refetch,
   isDeletableContract,
 }) => {
   const parameters = [];
@@ -129,8 +130,8 @@ const ContractHeader = ({
       } else {
         showToast("Не удалось удалить договор", "error");
       }
-    } catch (e) {
-      showToast("Произошла ошибка", "error");
+    } catch (err) {
+      showToast("Ошибка при удалении договора", "error");
     }
   };
   // const handleSendEmailSuccess = () => {
@@ -260,7 +261,11 @@ const ContractHeader = ({
             text="Отменить"
             type="outline"
             icon={IconGoToBack}
-            onClick={() => setIsEditMode(false)}
+            onClick={() => {
+              refetch();
+
+              setIsEditMode(false);
+            }}
           />
 
           <UniButton

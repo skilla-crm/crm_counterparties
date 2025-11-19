@@ -32,9 +32,11 @@ import History from "./COMPONENTS/History/History";
 import s from "./Contract.module.scss";
 
 const normalizeDate = (value) => {
-  if (!value) return "";
-  if (typeof value === "string" && value.startsWith("-000001")) return "";
-  return dayjs(value).isValid() ? dayjs(value).format("YYYY-MM-DD") : "";
+  if (!value) return null;
+  if (typeof value === "string" && value.startsWith("-000001")) return null;
+
+  const d = dayjs(value);
+  return d.isValid() ? d : null;
 };
 
 export const Contract = () => {
@@ -50,7 +52,7 @@ export const Contract = () => {
   const { form, setField, getFormData } = useContractForm();
 
   //данные контракта
-  const { data: contractData } = useGetContractQuery(
+  const { data: contractData, refetch: refetchContract } = useGetContractQuery(
     { contractId: id },
     { skip: !id }
   );
@@ -114,9 +116,10 @@ export const Contract = () => {
 
     const fields = {
       company_id: locationCounterparty?.general?.company_id || "",
-      company_details_id: locationCounterparty?.bank_accounts?.[0]?.id || "",
+      company_details_id: locationCounterparty?.bank_accounts?.[0]?.id || null,
       number: buildNumber(),
-      contract_template_id: scopedSettings?.contract_templates?.[0]?.id || "",
+      // contract_template_id: scopedSettings?.contract_templates?.[0]?.id || "",
+      contract_template_id: 276,
     };
 
     Object.entries(fields).forEach(([key, value]) => {
@@ -133,37 +136,38 @@ export const Contract = () => {
     setField,
   ]);
 
-  //заполнение формы при редактировании
+  // заполнение формы при редактировании
   useEffect(() => {
     if (!contractData || isCreateMode) return;
 
     const fields = {
       company_id: contractData.company_id || "",
-      company_details_id: contractData.company_details_id || "",
+      company_details_id: contractData.company_details_id || null,
       partnership_id: contractData.partnership_id || "",
-      partnership_details_id: contractData.partnership_details_id || "",
-      contract_template_id: contractData.contract_template_id || "",
+      partnership_details_id: contractData.partnership_details_id || null,
+      // contract_template_id: contractData.contract_template_id || "",
+      contract_template_id: 276,
       without_template: contractData.without_template || 0,
       number: contractData.number || "",
       date: normalizeDate(contractData.date),
       expired_date: normalizeDate(contractData.expired_date),
-      company_signature_id: contractData.company_signature_id || "",
-      partnership_signature_id: contractData.partnership_signature_id || "",
+      company_signature_id: contractData.company_signature_id || null,
+      partnership_signature_id: contractData.partnership_signature_id || null,
       // label: data.label || "",
     };
     Object.entries(fields).forEach(([key, value]) => setField(key, value));
   }, [contractData]);
 
   const handleCreateContract = async () => {
-    if (!form.number) return showToast("Введите номер договора", "error");
-    if (!form.company_id) return showToast("Выберите заказчика", "error");
-    if (!form.partnership_id) return showToast("Выберите исполнителя", "error");
-    if (!form.contract_template_id && !form.without_template)
-      return showToast("Выберите шаблон договора", "error");
-    if (!form.partnership_signature_id)
-      return showToast("Выберите подписанта поставщика", "error");
-    if (!form.company_signature_id)
-      return showToast("Выберите подписанта заказчика", "error");
+    // if (!form.number) return showToast("Введите номер договора", "error");
+    // if (!form.company_id) return showToast("Выберите заказчика", "error");
+    // if (!form.partnership_id) return showToast("Выберите исполнителя", "error");
+    // if (!form.contract_template_id && !form.without_template)
+    //   return showToast("Выберите шаблон договора", "error");
+    // if (!form.partnership_signature_id)
+    //   return showToast("Выберите подписанта поставщика", "error");
+    // if (!form.company_signature_id)
+    //   return showToast("Выберите подписанта заказчика", "error");
     try {
       const fd = getFormData();
       const res = await createContract({ data: fd }).unwrap();
@@ -180,6 +184,10 @@ export const Contract = () => {
     try {
       const fd = getFormData();
 
+      for (let key in fd) {
+        console.log(key, fd[key]);
+      }
+
       const res = await updateContract({
         data: fd,
         contractId: id,
@@ -195,6 +203,7 @@ export const Contract = () => {
   return (
     <div className={s.root}>
       <ContractHeader
+        // refetch={refetchCounterparty}
         settings={isCreateMode ? locationSettings : settings}
         isLoading={isCreateLoading || isUpdateLoading}
         contract={contractData}
