@@ -49,7 +49,7 @@ const ContractHeader = ({
   contractId,
   contract = {},
   contacts = [],
-  isDeletableContract
+  isDeletableContract,
 }) => {
   const parameters = [];
   const [isPrinting, setIsPrinting] = useState(false);
@@ -146,14 +146,13 @@ const ContractHeader = ({
   //     }, 200);
   // };
 
-  
   const handleDownload = async (params) => {
     try {
       const blob = await downloadContract({
         contractId,
         data: { ...params },
       }).unwrap();
-  
+
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -161,25 +160,24 @@ const ContractHeader = ({
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
     } catch (e) {
       showToast("Ошибка при скачивании документа", "error");
     }
   };
-  
+
   const handlePrint = async (params) => {
     setIsPrinting(true);
-    let url = null; 
-  
+    let url = null;
+
     try {
       const blob = await downloadContract({
         contractId,
         data: { ...params },
       }).unwrap();
-  
+
       url = URL.createObjectURL(blob);
       const win = window.open(url);
-  
+
       if (win) {
         win.onload = () => {
           win.focus();
@@ -195,9 +193,6 @@ const ContractHeader = ({
       if (url) URL.revokeObjectURL(url);
     }
   };
-  
-  
-  
 
   const handleGoBack = () => {
     navigate(-1);
@@ -220,10 +215,10 @@ const ContractHeader = ({
         <div className={s.headerButtons}>
           {isDeletableContract && (
             <UniButton
-              text="Удалить"
-              type="outline"
+              type="danger"
               icon={IconDelete}
               onClick={handleDelete}
+              width={40}
             />
           )}
           <UniButton
@@ -310,8 +305,7 @@ const ContractHeader = ({
           ...(Array.isArray(contract?.docs) ? contract.docs : []),
         ]}
         theme={`Договор №${contract.number} от ${dayjs(contract.date).format("DD.MM.YYYY")}`}
-        text={settings?.contract_mail_template?.value || ''
-        }
+        text={settings?.contract_mail_template?.value || ""}
         formats={[
           { id: 1, name: "PDF с печатью" },
           { id: 2, name: "Word с печатью" },
