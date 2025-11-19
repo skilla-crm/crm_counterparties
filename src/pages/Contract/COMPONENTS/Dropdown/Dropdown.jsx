@@ -6,7 +6,15 @@ import { ReactComponent as IconChevron } from 'assets/icons/iconChewron.svg';
 
 // styles
 import s from './Dropdown.module.scss';
-import EllipsisWithTooltip from 'components/General/EllipsisWithTooltip/EllipsisWithTooltip';
+
+
+const isValidField = (field) => {
+    if (field === null || field === undefined) {
+        return false;
+    }
+    const stringValue = String(field).trim();
+    return stringValue !== '' && stringValue !== '0';
+};
 
 const Dropdown = ({
     sub = '',
@@ -23,9 +31,10 @@ const Dropdown = ({
     const wrapperRef = useRef(null);
 
     const hasOptions = options.length > 0;
+    const hasMultipleOptions = options.length > 1;
 
     const toggleDropdown = () => {
-        if (disabled) return;
+        if (disabled || !hasMultipleOptions) return;
         if (hasOptions) setIsOpen((prev) => !prev);
     };
 
@@ -49,18 +58,34 @@ const Dropdown = ({
     const wrapperStyle =
         width && typeof width === 'number' ? { width: `${width}px` } : {};
 
+    const formatInnKpp = (inn, kpp) => {
+        const parts = [];
+        if (isValidField(inn)) {
+            parts.push(`ИНН ${inn}`);
+        }
+        if (isValidField(kpp)) {
+            parts.push(`КПП ${kpp}`);
+        }
+        return parts.join(' ');
+    };
+
     // Отображение выбранного значения
     const renderValue = () => {
         if (!value) return placeholder;
+        if (disabled && placeholder && !isValidField(value?.id ?? value)) {
+            return placeholder;
+        }
 
         switch (type) {
             case 'company':
                 return (
                     <div className={s.optionCompany}>
                         <div className={s.companyName}>{value.name ?? ''}</div>
-                        <div
-                            className={s.companyDetails}
-                        >{`ИНН${value.inn ?? ''} КПП${value.kpp ?? ''}`}</div>
+                        {formatInnKpp(value?.inn, value?.kpp) && (
+                            <div className={s.companyDetails}>
+                                {formatInnKpp(value?.inn, value?.kpp)}
+                            </div>
+                        )}
                     </div>
                 );
             case 'account':
@@ -101,9 +126,11 @@ const Dropdown = ({
                                 <div className={s.companyName}>
                                     {option.name ?? ''}
                                 </div>
-                                <div
-                                    className={s.companyDetails}
-                                >{`ИНН${option.inn ?? ''} КПП${option.kpp ?? ''}`}</div>
+                                {formatInnKpp(option?.inn, option?.kpp) && (
+                                    <div className={s.companyDetails}>
+                                        {formatInnKpp(option?.inn, option?.kpp)}
+                                    </div>
+                                )}
                             </div>
                         );
                         break;
@@ -165,7 +192,7 @@ const Dropdown = ({
             >
                 {renderValue()}
 
-                {!disabled && hasOptions && (
+                {!disabled && hasMultipleOptions && (
                     <IconChevron
                         className={classNames(
                             s.chevron,

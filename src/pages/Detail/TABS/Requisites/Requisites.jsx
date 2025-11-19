@@ -1,6 +1,14 @@
 import dayjs from "dayjs";
 import s from "./Requisites.module.scss";
 
+const isValidValue = (value) => {
+  if (value === null || value === undefined) return false;
+  const strValue = String(value).trim();
+  return strValue !== "" && strValue !== "0";
+};
+
+const formatValue = (value) => (isValidValue(value) ? value : "-");
+
 const Requisites = ({ general = {}, requisites = {} }) => {
   const { name, inn, kpp, ogrn, is_percent, date_add } = general;
 
@@ -10,7 +18,7 @@ const Requisites = ({ general = {}, requisites = {} }) => {
     director_rod,
     signatory,
     address,
-    address_ur,
+    ur_address,
     edo_id,
   } = requisites;
 
@@ -19,44 +27,44 @@ const Requisites = ({ general = {}, requisites = {} }) => {
       <div className={s.gridContainer}>
         <div className={s.row}>
           <p>Наименование</p>
-          <div>{name || "-"}</div>
+          <div>{formatValue(name)}</div>
         </div>
 
         <div className={s.row}>
           <p>ИНН</p>
-          <div>{inn || "-"}</div>
+          <div>{formatValue(inn)}</div>
         </div>
 
         <div className={s.row}>
           <p>КПП</p>
-          <div>{kpp || "-"}</div>
+          <div>{formatValue(kpp)}</div>
         </div>
 
         <div className={s.row}>
           <p>ОГРН</p>
-          <div>{ogrn || "-"}</div>
+          <div>{formatValue(ogrn)}</div>
         </div>
 
         <div className={s.row}>
           <p>ФИО лица, действ. без доверенности</p>
-          <div>{director || "-"}</div>
+          <div>{formatValue(director)}</div>
         </div>
 
         <div className={s.row}>
           <p>Должность</p>
-          <div>{director_position || "-"}</div>
+          <div>{formatValue(director_position)}</div>
         </div>
 
         <div className={s.row}>
           <p>Действует на основании</p>
-          <div>{director_rod || "-"}</div>
+          <div>{formatValue(director_rod)}</div>
         </div>
 
         <div className={s.row}>
           <p>Подписант по доверенности</p>
           <div>
-            <span> {signatory?.full_name || "-"}</span>
-            {signatory?.doc_validity_period && (
+            <span> {formatValue(signatory?.full_name)}</span>
+            {isValidValue(signatory?.doc_validity_period) && (
               <p>{`действует до ${dayjs(signatory.doc_validity_period).format("DD.MM.YYYY")}`}</p>
             )}
           </div>
@@ -64,22 +72,22 @@ const Requisites = ({ general = {}, requisites = {} }) => {
 
         <div className={s.row}>
           <p>Юр. адрес</p>
-          <div>{address_ur || "-"}</div>
+          <div>{formatValue(ur_address)}</div>
         </div>
 
         <div className={s.row}>
           <p>Факт. адрес</p>
-          <div>{address || "-"}</div>
+          <div>{formatValue(address)}</div>
         </div>
 
         <div className={s.row}>
           <p>Идентификатор ЭДО</p>
-          <div>{edo_id || "-"}</div>
+          <div>{formatValue(edo_id)}</div>
         </div>
 
         <div className={s.row}>
           <p>Процент</p>
-          <div>{is_percent || "-"}</div>
+          <div>{formatValue(is_percent)}</div>
         </div>
 
         <div className={s.row}>

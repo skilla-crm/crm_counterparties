@@ -76,6 +76,12 @@ const EmailSender = ({
   }, [text]);
 
   useEffect(() => {
+    if (formats?.length) {
+      setFormatDoc(formats[0].id);
+    }
+  }, [formats]);
+
+  useEffect(() => {
     const result = contacts
       ?.filter((el) => el.e_mail.trim() !== "")
       .map((item) => {
@@ -110,21 +116,61 @@ const EmailSender = ({
       return [...prev, id];
     });
   };
-  const handleSendEmail = async () => {
-    const { format, sign } = formatMap[formatDoc] || {
-      format: "docx",
-      sign: 0,
+  const resolveFormatSelection = () => {
+    const fallback = formatMap[formatDoc] || { format: "docx", sign: 0 };
+    const selectedFormat = formats?.find(
+      (item) => String(item?.id) === String(formatDoc)
+    );
+
+    if (!selectedFormat) {
+      return fallback;
+    }
+
+    const name = selectedFormat?.name?.toLowerCase();
+    const derivedFormatFromName = name?.includes("pdf")
+      ? "pdf"
+      : name?.includes("word") || name?.includes("doc")
+      ? "docx"
+      : undefined;
+
+    const resolvedFormat =
+      selectedFormat?.format ||
+      selectedFormat?.value ||
+      derivedFormatFromName ||
+      fallback.format;
+
+    const resolvedSign =
+      typeof selectedFormat?.sign === "number"
+        ? selectedFormat.sign
+        : fallback.sign;
+
+    return {
+      format: resolvedFormat,
+      sign: resolvedSign,
     };
+  };
+
+  const handleSendEmail = async () => {
+    const { format, sign } = resolveFormatSelection();
+
+    const baseEmails = emails
+      .map((el) => el.e_mail || el.email)
+      .filter((email) => Boolean(email));
+
+    const finalEmails =
+      sendCopy && partnerEmail
+        ? Array.from(new Set([...baseEmails, partnerEmail]))
+        : baseEmails;
 
     const dataForSend = {
-      emails: emails.map((el) => el.e_mail),
+      emails: finalEmails,
       // sendCopy: sendCopy ? 1 : 0,
       format,
       sign,
       text: textValue,
       subject: themeValue,
       contract_id: Number(id),
-      doc_id: selectedDocs,
+      // doc_id: selectedDocs,
     };
 
     try {
@@ -144,7 +190,9 @@ const EmailSender = ({
   };
 
   const handleUniqEmail = (email) => {
-    const result = emails?.find((el) => el.email === email);
+    const result = emails?.find(
+      (el) => el.e_mail === email || el.email === email
+    );
 
     if (result) {
       return false;
@@ -170,8 +218,9 @@ const EmailSender = ({
         setEmails((prevState) => [
           ...prevState,
           {
-            email: email,
+            e_mail: email,
             name: existingEmail ? existingEmail?.name : "",
+            surname: existingEmail ? existingEmail?.surname : "",
           },
         ]);
         setEmailValue("");
@@ -243,7 +292,11 @@ const EmailSender = ({
     uniq &&
       setEmails((prevState) => [
         ...prevState,
-        { e_mail: el?.e_mail, name: `${el.name} ${el.surname}` },
+        {
+          e_mail: el?.e_mail,
+          name: el?.name || "",
+          surname: el?.surname || "",
+        },
       ]);
   };
 
@@ -297,7 +350,7 @@ const EmailSender = ({
               {emails?.map((el, i) => {
                 return (
                   <Email
-                    key={el.email}
+                    key={el.e_mail || el.email || i}
                     el={el}
                     emails={emails}
                     setEmails={setEmails}
@@ -394,12 +447,14 @@ const EmailSender = ({
             />
           </div>
 
-          <Switch
-            text={`Копию письма отправить на почту компании ${partnerEmail}`}
-            switchState={sendCopy}
-            handleSwitch={handleSendCopy}
-            disabled={false}
-          />
+          {partnerEmail && (
+            <Switch
+              text={`Копию письма отправить на почту компании ${partnerEmail}`}
+              switchState={sendCopy}
+              handleSwitch={handleSendCopy}
+              disabled={false}
+            />
+          ) }
         </div>
 
         <div className={s.buttons}>
@@ -442,7 +497,9 @@ const Email = ({ el, emails, setEmails }) => {
 
   const handleDeleteEmail = (e) => {
     const id = e.currentTarget.id;
-    const result = emails.filter((el) => el.e_mail !== id);
+    const result = emails.filter(
+      (item) => item.e_mail !== id && item.email !== id
+    );
     /*    setHidden(true); */
     setTimeout(() => {
       setEmails(result);
@@ -451,14 +508,14 @@ const Email = ({ el, emails, setEmails }) => {
 
   return (
     <div
-      id={el.e_mail}
+      id={el.e_mail || el.email}
       className={classNames(
         s.item,
         anim && s.item_anim,
         hidden && s.item_hidden
       )}
     >
-      <span>{el.e_mail}</span>
+      <span>{el.e_mail || el.email}</span>
       {el.name && <p>{el.name}</p>}
       <IconCloseS id={el.e_mail} onClick={handleDeleteEmail} />
     </div>

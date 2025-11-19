@@ -49,6 +49,7 @@ const ContractHeader = ({
   contractId,
   contract = {},
   contacts = [],
+  isDeletableContract,
 }) => {
   const parameters = [];
   const [isPrinting, setIsPrinting] = useState(false);
@@ -144,43 +145,53 @@ const ContractHeader = ({
   //         });
   //     }, 200);
   // };
-  const handlePrint = async (params) => {
+
+  const handleDownload = async (params) => {
     try {
-      setIsPrinting(true);
       const blob = await downloadContract({
-        queryArgs: { ...params, contract_id: contractId },
-        contractId: contractId,
+        contractId,
+        data: { ...params },
       }).unwrap();
-      const url = window.URL.createObjectURL(blob);
 
-      const printWindow = window.open(url);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `Договор №${contract.number} от ${dayjs(contract.date).format("DD.MM.YYYY")}.${params.format}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (e) {
+      showToast("Ошибка при скачивании документа", "error");
+    }
+  };
 
-      printWindow.onload = () => {
-        printWindow.focus();
-        printWindow.print();
-      };
+  const handlePrint = async (params) => {
+    setIsPrinting(true);
+    let url = null;
+
+    try {
+      const blob = await downloadContract({
+        contractId,
+        data: { ...params },
+      }).unwrap();
+
+      url = URL.createObjectURL(blob);
+      const win = window.open(url);
+
+      if (win) {
+        win.onload = () => {
+          win.focus();
+          win.print();
+        };
+      } else {
+        showToast("Разрешите всплывающие окна", "error");
+      }
     } catch (e) {
       showToast("Ошибка при подготовке печати", "error");
     } finally {
       setIsPrinting(false);
+      if (url) URL.revokeObjectURL(url);
     }
-  };
-  const handleDownload = async (params) => {
-    const data = await downloadContract({
-      data: params,
-      contractId: contractId,
-    }).unwrap();
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(data);
-    link.setAttribute(
-      "download",
-      `Договор №${contract.number} от ${dayjs(contract.date).format("DD.MM.YYYY")}.${
-        params.format
-      }`
-    );
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   const handleGoBack = () => {
@@ -202,14 +213,14 @@ const ContractHeader = ({
       {/* КНОПКИ В РЕЖИМE ПРОСМОТРА  */}
       {!isEditMode && !isCreateMode && (
         <div className={s.headerButtons}>
-          <UniButton
-            type="danger"
-            icon={IconDelete}
-            width={40}
-            onClick={handleDelete}
-            isLoading={isLoadingDelete}
-            loaderColor="red"
-          />
+          {isDeletableContract && (
+            <UniButton
+              type="danger"
+              icon={IconDelete}
+              onClick={handleDelete}
+              width={40}
+            />
+          )}
           <UniButton
             text="Редактировать"
             type="outline"
@@ -294,12 +305,12 @@ const ContractHeader = ({
           ...(Array.isArray(contract?.docs) ? contract.docs : []),
         ]}
         theme={`Договор №${contract.number} от ${dayjs(contract.date).format("DD.MM.YYYY")}`}
-        // text={parameters?.act_message}
+        text={settings?.contract_mail_template?.value || ""}
         formats={[
           { id: 1, name: "PDF с печатью" },
           { id: 2, name: "Word с печатью" },
         ]}
-        partnerEmail={"go@skilla.ru"}
+        partnerEmail={settings?.partnership_email}
         handleSendEmailSuccess={() =>
           showToast("Сообщение отправлено", "success")
         }

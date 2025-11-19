@@ -1,3 +1,11 @@
+import { useEffect, useState } from 'react';
+
+//icons
+import { ReactComponent as IconPlusBlue } from "assets/icons/iconPlusBlue.svg";
+
+//hooks
+import { useModal } from 'hooks/useModal';
+
 //components
 import InputData from 'components/General/InputData/InputData';
 import Dropdown from './Dropdown/Dropdown';
@@ -7,6 +15,8 @@ import InputText from 'components/General/InputText/InputText';
 import InputNum from 'components/General/InputNum/InputNum';
 //styles
 import s from './ContractMainInfo.module.scss';
+import UniButton from 'components/General/UniButton/UniButton';
+
 
 const ContractMainInfo = ({
     form,
@@ -14,9 +24,19 @@ const ContractMainInfo = ({
     counterparty,
     settings,
     isEditMode,
+    onBankAccountChange = () => {},
 }) => {
-    const { partnerships = [], contract_templates = [] } = settings || {};
 
+    const {showModal } = useModal()
+    const { partnerships = [], contract_templates = [] } = settings || {};
+    const [withoutExpiredDate, setWithoutExpiredDate] = useState(false);
+
+
+    useEffect(() => {
+        setWithoutExpiredDate(form.expired_date === '');
+    }, [form.expired_date]);
+
+    
     //заказчик
     const company = {
         id: counterparty?.general?.company_id,
@@ -28,17 +48,11 @@ const ContractMainInfo = ({
     const companyAccounts = counterparty?.bank_accounts || [];
 
     //подписанты заказчика
-    const companySignPersons = counterparty?.requisites?.signatory
-        ? [
-              {
-                  id: counterparty.requisites.signatory.id,
-                  name: counterparty.requisites.signatory.full_name,
-              },
-          ]
-        : [];
-
-    //подписанты поставщика
-    const partnershipSignPersons = counterparty?.contacts || [];
+    const companySignPersons = settings?.company_signatories?.map((item) => ({
+        id: item.id,
+        name: item.name,
+    })) || [];
+       
     //список поставщиков
     const notArchivedPartnerships =
         (partnerships || []).filter((p) => p.is_archive !== 1) || [];
@@ -49,6 +63,23 @@ const ContractMainInfo = ({
         ) || [];
     //счета выбранного поставщика
     const partnershipAccounts = selectedPartnership?.details || [];
+    //подписанты выбранногопоставщика
+       
+    const partnershipSignPersons = selectedPartnership?.signatories?.map((item) => ({
+            id: item.id,
+            name: item.name,
+        })) || [];
+
+
+    const handleOpenAddAccount = () => {
+        if (!counterparty?.general?.company_id) return;
+        showModal('BANK_ACCOUNT', {
+            companyId: counterparty.general.company_id,
+            onSuccess: () => {
+                onBankAccountChange?.();
+            },
+        });
+    };
 
     return (
         <div className={s.mainInfo}>
@@ -62,17 +93,18 @@ const ContractMainInfo = ({
                     //   options={settings.partnerships}
                     disabled={true}
                 />
-                <Dropdown
+               {counterparty?.bank_accounts.length !== 0 ? <Dropdown
                     sub="Счет заказчика"
                     width={312}
                     value={(counterparty?.bank_accounts || []).find(
-                        (a) => a.id === form.company_details_id
+                        (a) => a.id === form.company_details_id || counterparty?.bank_accounts[0]  ||
+                        null
                     )}
                     onChange={(v) => setField('company_details_id', v?.id)}
                     disabled={!isEditMode}
                     options={companyAccounts}
                     type="account"
-                />
+                /> : <UniButton onClick={handleOpenAddAccount}           width={312} type= 'outline' text='Добавить банковский счет' iconPosition='left' icon={IconPlusBlue}/>}
             </div>
             <div className={s.row}>
                 <Dropdown
@@ -87,7 +119,8 @@ const ContractMainInfo = ({
                     sub="Счет поставщика"
                     width={312}
                     value={partnershipAccounts.find(
-                        (a) => a.id === form.partnership_details_id
+                        (a) => a.id === form.partnership_details_id || partnershipAccounts[0]  ||
+                        null
                     )}
                     onChange={(v) => setField('partnership_details_id', v?.id)}
                     disabled={!isEditMode}
@@ -131,20 +164,7 @@ const ContractMainInfo = ({
                         setText={(v) => setField('number', v)}
                     />
                 </Field>
-                <InputData
-                    sub={'Дата'}
-                    nosub={true}
-                    setDate={(v) => setField('date', v)}
-                    date={form.date}
-                    disabled={!isEditMode}
-                />
-                <InputData
-                    sub={'Срок действия'}
-                    nosub={true}
-                    setDate={(v) => setField('expired_date', v)}
-                    date={form.expired_date}
-                    disabled={!isEditMode}
-                />
+               
                 <Field
                     width={300}
                     text="Лимит по сумме"
@@ -157,28 +177,62 @@ const ContractMainInfo = ({
                         disabled={!isEditMode}
                     />
                 </Field>
+                <InputData
+                    sub={'Дата'}
+                    nosub={true}
+                    setDate={(v) => setField('date', v)}
+                    date={form.date}
+                    disabled={!isEditMode}
+                />
+                <InputData
+                    sub={'Срок действия'}
+                    nosub={true}
+                    setDate={(v) => setField('expired_date', v)}
+                    date={!withoutExpiredDate ? form.expired_date : null}
+                    disabled={!isEditMode || withoutExpiredDate}
+                />
+                <div className={s.switch}>
+                    <Switch
+                        text="Без срока действия"
+                        switchState={withoutExpiredDate}
+                        setSwitchState={() => {
+                            if (!isEditMode) {
+                                return;
+                            }
+                            const nextValue = !withoutExpiredDate;
+                            setWithoutExpiredDate(nextValue);
+                            if (nextValue) {
+                                setField('expired_date', '');
+                            }
+                        }}
+                        disabled={!isEditMode}
+                    />
+                </div>
             </div>
             <Dropdown
                 sub="Подписант заказчика"
                 width={500}
-                disabled={!isEditMode}
+                disabled={!isEditMode || companySignPersons.length === 0}
                 type="person"
                 value={companySignPersons.find(
                     (p) => p.id === form.company_signature_id
                 )}
                 onChange={(v) => setField('company_signature_id', v?.id)}
                 options={companySignPersons}
+                placeholder={companySignPersons.length === 0 ? 'Не указан. Добавь подписанта в настройках компании' : ''}
+                
             />{' '}
             <Dropdown
                 sub="Подписант поставщика"
                 width={500}
-                disabled={!isEditMode}
+                disabled={!isEditMode || partnershipSignPersons.length === 0}
                 type="person"
                 value={partnershipSignPersons.find(
                     (p) => p.id === form.partnership_signature_id
                 )}
                 onChange={(v) => setField('partnership_signature_id', v?.id)}
                 options={partnershipSignPersons}
+                placeholder={partnershipSignPersons.length === 0 ? 'Не указан. Добавь подписанта в реквизитах контрагента' : ''}
             />{' '}
         </div>
     );

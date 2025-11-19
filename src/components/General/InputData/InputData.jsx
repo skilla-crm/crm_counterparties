@@ -19,8 +19,12 @@ const InputData = ({ sub, nosub, setDate, date, disabled }) => {
     }, [date]);
 
     const handleDateStandart = () => {
+        if (!date || !dayjs(date).isValid()) {
+            setDateVis('');
+            return;
+        }
         const dateFormat = dayjs(date).format('DD.MM.YYYY');
-        dayjs(date).isValid() && setDateVis(dateFormat);
+        setDateVis(dateFormat);
     };
 
     const handleDateValue = (e) => {
@@ -71,7 +75,7 @@ const InputData = ({ sub, nosub, setDate, date, disabled }) => {
             {<span className={s.sub}>{sub}</span>}
             <div
                 ref={fieldRef}
-                onClick={handleOpenCalendar}
+                onClick={!disabled ? handleOpenCalendar : undefined}
                 className={`${s.field} ${s.field_data} ${fieldFocus && s.field_focus} ${disabled && s.field_disabled}`}
             >
                 <input
@@ -82,6 +86,7 @@ const InputData = ({ sub, nosub, setDate, date, disabled }) => {
                     onChange={handleDateValue}
                     value={dateVis || ''}
                     placeholder="дд.мм.гггг"
+                    disabled={disabled}
                 ></input>
                 <IconCalendar />
             </div>

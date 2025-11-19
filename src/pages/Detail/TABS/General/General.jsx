@@ -29,6 +29,16 @@ import { ReactComponent as IconInfo } from 'assets/icons/iconInfo.svg';
 // Styles
 import s from './General.module.scss';
 
+const hasValue = (value) => {
+    if (value === null || value === undefined) {
+        return false;
+    }
+    return String(value).trim() !== '' && String(value).trim() !== '0';
+};
+
+const formatText = (...values) =>
+    values.filter((value) => hasValue(value)).join(' ').trim();
+
 const General = ({ data = {} }) => {
     const { showToast } = useToast();
     const {
@@ -59,17 +69,17 @@ const General = ({ data = {} }) => {
     const [switchCounterpartyHidden] = useSwitchCounterpartyHiddenMutation();
 
     useEffect(() => {
-        setComment(notes);
+        setComment(notes ?? '');
     }, [notes]);
 
     useEffect(() => {
-        setIiHidden(is_hidden);
+        setIiHidden(Boolean(is_hidden));
     }, [is_hidden]);
     useEffect(() => {
-        setIsBlack(is_black);
+        setIsBlack(Boolean(is_black));
     }, [is_black]);
     useEffect(() => {
-        setIsStatisticHidden(statistic_hidden);
+        setIsStatisticHidden(Boolean(statistic_hidden));
     }, [statistic_hidden]);
 
     const handleSwitchIsHidden = () => {
@@ -135,15 +145,15 @@ const General = ({ data = {} }) => {
                 </div>
                 <div className={s.row}>
                     <p>ОКВЭД</p>
-                    {Boolean(okved) ? (
-                        <div>{`${okved} ${okved_name}`}</div>
+                    {hasValue(okved) ? (
+                        <div>{formatText(okved, okved_name)}</div>
                     ) : (
                         <Unknown />
                     )}
                 </div>
                 <div className={s.row}>
                     <p>Выручка за пред. год</p>
-                    {Boolean(revenue) ? (
+                    {hasValue(revenue) ? (
                         <div>{`${formatNumWithSpace(revenue)}`}</div>
                     ) : (
                         <Unknown />
@@ -151,7 +161,7 @@ const General = ({ data = {} }) => {
                 </div>
                 <div className={s.row}>
                     <p>Среднесписочная численность</p>
-                    {Boolean(employee_count) ? (
+                    {hasValue(employee_count) ? (
                         <div>{`${formatNumWithSpace(employee_count)} чел.`}</div>
                     ) : (
                         <Unknown />
@@ -159,7 +169,7 @@ const General = ({ data = {} }) => {
                 </div>
                 <div className={s.row}>
                     <p>Сайт</p>
-                    {Boolean(site) ? <div>{site}</div> : <Unknown />}
+                    {hasValue(site) ? <div>{site}</div> : <Unknown />}
                 </div>
                 <div className={s.row}>
                     <p>Комментарий</p>
@@ -210,8 +220,11 @@ const General = ({ data = {} }) => {
                 </div>
                 <div className={s.row}>
                     <p>Добавлен</p>
-                    {date_add ? (
-                        <p>{`${dayjs(date_add).format('DD.MM.YYYY')} ${person_add.name} ${person_add.surname}`}</p>
+                    {hasValue(date_add) ? (
+                        <p>{`${dayjs(date_add).format('DD.MM.YYYY')} ${formatText(
+                            person_add?.name,
+                            person_add?.surname
+                        )}`}</p>
                     ) : (
                         <Unknown />
                     )}
