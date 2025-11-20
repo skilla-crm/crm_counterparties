@@ -43,6 +43,7 @@ const DocumentsList = ({
     contract,
     docTypes = [],
     contacts = [],
+    settings,
 }) => {
     const { showModal } = useModal();
 
@@ -67,7 +68,7 @@ const DocumentsList = ({
                     onClick={handleOpenUploadMoadal}
                 />
             </div>
-            {(isCreateMode ? form.documents : data).length > 0 && (
+            {(isCreateMode ? form.docs : data).length > 0 && (
                 <div className={s.objects}>
                     <div className={classNames(s.gridRow, s.tableHeader)}>
                         <div>Название</div>
@@ -85,6 +86,10 @@ const DocumentsList = ({
                                 contacts={contacts}
                                 contractId={contractId}
                                 contract={contract}
+                                settings={settings}
+                                form={form}
+                                setField={setField}
+                                isCreateMode={isCreateMode}
                             />
                         ))
                     ) : (
@@ -107,6 +112,7 @@ const DocumentRow = ({
     form,
     setField,
     isCreateMode,
+    settings,
 }) => {
     const { showModal } = useModal();
     const { showToast } = useToast();
@@ -187,7 +193,10 @@ const DocumentRow = ({
             showToast('Ошибка при подготовке печати', 'error');
         }
     };
-
+    const handleDeleteFromform = () => {
+        const newDocs = form.docs.filter((doc) => doc.name !== name);
+        setField('docs', newDocs);
+    };
     const handleDelete = () => {
         showModal('DELETE_DOC_FROM_CONTRACT', { id });
     };
@@ -213,6 +222,28 @@ const DocumentRow = ({
             icon: <IconDelete />,
         },
     ];
+    const createOperation = [
+        {
+            label: 'Удалить',
+            handler: () => handleDeleteFromform(),
+            icon: <IconDelete />,
+        },
+    ];
+
+    if (isCreateMode) {
+        return (
+            <div className={classNames(s.gridRow)} onClick={hadleOpenContract}>
+                <div className={s.flexCell}>
+                    <EllipsisWithTooltip text={name} />
+                </div>
+                <div className={s.flexCell}>{type}</div>
+
+                <div className={s.optionsBtn} onClick={handleOpenOptions}>
+                    <IconKebab />
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={classNames(s.gridRow)} onClick={hadleOpenContract}>
@@ -235,35 +266,38 @@ const DocumentRow = ({
                 <IconKebab />
                 {openMenu && (
                     <div className={s.dropDownMenu}>
-                        {operations.map((operation) => (
-                            <div
-                                key={operation.label}
-                                className={classNames(
-                                    s.dropDownItem,
-                                    operation.label === 'Удалить' && s.delete
-                                )}
-                                onClick={operation.handler}
-                            >
-                                {operation.icon}
-                                {operation.label}
-                            </div>
-                        ))}
+                        {(isCreateMode ? createOperation : operations).map(
+                            (operation) => (
+                                <div
+                                    key={operation.label}
+                                    className={classNames(
+                                        s.dropDownItem,
+                                        operation.label === 'Удалить' &&
+                                            s.delete
+                                    )}
+                                    onClick={operation.handler}
+                                >
+                                    {operation.icon}
+                                    {operation.label}
+                                </div>
+                            )
+                        )}
                     </div>
                 )}
             </div>
             <EmailSender
-                id={contractId}
+                id={doc.id}
                 open={isOpenSender}
                 setOpen={setIsOpenSender}
                 contacts={contacts}
                 docs={[doc]}
-                theme={`Договор №${contract.number} от ${dayjs(contract.date).format('DD.MM.YYYY')}`}
-                // text={parameters?.act_message}
+                theme={`Документ "${doc.name}" от ${dayjs(doc.date_add).format('DD.MM.YYYY')}`}
+                text={settings?.contract_mail_template?.value || ''}
                 formats={[
                     { id: 1, name: 'PDF с печатью' },
                     { id: 2, name: 'Word с печатью' },
                 ]}
-                partnerEmail={'go@skilla.ru'}
+                partnerEmail={settings?.partnership_email}
                 handleSendEmailSuccess={() =>
                     showToast('Сообщение отправлено', 'success')
                 }

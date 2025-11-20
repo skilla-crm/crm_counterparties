@@ -95,6 +95,23 @@ const UploadDoc = () => {
             'text/plain': ['.txt'],
         },
     });
+    const handleAddToForm = () => {
+        if (!file) return;
+
+        const payload = {
+            name: file.name,
+            type_id: Number(type.id),
+            file: file,
+        };
+
+        const updatedDocs = [
+            ...(Array.isArray(form.docs) ? form.docs : []),
+            payload,
+        ];
+
+        setField('docs', updatedDocs);
+        hideModal();
+    };
 
     const handleSubmit = async () => {
         if (!file) {
@@ -225,7 +242,7 @@ const UploadDoc = () => {
                         text={'Добавить'}
                         isLoading={isLoadingAddAttachments}
                         type="primary"
-                        onClick={handleSubmit}
+                        onClick={isCreateMode ? handleAddToForm : handleSubmit}
                         className={classNames(
                             s.submit,
                             (!file || isLoadingAddAttachments) && s.disabledLike

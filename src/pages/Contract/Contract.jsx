@@ -2,6 +2,7 @@
 import { useContractForm } from 'hooks/useContractForm';
 import { use, useEffect, useState } from 'react';
 import classNames from 'classnames';
+import { useDispatch } from 'react-redux';
 
 // Hooks
 import useToast from 'hooks/useToast';
@@ -20,7 +21,7 @@ import {
     useGetSettingsQuery,
 } from '../../redux/services/contractApiActions';
 import { useGetCounterpartyInfoQuery } from '../../redux/services/counterpartyDetailsApiActions';
-
+import { counterpartyDetailsApiActions } from '../../redux/services/counterpartyDetailsApiActions';
 // Components
 import ContractHeader from './COMPONENTS/ContractHeader';
 import ContractMainInfo from './COMPONENTS/ContractMainInfo';
@@ -44,6 +45,7 @@ export const Contract = () => {
     const navigate = useNavigate();
     const { showToast } = useToast();
     const location = useLocation();
+    const dispatch = useDispatch();
     const { counterparty: locationCounterparty, settings: locationSettings } =
         location.state || {};
 
@@ -121,6 +123,7 @@ export const Contract = () => {
             number: buildNumber(),
             // contract_template_id: scopedSettings?.contract_templates?.[0]?.id || "",
             contract_template_id: 276,
+            docs: [],
         };
 
         Object.entries(fields).forEach(([key, value]) => {
@@ -167,10 +170,6 @@ export const Contract = () => {
             return showToast('Выберите исполнителя', 'error');
         if (!form.contract_template_id && !form.without_template)
             return showToast('Выберите шаблон договора', 'error');
-        if (!form.partnership_signature_id)
-            return showToast('Выберите подписанта поставщика', 'error');
-        if (!form.company_signature_id)
-            return showToast('Выберите подписанта заказчика', 'error');
         if (!form.date) return showToast('Выберите дату договора', 'error');
         if (!withoutExpiredDate && !form.expired_date)
             return showToast('Выберите срок дйствия', 'error');
@@ -178,6 +177,11 @@ export const Contract = () => {
             const fd = getFormData();
             const res = await createContract({ data: fd }).unwrap();
             if (res.success) {
+                dispatch(
+                    counterpartyDetailsApiActions.util.invalidateTags([
+                        'counterparty',
+                    ])
+                );
                 navigate(-1);
                 showToast('Договор создан', 'success');
             }
@@ -192,7 +196,7 @@ export const Contract = () => {
         if (!form.contract_template_id && !form.without_template)
             return showToast('Выберите шаблон договора', 'error');
         try {
-            const fd = getFormData();
+            const fd = getFormData(['docs']);
 
             const res = await updateContract({
                 data: fd,
@@ -237,22 +241,21 @@ export const Contract = () => {
                         setWithoutExpiredDate={setWithoutExpiredDate}
                     />
 
-                    {!isCreateMode && (
-                        <DocumentsList
-                            form={form}
-                            setField={setField}
-                            isCreateMode={isCreateMode}
-                            data={contractData?.docs}
-                            contractId={id}
-                            contract={contractData}
-                            docTypes={
-                                isCreateMode
-                                    ? locationSettings?.doc_types
-                                    : settings?.doc_types
-                            }
-                            contacts={CONTACTS_MAILS}
-                        />
-                    )}
+                    <DocumentsList
+                        settings={isCreateMode ? locationSettings : settings}
+                        form={form}
+                        setField={setField}
+                        isCreateMode={isCreateMode}
+                        data={contractData?.docs}
+                        contractId={id}
+                        contract={contractData}
+                        docTypes={
+                            isCreateMode
+                                ? locationSettings?.doc_types
+                                : settings?.doc_types
+                        }
+                        contacts={CONTACTS_MAILS}
+                    />
                 </div>
 
                 <div
