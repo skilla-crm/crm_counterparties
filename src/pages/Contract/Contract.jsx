@@ -161,7 +161,7 @@ export const Contract = () => {
             // label: data.label || "",
         };
         Object.entries(fields).forEach(([key, value]) => setField(key, value));
-    }, [contractData]);
+    }, [contractData, isEditMode]);
 
     const handleCreateContract = async () => {
         if (!form.number) return showToast('Введите номер договора', 'error');

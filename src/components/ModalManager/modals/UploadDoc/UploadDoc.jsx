@@ -63,7 +63,6 @@ const UploadDoc = () => {
     const onDrop = useCallback((acceptedFiles) => {
         if (acceptedFiles.length > 0) {
             const realFile = acceptedFiles[0];
-            console.log('realFile', realFile);
             setFile(realFile);
             setUploadError('');
             setSucces('');
@@ -96,18 +95,21 @@ const UploadDoc = () => {
         },
     });
     const handleAddToForm = () => {
-        if (!file) return;
+        if (!file || !type) {
+            setValidationError('Не выбран файл или тип документа');
+            return;
+        }
 
         const payload = {
             name: file.name,
-            type_id: Number(type.id),
+            type_id: typeof type === 'object' ? type.id : Number(type),
             file: file,
+            temp_id: Date.now(),
         };
 
-        const updatedDocs = [
-            ...(Array.isArray(form.docs) ? form.docs : []),
-            payload,
-        ];
+        const updatedDocs = Array.isArray(form?.docs)
+            ? [...form.docs, payload]
+            : [payload];
 
         setField('docs', updatedDocs);
         hideModal();

@@ -50,7 +50,7 @@ const ContractHeader = ({
     contractId,
     contract = {},
     contacts = [],
-    refetch,
+    // refetch,
     isDeletableContract,
 }) => {
     const parameters = [];
@@ -268,7 +268,7 @@ const ContractHeader = ({
                         type="outline"
                         icon={IconGoToBack}
                         onClick={() => {
-                            refetch();
+                            // refetch();
 
                             setIsEditMode(false);
                         }}

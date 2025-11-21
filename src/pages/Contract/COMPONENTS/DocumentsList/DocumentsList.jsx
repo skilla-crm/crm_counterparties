@@ -46,6 +46,7 @@ const DocumentsList = ({
     settings,
 }) => {
     const { showModal } = useModal();
+    const renderData = isCreateMode ? form.docs : data;
 
     const handleOpenUploadMoadal = () => {
         showModal('UPLOAD_DOC', {
@@ -68,35 +69,45 @@ const DocumentsList = ({
                     onClick={handleOpenUploadMoadal}
                 />
             </div>
-            {(isCreateMode ? form.docs : data).length > 0 && (
+            {renderData.length > 0 && (
                 <div className={s.objects}>
-                    <div className={classNames(s.gridRow, s.tableHeader)}>
-                        <div>Название</div>
-                        <div>Категория</div>
-                        <div>Добавлен</div>
-                        <div>Кем добавлен </div>
-                        <div></div>
-                    </div>
-
-                    {data.length > 0 ? (
-                        data.map((doc, i) => (
-                            <DocumentRow
-                                key={doc.id}
-                                doc={doc}
-                                contacts={contacts}
-                                contractId={contractId}
-                                contract={contract}
-                                settings={settings}
-                                form={form}
-                                setField={setField}
-                                isCreateMode={isCreateMode}
-                            />
-                        ))
-                    ) : (
-                        <div className={s.empty}>
-                            Пока не добавлен ни один документ
+                    {isCreateMode && (
+                        <div
+                            className={classNames(
+                                s.gridRow,
+                                s.tableHeader,
+                                s.createHeaderRow
+                            )}
+                        >
+                            <div>Название</div>
+                            <div>Категория</div>
+                            <div></div>
                         </div>
                     )}
+
+                    {!isCreateMode && (
+                        <div className={classNames(s.gridRow, s.tableHeader)}>
+                            <div>Название</div>
+                            <div>Категория</div>
+                            <div>Добавлен</div>
+                            <div>Кем добавлен </div>
+                            <div></div>
+                        </div>
+                    )}
+
+                    {renderData.map((doc, i) => (
+                        <DocumentRow
+                            key={doc.id}
+                            doc={doc}
+                            contacts={contacts}
+                            contractId={contractId}
+                            contract={contract}
+                            settings={settings}
+                            form={form}
+                            setField={setField}
+                            isCreateMode={isCreateMode}
+                        />
+                    ))}
                 </div>
             )}
         </div>
@@ -128,9 +139,10 @@ const DocumentRow = ({
         person_name,
         person_surname,
         position,
+        type_id,
     } = doc;
     const [downloadAttachment] = useDownloadAttachmentMutation();
-    // const {} = documnet;
+    console.log(doc, 'doc');
     const navigate = useNavigate();
     const hadleOpenContract = () => {
         // navigate(`/details/contract/${id}`, {
@@ -232,14 +244,38 @@ const DocumentRow = ({
 
     if (isCreateMode) {
         return (
-            <div className={classNames(s.gridRow)} onClick={hadleOpenContract}>
+            <div
+                className={classNames(s.gridRow, s.createHeaderRow)}
+                onClick={hadleOpenContract}
+            >
                 <div className={s.flexCell}>
                     <EllipsisWithTooltip text={name} />
                 </div>
-                <div className={s.flexCell}>{type}</div>
+                <div className={s.flexCell}>
+                    {settings?.doc_types?.find((t) => t.id == type_id)?.name ||
+                        '—'}
+                </div>
 
                 <div className={s.optionsBtn} onClick={handleOpenOptions}>
                     <IconKebab />
+                    {openMenu && (
+                        <div className={s.dropDownMenu}>
+                            {createOperation.map((operation) => (
+                                <div
+                                    key={operation.label}
+                                    className={classNames(
+                                        s.dropDownItem,
+                                        operation.label === 'Удалить' &&
+                                            s.delete
+                                    )}
+                                    onClick={operation.handler}
+                                >
+                                    {operation.icon}
+                                    {operation.label}
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         );
@@ -266,22 +302,19 @@ const DocumentRow = ({
                 <IconKebab />
                 {openMenu && (
                     <div className={s.dropDownMenu}>
-                        {(isCreateMode ? createOperation : operations).map(
-                            (operation) => (
-                                <div
-                                    key={operation.label}
-                                    className={classNames(
-                                        s.dropDownItem,
-                                        operation.label === 'Удалить' &&
-                                            s.delete
-                                    )}
-                                    onClick={operation.handler}
-                                >
-                                    {operation.icon}
-                                    {operation.label}
-                                </div>
-                            )
-                        )}
+                        {operations.map((operation) => (
+                            <div
+                                key={operation.label}
+                                className={classNames(
+                                    s.dropDownItem,
+                                    operation.label === 'Удалить' && s.delete
+                                )}
+                                onClick={operation.handler}
+                            >
+                                {operation.icon}
+                                {operation.label}
+                            </div>
+                        ))}
                     </div>
                 )}
             </div>
