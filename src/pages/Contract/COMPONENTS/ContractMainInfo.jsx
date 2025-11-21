@@ -16,6 +16,7 @@ import InputNum from 'components/General/InputNum/InputNum';
 //styles
 import s from './ContractMainInfo.module.scss';
 import UniButton from 'components/General/UniButton/UniButton';
+import { set } from 'lodash';
 
 const ContractMainInfo = ({
     form,
@@ -29,6 +30,7 @@ const ContractMainInfo = ({
 }) => {
     const { showModal } = useModal();
     const { partnerships = [], contract_templates = [] } = settings || {};
+    const [companyAccounts, setCompanyAccounts] = useState([]);
 
     useEffect(() => {
         setWithoutExpiredDate(form.expired_date === null);
@@ -42,8 +44,10 @@ const ContractMainInfo = ({
         kpp: counterparty?.general?.kpp,
     };
     //счета заказчика
-    const companyAccounts = counterparty?.bank_accounts || [];
-    console.log(counterparty?.bank_accounts, 'counterparty?.bank_accounts');
+    useEffect(() => {
+        setCompanyAccounts(counterparty?.bank_accounts || []);
+        console.log(counterparty?.bank_accounts, 'counterparty?.bank_accounts');
+    }, [counterparty?.bank_accounts]);
 
     //подписанты заказчика
     const companySignPersons =
@@ -92,17 +96,16 @@ const ContractMainInfo = ({
                     options={[company]}
                     disabled={true}
                 />
-                {counterparty?.bank_accounts.length !== 0 ? (
+
+                {!isEditMode || companyAccounts.length > 0 ? (
                     <Dropdown
                         sub="Счет заказчика"
                         width={312}
-                        value={
-                            companyAccounts.find(
-                                (a) => a.id === form.company_details_id
-                            ) || null
-                        }
+                        value={companyAccounts.find(
+                            (a) => a.id === form.company_details_id
+                        )}
                         onChange={(v) => setField('company_details_id', v?.id)}
-                        disabled={!isEditMode}
+                        disabled={!isEditMode || companyAccounts.length === 0}
                         options={companyAccounts}
                         type="account"
                     />
@@ -132,7 +135,9 @@ const ContractMainInfo = ({
                     value={
                         partnershipAccounts.find(
                             (a) => a.id === form.partnership_details_id
-                        ) || null
+                        ) ||
+                        partnershipAccounts[0] ||
+                        null
                     }
                     onChange={(v) => setField('partnership_details_id', v?.id)}
                     disabled={!isEditMode}
