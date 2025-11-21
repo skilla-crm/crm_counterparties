@@ -31,7 +31,7 @@ const ContractMainInfo = ({
     const { partnerships = [], contract_templates = [] } = settings || {};
 
     useEffect(() => {
-        setWithoutExpiredDate(form.expired_date === '');
+        setWithoutExpiredDate(form.expired_date === null);
     }, [form.expired_date]);
 
     //заказчик
@@ -43,6 +43,7 @@ const ContractMainInfo = ({
     };
     //счета заказчика
     const companyAccounts = counterparty?.bank_accounts || [];
+    console.log(counterparty?.bank_accounts, 'counterparty?.bank_accounts');
 
     //подписанты заказчика
     const companySignPersons =
@@ -145,7 +146,7 @@ const ContractMainInfo = ({
                     width={312}
                     value={
                         form.without_template
-                            ? ''
+                            ? null
                             : contract_templates.find(
                                   (t) => t.id === form.contract_template_id
                               )
@@ -176,7 +177,7 @@ const ContractMainInfo = ({
                     />
                 </Field>
 
-                <Field
+                {/* <Field
                     width={300}
                     text="Лимит по сумме"
                     info="Используется для договоров с лимитом по сумме актов. Ты получишь уведомление, когда сумма актов достигнет заданного лимита и договор потребуется перезаключить."
@@ -187,7 +188,7 @@ const ContractMainInfo = ({
                         width={150}
                         disabled={!isEditMode}
                     />
-                </Field>
+                </Field> */}
                 <InputData
                     sub={'Дата'}
                     nosub={true}

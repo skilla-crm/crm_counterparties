@@ -34,7 +34,7 @@ import { ReactComponent as IconEdit } from 'assets/icons/iconEdit.svg';
 import { ReactComponent as IconMail } from 'assets/icons/iconMail.svg';
 import { ReactComponent as IconPrint } from 'assets/icons/iconPrint.svg';
 import { ReactComponent as IconGoToBack } from 'assets/icons/IconGoToBack.svg';
-import { ReactComponent as IconDone } from 'assets/icons/iconDone.svg';
+import { ReactComponent as IconDoneWhite } from 'assets/icons/iconDoneWhite.svg';
 
 // Styles
 import s from './ContractHeader.module.scss';
@@ -276,7 +276,7 @@ const ContractHeader = ({
 
                     <UniButton
                         text="Cохранить"
-                        icon={IconDone}
+                        icon={IconDoneWhite}
                         width={200}
                         onClick={handleSave}
                         isLoading={isLoading}
@@ -296,7 +296,7 @@ const ContractHeader = ({
 
                     <UniButton
                         text="Cохранить"
-                        icon={IconDone}
+                        icon={IconDoneWhite}
                         width={200}
                         onClick={handleCreate}
                         isLoading={isLoading}

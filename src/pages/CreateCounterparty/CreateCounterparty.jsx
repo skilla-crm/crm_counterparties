@@ -36,7 +36,6 @@ const CreateCounterparty = () => {
     const [isVerified, setIsVerified] = useState(false);
     const [isAdditionalSignature, setIsAdditionalSignature] = useState(false);
     const [isPercent, setIsPercent] = useState(false);
-    console.log(isCreateMode, 'isCreateMode');
 
     const { showToast } = useToast();
 

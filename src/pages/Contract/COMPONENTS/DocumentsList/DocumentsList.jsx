@@ -142,7 +142,7 @@ const DocumentRow = ({
         type_id,
     } = doc;
     const [downloadAttachment] = useDownloadAttachmentMutation();
-    console.log(doc, 'doc');
+
     const navigate = useNavigate();
     const hadleOpenContract = () => {
         // navigate(`/details/contract/${id}`, {
@@ -280,62 +280,63 @@ const DocumentRow = ({
             </div>
         );
     }
+    if (!isCreateMode)
+        return (
+            <div className={classNames(s.gridRow)} onClick={hadleOpenContract}>
+                <div className={s.flexCell}>
+                    <EllipsisWithTooltip text={name} />
+                </div>
 
-    return (
-        <div className={classNames(s.gridRow)} onClick={hadleOpenContract}>
-            <div className={s.flexCell}>
-                <EllipsisWithTooltip text={name} />
-            </div>
+                <div className={s.flexCell}>{type}</div>
+                <div>{dayjs(date_add).format('DD.MM.YYYY')}</div>
+                <div className={s.personCell}>
+                    <div>{`${person_name || ''} ${person_surname || ''}`}</div>
+                    <div className={s.grayText}>{ROLES_LIST[position]}</div>
+                </div>
 
-            <div className={s.flexCell}>{type}</div>
-            <div>{dayjs(date_add).format('DD.MM.YYYY')}</div>
-            <div className={s.personCell}>
-                <div>{`${person_name || ''} ${person_surname || ''}`}</div>
-                <div className={s.grayText}>{ROLES_LIST[position]}</div>
+                <div
+                    className={s.optionsBtn}
+                    onClick={handleOpenOptions}
+                    ref={optionsRef}
+                >
+                    <IconKebab />
+                    {openMenu && (
+                        <div className={s.dropDownMenu}>
+                            {operations.map((operation) => (
+                                <div
+                                    key={operation.label}
+                                    className={classNames(
+                                        s.dropDownItem,
+                                        operation.label === 'Удалить' &&
+                                            s.delete
+                                    )}
+                                    onClick={operation.handler}
+                                >
+                                    {operation.icon}
+                                    {operation.label}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+                <EmailSender
+                    id={doc.id}
+                    open={isOpenSender}
+                    setOpen={setIsOpenSender}
+                    contacts={contacts}
+                    docs={[doc]}
+                    theme={`Документ "${doc.name}" от ${dayjs(doc.date_add).format('DD.MM.YYYY')}`}
+                    text={settings?.contract_mail_template?.value || ''}
+                    formats={[
+                        { id: 1, name: 'PDF с печатью' },
+                        { id: 2, name: 'Word с печатью' },
+                    ]}
+                    partnerEmail={settings?.partnership_email}
+                    handleSendEmailSuccess={() =>
+                        showToast('Сообщение отправлено', 'success')
+                    }
+                    detailState={true}
+                />
             </div>
-
-            <div
-                className={s.optionsBtn}
-                onClick={handleOpenOptions}
-                ref={optionsRef}
-            >
-                <IconKebab />
-                {openMenu && (
-                    <div className={s.dropDownMenu}>
-                        {operations.map((operation) => (
-                            <div
-                                key={operation.label}
-                                className={classNames(
-                                    s.dropDownItem,
-                                    operation.label === 'Удалить' && s.delete
-                                )}
-                                onClick={operation.handler}
-                            >
-                                {operation.icon}
-                                {operation.label}
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
-            <EmailSender
-                id={doc.id}
-                open={isOpenSender}
-                setOpen={setIsOpenSender}
-                contacts={contacts}
-                docs={[doc]}
-                theme={`Документ "${doc.name}" от ${dayjs(doc.date_add).format('DD.MM.YYYY')}`}
-                text={settings?.contract_mail_template?.value || ''}
-                formats={[
-                    { id: 1, name: 'PDF с печатью' },
-                    { id: 2, name: 'Word с печатью' },
-                ]}
-                partnerEmail={settings?.partnership_email}
-                handleSendEmailSuccess={() =>
-                    showToast('Сообщение отправлено', 'success')
-                }
-                detailState={true}
-            />
-        </div>
-    );
+        );
 };

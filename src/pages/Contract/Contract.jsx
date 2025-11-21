@@ -150,11 +150,14 @@ export const Contract = () => {
             partnership_id: contractData.partnership_id || '',
             partnership_details_id: contractData.partnership_details_id || null,
             // contract_template_id: contractData.contract_template_id || "",
-            contract_template_id: 276,
+            contract_template_id:
+                contractData.contract_template_id == 1
+                    ? 276
+                    : contractData.contract_template_id,
             without_template: contractData.without_template || 0,
             number: contractData.number || '',
             date: normalizeDate(contractData.date),
-            expired_date: normalizeDate(contractData.expired_date),
+            expired_date: contractData.expired_date || null,
             company_signature_id: contractData.company_signature_id || null,
             partnership_signature_id:
                 contractData.partnership_signature_id || null,
