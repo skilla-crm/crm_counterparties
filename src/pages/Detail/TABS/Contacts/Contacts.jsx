@@ -38,7 +38,7 @@ const Contacts = ({ data = [], counterpartyId }) => {
             <div>Должность</div>
             <div>Телефон</div>
             <div>E-mail</div>
-            <div className={s.switchContainer}>Основной</div>
+            <div className={s.switchContainer}>Активный</div>
             <div></div>
           </div>
           {data.map((contact) => (

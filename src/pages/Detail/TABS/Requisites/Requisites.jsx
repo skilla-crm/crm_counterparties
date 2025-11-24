@@ -86,10 +86,10 @@ const Requisites = ({ general = {}, requisites = {} }) => {
           <div>{formatValue(edo_id)}</div>
         </div>
 
-        <div className={s.row}>
+        {/* <div className={s.row}>
           <p>Процент</p>
           <div>{formatValue(is_percent)}</div>
-        </div>
+        </div> */}
 
         <div className={s.row}>
           <p>Добавлен</p>
