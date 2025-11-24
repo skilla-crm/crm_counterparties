@@ -7,7 +7,6 @@ import { ReactComponent as IconChevron } from 'assets/icons/iconChewron.svg';
 // styles
 import s from './Dropdown.module.scss';
 
-
 const isValidField = (field) => {
     if (field === null || field === undefined) {
         return false;
@@ -31,11 +30,12 @@ const Dropdown = ({
     const wrapperRef = useRef(null);
 
     const hasOptions = options.length > 0;
-    const hasMultipleOptions = options.length > 1;
+    const hasSelectedValue = !!value?.id || !!value;
+    const canOpen = hasOptions && (!hasSelectedValue || options.length > 1);
 
     const toggleDropdown = () => {
-        if (disabled || !hasMultipleOptions) return;
-        if (hasOptions) setIsOpen((prev) => !prev);
+        if (disabled || !canOpen) return;
+        setIsOpen((prev) => !prev);
     };
 
     const handleOptionClick = (option) => {
@@ -54,6 +54,11 @@ const Dropdown = ({
         return () =>
             document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+    useEffect(() => {
+        if (!disabled && options.length > 0 && !hasSelectedValue) {
+            onChange(options[0]);
+        }
+    }, [options, hasSelectedValue, disabled]);
 
     const wrapperStyle =
         width && typeof width === 'number' ? { width: `${width}px` } : {};
@@ -191,8 +196,7 @@ const Dropdown = ({
                 onClick={toggleDropdown}
             >
                 {renderValue()}
-
-                {!disabled && hasMultipleOptions && (
+                {!disabled && canOpen && (
                     <IconChevron
                         className={classNames(
                             s.chevron,

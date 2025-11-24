@@ -16,7 +16,7 @@ import s from "./RightPanelBlock.module.scss";
 
 import { Link } from "react-router-dom";
 
-const RightPanelBlock = ({ list = [], title, navigateTo }) => {
+const RightPanelBlock = ({ list = [], title, counterpartyId }) => {
   if (!Array.isArray(list) || list.length === 0) return null;
 
   const RowComponent =
@@ -34,27 +34,62 @@ const RightPanelBlock = ({ list = [], title, navigateTo }) => {
           <RowComponent key={elem.id} elem={elem} />
         ))}
       </div>
-
-      {title === "Документы" ? (
+      {title === "Документы" && (
         <div className={s.links}>
-          <Link className={s.link} to={`${navigateTo}/счета`}>
+          <Link
+            target="_blank"
+            rel="noopener noreferrer"
+            className={s.link}
+            to={`https://lk.skilla.ru/new/bills?counterparty_id=${counterpartyId}`}
+          >
             <IconArrowRight />
             Все счета
           </Link>
-          <Link className={s.link} to={`${navigateTo}/упд`}>
+          <Link
+            target="_blank"
+            rel="noopener noreferrer"
+            className={s.link}
+            to={`https://lk.skilla.ru/new/upd?counterparty_id=${counterpartyId}`}
+          >
             <IconArrowRight />
             Все упд
           </Link>
-          <Link className={s.link} to={`${navigateTo}/акты`}>
+          <Link
+            target="_blank"
+            rel="noopener noreferrer"
+            className={s.link}
+            to={`https://lk.skilla.ru/new/act?counterparty_id=${counterpartyId}`}
+          >
             <IconArrowRight />
             Все акты
           </Link>
         </div>
-      ) : (
-        <Link className={s.link} to={navigateTo}>
-          <IconArrowRight />
-          Посмотреть все
-        </Link>
+      )}
+      {title === "Заказы" && (
+        <div className={s.links}>
+          <Link
+            target="_blank"
+            rel="noopener noreferrer"
+            className={s.link}
+            to={`https://lk.skilla.ru/new/orders?counterparty_id=${counterpartyId}`}
+          >
+            <IconArrowRight />
+            Посмотреть все
+          </Link>
+        </div>
+      )}
+      {title === "Транзакции" && (
+        <div className={s.links}>
+          <Link
+            target="_blank"
+            rel="noopener noreferrer"
+            className={s.link}
+            to={`https://lk.skilla.ru/new/bank?counterparty_id=${counterpartyId}`}
+          >
+            <IconArrowRight />
+            Посмотреть все
+          </Link>
+        </div>
       )}
     </div>
   );
@@ -67,6 +102,7 @@ const ListRowOrders = ({ elem }) => {
     <div className={s.listRow} key={id}>
       <div className={s.leftColumn}>
         <span>{date && dayjs(date).format("DD.MM.YYYY")}</span>
+
         <EllipsisWithTooltip text={address || ""} />
       </div>
       <div className={classNames(s.rightColumn)}>

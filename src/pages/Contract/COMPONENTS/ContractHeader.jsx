@@ -16,6 +16,7 @@ import {
   useDeleteContractMutation,
   useDownloadContractMutation,
 } from "../../../redux/services/contractApiActions";
+import { counterpartyDetailsApiActions } from "../../../redux/services/counterpartyDetailsApiActions";
 
 // Components
 import ButtonOptions from "components/General/ButtonOptions/ButtonOptions";
@@ -33,7 +34,7 @@ import { ReactComponent as IconEdit } from "assets/icons/iconEdit.svg";
 import { ReactComponent as IconMail } from "assets/icons/iconMail.svg";
 import { ReactComponent as IconPrint } from "assets/icons/iconPrint.svg";
 import { ReactComponent as IconGoToBack } from "assets/icons/IconGoToBack.svg";
-import { ReactComponent as IconDone } from "assets/icons/iconDone.svg";
+import { ReactComponent as IconDoneWhite } from "assets/icons/iconDoneWhite.svg";
 
 // Styles
 import s from "./ContractHeader.module.scss";
@@ -49,6 +50,7 @@ const ContractHeader = ({
   contractId,
   contract = {},
   contacts = [],
+  // refetch,
   isDeletableContract,
 }) => {
   const parameters = [];
@@ -124,13 +126,16 @@ const ContractHeader = ({
       const res = await deleteContract({ contractId }).unwrap();
 
       if (res.success) {
+        dispatch(
+          counterpartyDetailsApiActions.util.invalidateTags(["counterparty"])
+        );
         showToast("Договор удален", "success");
         navigate(-1);
       } else {
         showToast("Не удалось удалить договор", "error");
       }
-    } catch (e) {
-      showToast("Произошла ошибка", "error");
+    } catch (err) {
+      showToast("Ошибка при удалении договора", "error");
     }
   };
   // const handleSendEmailSuccess = () => {
@@ -260,12 +265,16 @@ const ContractHeader = ({
             text="Отменить"
             type="outline"
             icon={IconGoToBack}
-            onClick={() => setIsEditMode(false)}
+            onClick={() => {
+              // refetch();
+
+              setIsEditMode(false);
+            }}
           />
 
           <UniButton
             text="Cохранить"
-            icon={IconDone}
+            icon={IconDoneWhite}
             width={200}
             onClick={handleSave}
             isLoading={isLoading}
@@ -285,7 +294,7 @@ const ContractHeader = ({
 
           <UniButton
             text="Cохранить"
-            icon={IconDone}
+            icon={IconDoneWhite}
             width={200}
             onClick={handleCreate}
             isLoading={isLoading}
