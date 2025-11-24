@@ -20,6 +20,7 @@ import { ReactComponent as SmileYellow } from "assets/icons/cardFilling/yellowSm
 
 // Styles
 import s from "./Table.module.scss";
+import Label from "components/General/Label/Label";
 
 const TableRow = ({ row, type }) => {
   // const { showModal } = useModal();
@@ -34,7 +35,7 @@ const TableRow = ({ row, type }) => {
     kpp,
     notes,
     okved,
-
+    to_correct_kpp,
     revenue,
     share_of_partnership_revenue,
   } = row;
@@ -90,6 +91,9 @@ const TableRow = ({ row, type }) => {
         </div>
         <div className={classNames(s.gridCell, s.gray)}>
           <EllipsisWithTooltip text={notes || ""} />{" "}
+        </div>
+        <div className={classNames(s.gridCell)}>
+          <LabelKPP text={Boolean(to_correct_kpp) && "Уточнить КПП"} />
         </div>
       </Link>
     );
@@ -176,4 +180,8 @@ const Badge = ({ status }) => {
     default:
       return null;
   }
+};
+const LabelKPP = ({ text }) => {
+  if (!text) return null;
+  return <div className={s.labelKPP}>{text}</div>;
 };
