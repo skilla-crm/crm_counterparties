@@ -1,13 +1,12 @@
 // External
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import { useGetCounterpartiesInfiniteQuery } from "../../redux/services/counterpartiesListApiActions";
-
-// Hooks
-import { useCounterparties } from "hooks/useCounterarties";
+import { resetSort } from "../../redux/sorting/sortSlice";
+import { resetAllFilters } from "../../redux/filters/filtersSlice";
 
 // Components
 import Search from "components/General/Search/Search";
@@ -24,8 +23,8 @@ const List = () => {
     { value: 0, label: "Активные", ref: useRef() },
     { value: 1, label: "Стоп-лист", ref: useRef() },
   ];
-  const dispatch = useDispatch();
   const containerRef = useRef();
+  const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("approved");
   const [counterpartiesType, setCounterpartiesType] = useState(0);
@@ -34,20 +33,8 @@ const List = () => {
   const [anim, setAnim] = useState(true);
 
   const { sortBy, sortDir } = useSelector((state) => state.sort);
-  // const {
-  //     allRows,
-  //     fetchNextPage,
-  //     hasNextPage,
-  //     isLoading,
-  //     isFetching,
-  //     error,
-  // } = useCounterparties({
-  //     activeTab,
-  //     sortDir,
-  //     sortBy,
-  //     counterpartiesType,
-  //     searchQuery,
-  // });
+  const { counterpartyInvalidKpp } = useSelector((state) => state.filters);
+
 
   const {
     data: approvedData,
@@ -77,12 +64,28 @@ const List = () => {
     "sort[type]": sortBy,
     "sort[dir]": sortDir,
     "filter[verified]": 0,
+    'filter[to_correct_kpp]': activeTab === "notApproved" ? counterpartyInvalidKpp : '',
     "filter[is_black]": activeTab === "notApproved" ? counterpartiesType : 0,
     ...(searchQuery.length > 0 && activeTab === "notApproved"
       ? { "filter[search]": searchQuery }
       : {}),
+   
   });
+  //Если data.length > 0, то показываем предупреждение о некорректном КПП
+  const { data: invalidKppList } = useGetCounterpartiesInfiniteQuery({
+    "sort[type]": sortBy,
+    "sort[dir]": sortDir,
+    "filter[to_correct_kpp]": 1, 
+  });
+  
+  const invalidKppCount = useMemo(
+    () => invalidKppList?.pages?.[0]?.meta?.total || 0,
+    [invalidKppList]
+  );
+ const hasInvalidKpp = invalidKppCount > 0;
 
+  
+  //////////////////////////////////////////////////////////////////////////////////
   const allRowsApproved =
     approvedData?.pages?.flatMap((page) => page.data) || [];
   const totalCountApproved = approvedData?.pages?.[0]?.meta?.total;
@@ -91,11 +94,17 @@ const List = () => {
     notApprovedData?.pages?.flatMap((page) => page.data) || [];
   const totalCountNotApproved = notApprovedData?.pages?.[0]?.meta?.total;
 
+  const handleActiveTabChange = (value) => {
+    dispatch(resetSort());
+    dispatch(resetAllFilters());
+    setActiveTab(value);
+  };
+
   return (
     <div className={s.root} ref={containerRef}>
       <ListHeader
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={handleActiveTabChange}
         setCounterpartiesType={setCounterpartiesType}
         setAnim={setAnim}
         isLoading={isLoadingApproved || isLoadingNotApproved}
@@ -103,6 +112,8 @@ const List = () => {
           approved: totalCountApproved,
           notApproved: totalCountNotApproved,
         }}
+        isShowInformation={hasInvalidKpp && counterpartyInvalidKpp !== 1}
+        countInvalidKpp={invalidKppCount}
       />
       <span
         key={activeTab}

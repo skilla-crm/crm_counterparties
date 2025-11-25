@@ -1,8 +1,17 @@
+.wrapper {
+  position: relative;
+}
+
 .root {
   display: flex;
   gap: 20px;
   flex-direction: column;
   // padding: 20px 24px;
+}
+
+.rootLoading {
+  opacity: 0.4;
+  pointer-events: none;
 }
 .content {
   display: flex;

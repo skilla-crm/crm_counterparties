@@ -1,149 +1,142 @@
-// import { useEffect, useRef, useState } from "react";
-// // redux
-// import { useDispatch, useSelector } from "react-redux";
-// import { setCounterpartiesCorrectKpp } from "../../../redux/filters/filtersSlice";
+import { useEffect, useRef, useState } from "react";
+import classNames from "classnames";
 
-// // components
-// import FilterButton from "components/Filters/COMPONENTS/FilterButton/FilterButton";
-// import CheckBox from "components/General/CheckBox/CheckBox";
-// import UniButton from "components/General/UniButton/UniButton";
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import { setCounterpartyInvalidKpp } from "../../../redux/filters/filtersSlice";
 
-// // icons
-// import { ReactComponent as IconCloseBlue } from "assets/icons/iconCloseBlue.svg";
-// import { ReactComponent as IconDoneWhite } from "assets/icons/iconDoneWhite.svg";
-// import { ReactComponent as IconFilterSettingts } from "assets/icons/iconFilterSettings.svg";
+// components
+import FilterButton from "components/Filters/COMPONENTS/FilterButton/FilterButton";
+import CheckBox from "components/General/CheckBox/CheckBox";
+import UniButton from "components/General/UniButton/UniButton";
 
-// // styles
-// import s from "./TypeFilters.module.scss";
-// import classNames from "classnames";
+// icons
+import { ReactComponent as IconCloseBlue } from "assets/icons/iconCloseBlue.svg";
+import { ReactComponent as IconDoneWhite } from "assets/icons/iconDoneWhite.svg";
+import { ReactComponent as IconFilterSettingts } from "assets/icons/iconFilterSettings.svg";
 
-// const counterpartyCorrectKppList = [{ id: "income", name: "Поступления" }];
+// styles
+import s from "./TypeFilters.module.scss";
 
-// const TypeFilter = ({
-//   isFetching,
-//   setActiveFilter,
-//   clearActiveFilter,
-//   name,
-// }) => {
-//   const selectedCorrectKpp =
-//     useSelector((state) => state.filters.counterpartyCorrectKpp) || 0;
+const TypeFilter = ({
+  isFetching,
+  setActiveFilter,
+  clearActiveFilter,
+  name,
+}) => {
+  const dispatch = useDispatch();
+  const { counterpartyInvalidKpp = 0 } = useSelector((state) => state.filters);
 
-//   const [openModal, setOpenModal] = useState(false);
-//   const [transactionType, setTransactionType] = useState([]);
+  const modalRef = useRef(null);
+  const buttonRef = useRef(null);
 
-//   const [load, setLoad] = useState(false);
-//   const [done, setDone] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [done, setDone] = useState(false);
+  const [invalidOnly, setInvalidOnly] = useState(
+    Boolean(counterpartyInvalidKpp)
+  );
 
-//   const dispatch = useDispatch();
-//   const modalRef = useRef();
-//   const buttonRef = useRef();
+  useEffect(() => {
+    setDone(Boolean(counterpartyInvalidKpp));
+  }, [counterpartyInvalidKpp]);
 
-//   useEffect(() => {
-//     setLoad(isFetching);
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        openModal &&
+        modalRef.current &&
+        !modalRef.current.contains(e.target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(e.target)
+      ) {
+        setOpenModal(false);
+        if (!counterpartyInvalidKpp) {
+          clearActiveFilter();
+        }
+      }
+    };
 
-//       selectedRecognizedType === "1";
-//     setDone(!isFetching && hasActiveFilters);
-//   }, [isFetching, selectedTypes, selectedViews, selectedRecognizedType]);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [openModal, clearActiveFilter, counterpartyInvalidKpp]);
 
-//   const handleOpen = () => {
-//     setTransactionType(selectedTypes);
-//     setTransactionView(selectedViews);
-//     setRecognizedType(selectedRecognizedType);
-//     setOpenModal(true);
-//     setActiveFilter(name);
-//   };
+  const handleOpen = () => {
+    if (openModal) {
+      setOpenModal(false);
+      clearActiveFilter();
+      return;
+    }
 
-//   const handleToggle = (id, list, setList) => {
-//     setList((prev) =>
-//       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-//     );
-//   };
+    setInvalidOnly(Boolean(counterpartyInvalidKpp));
+    setOpenModal(true);
+    setActiveFilter(name);
+  };
 
-//   const handleConfirm = () => {
-//     setLoad(true);
-//     setActiveFilter(name);
-//     dispatch(setCounterpartiesCorrectKpp(1));
+  const handleConfirm = () => {
+    dispatch(setCounterpartyInvalidKpp(invalidOnly ? 1 : 0));
+    if (invalidOnly) {
+      setActiveFilter(name);
+    } else {
+      clearActiveFilter();
+    }
+    setOpenModal(false);
+  };
 
-//     setOpenModal(false);
-//   };
+  const handleReset = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    dispatch(setCounterpartyInvalidKpp(0));
+    setInvalidOnly(false);
+    setDone(false);
+    setOpenModal(false);
+    clearActiveFilter();
+  };
 
-//   const handleReset = (e) => {
-//     e.stopPropagation();
-//     dispatch(setCounterpartiesCorrectKpp(0));
+  return (
+    <div className={s.root}>
+      <FilterButton
+        title="Фильтры"
+        Icon={IconFilterSettingts}
+        count={counterpartyInvalidKpp ? 1 : 0}
+        handleReset={handleReset}
+        handleOpen={handleOpen}
+        buttonRef={buttonRef}
+        done={done}
+        load={Boolean(isFetching)}
+      />
 
-//     setOpenModal(false);
-//     setDone(false);
-//     clearActiveFilter();
-//   };
+      <div
+        ref={modalRef}
+        className={classNames(s.modal, openModal && s.modal_open)}
+      >
+        <div className={s.block}>
+          <div className={s.blockTitle}>Требуют внимания</div>
 
-//   useEffect(() => {
-//     const clickOutside = (e) => {
-//       if (
-//         modalRef.current &&
-//         !modalRef.current.contains(e.target) &&
-//         !buttonRef.current.contains(e.target)
-//       ) {
-//         setOpenModal(false);
-//       }
-//     };
-//     document.body.addEventListener("mousedown", clickOutside);
-//     return () => document.body.removeEventListener("mousedown", clickOutside);
-//   }, []);
+          <div className={s.item} onClick={() => setInvalidOnly((prev) => !prev)}>
+            <CheckBox active={invalidOnly} />
+            <span>Уточнить КПП</span>
+          </div>
+        </div>
 
-//   return (
-//     <div className={s.root}>
-//       <FilterButton
-//         title="Фильтры"
-//         Icon={IconFilterSettingts}
-//         count={
-//           selectedTypes.length +
-//           (selectedViews.length || Number(selectedRecognizedType))
-//         }
-//         handleReset={handleReset}
-//         handleOpen={handleOpen}
-//         buttonRef={buttonRef}
-//         done={done}
-//         load={load}
-//       />
+        <div className={s.buttons}>
+          <UniButton
+            onClick={handleReset}
+            text="Сбросить"
+            icon={IconCloseBlue}
+            isLoading={false}
+            type="outline"
+          />
+          <UniButton
+            onClick={handleConfirm}
+            text="Применить"
+            icon={IconDoneWhite}
+            isLoading={false}
+            width={218}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
-//       <div
-//         ref={modalRef}
-//         className={classNames(s.modal, openModal && s.modal_open)}
-//       >
-//         <div className={s.block}>
-//           <div className={s.blockTitle}>Требуют внимания</div>
-
-//           <div
-//             key={item.id}
-//             className={s.item}
-//             onClick={() =>
-//               handleToggle(item.id, transactionType, setTransactionType)
-//             }
-//           >
-//             <CheckBox active={transactionType.includes(item.id)} />
-//             <span className={s.checkboxLabel}>{item.name}</span>
-//           </div>
-//         </div>
-
-//         <div className={s.buttons}>
-//           <UniButton
-//             onClick={handleReset}
-//             text="Сбросить"
-//             icon={IconCloseBlue}
-//             isLoading={false}
-//             type="outline"
-//           />
-//           <UniButton
-//             onClick={handleConfirm}
-//             text="Применить"
-//             icon={IconDoneWhite}
-//             isLoading={false}
-//             width={218}
-//           />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default TypeFilter;
+export default TypeFilter;

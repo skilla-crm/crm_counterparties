@@ -28,6 +28,7 @@ import ContractMainInfo from "./COMPONENTS/ContractMainInfo";
 import DocumentFlow from "./COMPONENTS/DocumentFlow/DocumentFlow";
 import DocumentsList from "./COMPONENTS/DocumentsList/DocumentsList";
 import History from "./COMPONENTS/History/History";
+import ContractSkeleton from "./ui/ContractSkeleton/ContractSkeleton";
 
 // Styles
 import s from "./Contract.module.scss";
@@ -123,7 +124,7 @@ export const Contract = () => {
       company_details_id: locationCounterparty?.bank_accounts?.[0]?.id || null,
       number: buildNumber(),
       // contract_template_id: scopedSettings?.contract_templates?.[0]?.id || "",
-      contract_template_id: 276,
+      contract_template_id: '',
       docs: [],
     };
 
@@ -152,9 +153,7 @@ export const Contract = () => {
       partnership_details_id: contractData.partnership_details_id || null,
       // contract_template_id: contractData.contract_template_id || "",
       contract_template_id:
-        contractData.contract_template_id == 1
-          ? 276
-          : contractData.contract_template_id,
+       contractData.contract_template?.id,
       without_template: contractData.without_template || 0,
       number: contractData.number || "",
       date: normalizeDate(contractData.date),
@@ -214,10 +213,17 @@ export const Contract = () => {
     }
   };
 
+  const isContractLoading =
+    (!isCreateMode && (!contractData || isLoadingCounterparty || isLoadingSettings)) ||
+    (isCreateMode && (isLoadingCounterparty || isLoadingSettings));
+
   return (
-    <div className={s.root}>
+    <div className={s.wrapper}>
+      {/* <ContractSkeleton isLoading={true} /> */}
+      <div className={classNames(s.root, isContractLoading && s.rootLoading)}>
       <ContractHeader
         // refetch={refetchCounterparty}
+
         settings={isCreateMode ? locationSettings : settings}
         isLoading={isCreateLoading || isUpdateLoading}
         contract={contractData}
@@ -241,6 +247,7 @@ export const Contract = () => {
             onBankAccountChange={refetchCounterparty}
             withoutExpiredDate={withoutExpiredDate}
             setWithoutExpiredDate={setWithoutExpiredDate}
+            contract={contractData}
           />
 
           <DocumentsList
@@ -270,6 +277,7 @@ export const Contract = () => {
           )}
         </div>
       </div>
+    </div>
     </div>
   );
 };

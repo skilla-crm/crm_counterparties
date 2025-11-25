@@ -27,6 +27,7 @@ const FiltersContainer = ({ type, isFetching }) => {
         name="sort"
         key="sort"
         isFetching={getFetching("sort")}
+        activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
         clearActiveFilter={clearActiveFilter}
       />,
@@ -37,17 +38,18 @@ const FiltersContainer = ({ type, isFetching }) => {
         name="sort"
         key="sort"
         isFetching={getFetching("sort")}
+        activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
         clearActiveFilter={clearActiveFilter}
       />,
-      // <TypeFilter
-      //   key="type"
-      //   name="type"
-      //   isFetching={getFetching("type")}
-      //   activeFilter={activeFilter}
-      //   setActiveFilter={setActiveFilter}
-      //   clearActiveFilter={clearActiveFilter}
-      // />,
+      <TypeFilter
+        key="type"
+        name="type"
+        isFetching={getFetching("type")}
+        activeFilter={activeFilter}
+        setActiveFilter={setActiveFilter}
+        clearActiveFilter={clearActiveFilter}
+      />,
     ],
     details: [
       <DateFilter

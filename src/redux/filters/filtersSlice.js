@@ -1,21 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  counterpartyCorrectKpp: 0,
+  counterpartyInvalidKpp: 0,
 };
 
 const filtersSlice = createSlice({
   name: "filters",
   initialState,
   reducers: {
-    setCounterpartiesCorrectKpp: (state, action) => {
-      state.counterpartyCorrectKpp = action.payload;
+    setCounterpartyInvalidKpp: (state, action) => {
+      state.counterpartyInvalidKpp = action.payload;
     },
     resetAllFilters: () => initialState,
   },
 });
 
-export const { setCounterpartiesCorrectKpp, resetAllFilters } =
+export const { setCounterpartyInvalidKpp, resetAllFilters } =
   filtersSlice.actions;
 
 export default filtersSlice.reducer;

@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 
 // Redux
 import { useDispatch } from 'react-redux';
+import { setCounterpartyInvalidKpp } from '../../redux/filters/filtersSlice';
 
 //hooks
 import { useModal } from 'hooks/useModal';
@@ -10,12 +11,14 @@ import { useModal } from 'hooks/useModal';
 //Components
 import UniButton from 'components/General/UniButton/UniButton';
 import SegmentButtons from 'components/General/SegmentButtons/SegmentButtons';
+import Information from 'components/General/Information/Information';
 
 // Icons
 import { ReactComponent as IconPlus } from 'assets/icons/iconPlus.svg';
 
 // Styles
 import s from './List.module.scss';
+
 
 const TABS = [
     { value: 'approved', label: 'Контрагенты' },
@@ -29,6 +32,8 @@ const ListHeader = ({
     setAnim,
     isLoading,
     counters = {},
+    isShowInformation,
+    countInvalidKpp,
 }) => {
     const { showModal } = useModal();
     const controlRef = useRef(null);
@@ -50,12 +55,23 @@ const ListHeader = ({
         return 0;
     };
 
+
+    const handleShowInvalidKpp = () => {
+        dispatch(setCounterpartyInvalidKpp(1));
+        setActiveTab('notApproved');
+    };
     const handleShowModalAdd = () => {
         showModal('ADD_COUNTERPARTY');
     };
 
     return (
         <header className={s.header}>
+             <Information
+                onClick={handleShowInvalidKpp}
+                open={isShowInformation}
+                count={countInvalidKpp}
+                text="Необходимо уточнить актуальность КПП"
+            />
             <div className={s.block}>
                 <SegmentButtons
                     segments={segmentsWithRef}

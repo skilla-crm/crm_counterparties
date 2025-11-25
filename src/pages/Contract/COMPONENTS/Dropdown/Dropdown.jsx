@@ -7,6 +7,7 @@ import { ReactComponent as IconChevron } from 'assets/icons/iconChewron.svg';
 // styles
 import s from './Dropdown.module.scss';
 
+
 const isValidField = (field) => {
     if (field === null || field === undefined) {
         return false;
@@ -102,7 +103,11 @@ const Dropdown = ({
                 );
             case 'type':
                 return (
-                    <div className={s.optionType}>{value?.type_name ?? ''}</div>
+                    <div className={s.optionType}>
+                        <div className={s.optionTypeIcon}></div>
+                        {value?.type_name ?? ''}
+                        {value?.is_delete && <Label text="Архив" />}
+                    </div>
                 );
 
             case 'person':
@@ -155,6 +160,7 @@ const Dropdown = ({
                         content = (
                             <div className={s.optionType}>
                                 {option?.type_name ?? ''}
+                                {option?.is_delete && <Label text="Архив" />}
                             </div>
                         );
                         break;
@@ -222,3 +228,11 @@ const Dropdown = ({
 };
 
 export default Dropdown;
+
+const Label = ({ text }) => {
+    return (
+        <div className={s.label}>
+            {text}
+        </div>
+    );
+};
