@@ -169,7 +169,7 @@ const ContractMainInfo = ({
                     value={
                         form.without_template
                             ? null
-                            : contract_templates.find(
+                            : templates.find(
                                   (t) => t.id === form.contract_template_id
                               )
                     }
