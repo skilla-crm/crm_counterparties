@@ -20,13 +20,13 @@ const sortingList = [
         id: 1,
         text: 'По убыванию доли от моей выручки',
         type: 'share_of_partnership_revenue',
-        dir: 'asc',
+        dir: 'desc',
     },
     {
         id: 2,
         text: 'По возрастанию доли от моей выручки',
         type: 'share_of_partnership_revenue',
-        dir: 'desc',
+        dir: 'asc',
     },
     { id: 3, text: 'По алфавиту с A', type: 'name', dir: 'asc' },
     { id: 4, text: 'По алфавиту с Я', type: 'name', dir: 'desc' },
@@ -57,7 +57,13 @@ const sortingList = [
     },
 ];
 
-const Sorting = ({ isFetching, setActiveFilter, clearActiveFilter, name }) => {
+const Sorting = ({
+    isFetching,
+    setActiveFilter,
+    clearActiveFilter,
+    name,
+    activeFilter,
+}) => {
     const [openModal, setOpenModal] = useState(false);
 
     const { sortBy, sortDir } = useSelector((state) => state.sort);
@@ -71,24 +77,24 @@ const Sorting = ({ isFetching, setActiveFilter, clearActiveFilter, name }) => {
 
     const isSelected = (el) => sortBy === el.type && sortDir === el.dir;
 
-    useEffect(() => {
-        if (sortBy !== 'share_of_partnership_revenue' || sortDir !== 'asc') {
-            setActiveFilter(name);
-        } else {
-            clearActiveFilter();
-        }
-    }, [sortBy, sortDir, name, setActiveFilter, clearActiveFilter]);
-
     const handleOpen = () => {
-        openModal ? setOpenModal(false) : setOpenModal(true);
+        if (openModal) {
+            setOpenModal(false);
+            if (activeFilter === name) {
+                clearActiveFilter();
+            }
+            return;
+        }
+        setOpenModal(true);
+        setActiveFilter(name);
     };
 
     const handleReset = (e) => {
-        clearActiveFilter();
         e.preventDefault();
         e.stopPropagation();
         dispatch(resetSort());
         setOpenModal(false);
+        clearActiveFilter();
     };
 
     useEffect(() => {
@@ -99,25 +105,36 @@ const Sorting = ({ isFetching, setActiveFilter, clearActiveFilter, name }) => {
                 !buttonRef.current.contains(e.target)
             ) {
                 setOpenModal(false);
+                if (activeFilter === name) {
+                    clearActiveFilter();
+                }
             }
         };
         document.body.addEventListener('mousedown', clickOutside);
         return () =>
             document.body.removeEventListener('mousedown', clickOutside);
-    }, []);
+    }, [activeFilter, clearActiveFilter, name]);
+
+    useEffect(() => {
+        if (!isFetching && activeFilter === name) {
+            clearActiveFilter();
+        }
+    }, [isFetching, activeFilter, name, clearActiveFilter]);
+
+    const showLoader = isFetching && activeFilter === name;
 
     return (
         <div className={s.root}>
             <SortButton
                 title="Сортировка"
                 Icon={IconElevator}
-                load={isFetching}
+                load={showLoader}
                 handleReset={handleReset}
                 handleOpen={handleOpen}
                 buttonRef={buttonRef}
                 sort={
                     sortBy !== 'share_of_partnership_revenue' ||
-                    sortDir !== 'asc'
+                    sortDir !== 'desc'
                 }
             />
             <div

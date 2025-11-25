@@ -1,55 +1,55 @@
 .rightPanelBlock {
-    padding: 24px 20px;
-    border-radius: 8px;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    min-width: 500px;
+  padding: 24px 20px;
+  border-radius: 8px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 500px;
 }
 .list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 .listRow {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .leftColumn {
-    display: flex;
-    flex-direction: row;
-    gap: 6px;
-    width: 300px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  max-width: 340px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .links {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
 }
 .link {
-    display: flex;
-    flex-direction: row;
-    gap: 6px;
-    cursor: pointer;
-    align-items: center;
-    color: #002cfb;
-    text-align: center;
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  cursor: pointer;
+  align-items: center;
+  color: #002cfb;
+  text-align: center;
 
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 140%;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
 
-    &:hover {
-        color: #0024cb;
-    }
+  &:hover {
+    color: #0024cb;
+  }
 }
 .greenText {
-    color: #28a879;
+  color: #28a879;
 }

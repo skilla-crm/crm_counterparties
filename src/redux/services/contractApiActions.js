@@ -13,6 +13,8 @@ export const contractApiActions = createApi({
     baseUrl: process.env.REACT_APP_BASE_URL,
     prepareHeaders: (headers) => {
       if (token) headers.set("Authorization", token);
+      headers.set("Accept", "application/json");
+      //   headers.set("Content-Type", "application/json");
       return headers;
     },
   }),
@@ -34,6 +36,7 @@ export const contractApiActions = createApi({
         url: `${CONTRACT_URL}`,
         method: "POST",
         body: data,
+        // body: JSON.stringify(data),
       }),
     }),
 
@@ -44,6 +47,7 @@ export const contractApiActions = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["contract"],
     }),
     // УДАЛЕНИЕ ДОГОВОРА
     deleteContract: build.mutation({
@@ -116,7 +120,7 @@ export const contractApiActions = createApi({
         responseHandler: (response) => response.blob(),
       }),
     }),
-    
+
     //СКАЧИВАНИЕ ДОКУМЕНТА ПРИЛОЖЕННОГО К ДОГОВОРУ
     downloadAttachment: build.mutation({
       query: ({ attachmentId }) => ({
@@ -126,13 +130,13 @@ export const contractApiActions = createApi({
       }),
     }),
     //УДАЛЕНИЕ ДОКУМЕНТА ПРИЛОЖЕННОГО К ДОГОВОРУ
-    downloadContract: build.mutation({
-      query: ({ contractId, data }) => ({
-        url: `${CONTRACT_URL}/download/${contractId}`,
-        method: "POST",
-        body: { ...data },
-        responseHandler: (response) => response.blob(),
+
+    deleteAttachment: build.mutation({
+      query: ({ attachmentId }) => ({
+        url: `${CONTRACT_URL}/docs/${attachmentId}`,
+        method: "DELETE",
       }),
+      invalidatesTags: ["contract"],
     }),
 
     //НАСТРОЙКИ

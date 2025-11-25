@@ -38,7 +38,12 @@ const FilterButton = ({
           <LoaderCircle />
         </div>
 
-        <div className={classNames(s.loader, mounted && done && s.loader_vis)}>
+        <div
+          className={classNames(
+            s.loader,
+            mounted && done && !load && s.loader_vis
+          )}
+        >
           <IconDone />
         </div>
       </div>

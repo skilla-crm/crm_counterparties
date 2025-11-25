@@ -14,15 +14,17 @@ import CompanyListInn from './CompanyList/CompanyListInn';
 // Styles
 import s from './InputCounterparty.module.scss';
 import idObj from 'identity-obj-proxy';
+import { set } from 'lodash';
 
 const InputCounterparty = ({
+    setParentSaggestions,
     value,
     setValue,
     setField,
     disabled,
     checker,
     setCheckResult,
-    withInn,
+    withoutInn,
 }) => {
     const [suggestions, setSuggestions] = useState([]);
     const [openList, setOpenList] = useState(false);
@@ -32,30 +34,36 @@ const InputCounterparty = ({
 
     const [inputValue, setInputValue] = useState(value);
     const [displayAsName, setDisplayAsName] = useState(false);
-
+    const openListRef = useRef(false);
     const inputRef = useRef();
-    const debouncedValue = useDebounce(value, 300);
+    const debouncedValue = useDebounce(value, 1000);
 
     const [getCompanyInfo] = useGetCompanyInfoMutation();
-
     useEffect(() => {
-        if (withInn) {
+        openListRef.current = openList;
+    }, [openList]);
+    useEffect(() => {
+        if (withoutInn) {
+            setError('');
             setValue('');
             setDisplayAsName(false);
             setInputValue('');
             setSuggestions([]);
+            setParentSaggestions([]);
             setCheckResult(null);
             setOpenList(false);
             setNoFind(false);
-            setError('');
+
             setFieldFocus(false);
         }
-    }, [withInn]);
+    }, [withoutInn]);
     useEffect(() => {
+        if (withoutInn) return;
         // очистка ошибки
         if (!debouncedValue) {
             setError('');
             setSuggestions([]);
+            setParentSaggestions([]);
             setNoFind(false);
             setOpenList(false);
             return;
@@ -65,6 +73,7 @@ const InputCounterparty = ({
         if (debouncedValue.length !== 10 && debouncedValue.length !== 12) {
             setError('ИНН должен содержать 10 или 12 цифр');
             setSuggestions([]);
+            setParentSaggestions([]);
             setNoFind(false);
             setOpenList(false);
             return;
@@ -81,6 +90,7 @@ const InputCounterparty = ({
                 }).unwrap();
 
                 setSuggestions(res.suggestions);
+                setParentSaggestions(res.suggestions);
                 setNoFind(res.suggestions.length === 0 && fieldFocus);
                 setOpenList(res.suggestions.length > 0 && fieldFocus);
 
@@ -95,18 +105,26 @@ const InputCounterparty = ({
 
         fetchAndCheck();
     }, [debouncedValue, getCompanyInfo, fieldFocus]);
-    useEffect(() => {
-        const checkInn = async () => {
-            if (debouncedValue.length === 10 || debouncedValue.length === 12) {
-                setError('');
-                await handleCheck(debouncedValue);
-            }
-        };
-        checkInn();
-    }, [debouncedValue]);
+    // useEffect(() => {
+    //     const checkInn = async () => {
+    //         const len = debouncedValue.length;
+
+    //         if ((len === 10 || len === 12) && openList) {
+    //             setError('');
+    //             return;
+    //         }
+
+    //         if (len === 10 || len === 12) {
+    //             setError('');
+    //             await handleCheck(debouncedValue);
+    //         }
+    //     };
+
+    //     checkInn();
+    // }, [debouncedValue, openList]);
 
     const handleChoose = useCallback(
-        (company) => {
+        async (company) => {
             setField({
                 inn: company.inn,
                 kpp: company.kpp,
@@ -118,11 +136,14 @@ const InputCounterparty = ({
                 signature_position: company?.management?.post || '',
             });
 
+            // setValue(company.inn);
             setInputValue(company?.name?.short_with_opf || company.inn);
             setDisplayAsName(true);
-            //   setOpenList(false);
 
-            checker(company.inn, company.kpp);
+            // setOpenList(false);
+            // setFieldFocus(false);
+
+            await handleCheck(company.inn);
         },
         [setField, checker]
     );
@@ -146,7 +167,7 @@ const InputCounterparty = ({
         if (suggestions.length > 0) setOpenList(true);
     };
     const handleCheck = async (inn) => {
-        // if (!inn || error) return;
+        // if (openListRef.current) return;
         try {
             const res = await checker({ inn, kpp: null }).unwrap();
             if (res.success) {
@@ -173,17 +194,17 @@ const InputCounterparty = ({
                         setCheckResult(null);
                     }
                 }}
-                onKeyDown={async (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        if (value) {
-                            await handleCheck(value);
-                            setOpenList(false);
-                            setFieldFocus(false);
-                            inputRef.current?.blur();
-                        }
-                    }
-                }}
+                // onKeyDown={async (e) => {
+                //     if (e.key === 'Enter') {
+                //         e.preventDefault();
+                //         if (value) {
+                //             await handleCheck(value);
+                //             setOpenList(false);
+                //             setFieldFocus(false);
+                //             inputRef.current?.blur();
+                //         }
+                //     }
+                // }}
                 onFocus={handleFocus}
                 onBlur={() => {
                     setTimeout(async () => {
@@ -196,7 +217,9 @@ const InputCounterparty = ({
             <div
                 className={classNames(
                     s.warningText,
-                    error === 'Не найден в реестре' && s.warningText_active
+                    error === 'Не найден в реестре' &&
+                        suggestions.length === 0 &&
+                        s.warningText_active
                 )}
             >
                 <p>{error}</p>
@@ -205,8 +228,18 @@ const InputCounterparty = ({
                 className={classNames(
                     s.errorText,
                     error !== 'Не найден в реестре' &&
+                        error !== 'Проверен платформой Скилла Работа' &&
                         error &&
                         s.errorText_active
+                )}
+            >
+                <p>{error}</p>
+            </div>
+            <div
+                className={classNames(
+                    s.greenText,
+                    error === 'Проверен платформой Скилла Работа' &&
+                        s.greenText_active
                 )}
             >
                 <p>{error}</p>

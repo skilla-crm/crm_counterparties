@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     sortBy: 'share_of_partnership_revenue',
-    sortDir: 'asc',
+    sortDir: 'desc',
 };
 
 const sortSlice = createSlice({

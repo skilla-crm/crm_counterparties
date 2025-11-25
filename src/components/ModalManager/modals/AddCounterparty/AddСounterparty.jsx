@@ -35,13 +35,14 @@ const AddCounterparty = () => {
     const navigate = useNavigate();
     const { showToast } = useToast();
     const { modalProps, hideModal } = useModal();
-    const { id } = modalProps;
+    // const { id } = modalProps;
 
-    const [withInn, setWithInn] = useState(false);
+    const [withoutInn, setWithoutInn] = useState(false);
     const [dadataState, setDadataState] = useState({});
     const [inputCounterparty, setInputCounterparty] = useState('');
     const [checkResult, setCheckResult] = useState(null);
-
+    const [parentSaggestions, setParentSuggestions] = useState([]);
+    const [successCheck, setSuccessCheck] = useState(false);
     const [isNotFound, setIsNotFound] = useState(false);
     const [isAlreadyAdded, setIsAlreadyAdded] = useState(false);
     const [disabledBtn, setDisabledBtn] = useState(false);
@@ -54,14 +55,14 @@ const AddCounterparty = () => {
     useEffect(() => {
         const validInn =
             inputCounterparty.length === 10 || inputCounterparty.length === 12;
-        setDisabledBtn(!withInn && (!validInn || !checkResult));
-    }, [inputCounterparty, withInn, checkResult]);
+        setDisabledBtn(!withoutInn && (!validInn || !checkResult));
+    }, [inputCounterparty, withoutInn, checkResult]);
     useEffect(() => {
-        if (withInn) {
+        if (withoutInn) {
             setCheckResult(null);
             setInputCounterparty('');
         }
-    }, [withInn]);
+    }, [withoutInn]);
     useEffect(() => {
         if (!checkResult) {
             setIsNotFound(false);
@@ -69,19 +70,23 @@ const AddCounterparty = () => {
             return;
         }
 
-        setIsNotFound(checkResult?.message === 'Не найден в реестре');
+        setIsNotFound(
+            checkResult?.message === 'Не найден в реестре' &&
+                parentSaggestions.length === 0
+        );
+
         setIsAlreadyAdded(checkResult?.message === 'Уже есть в твоей базе');
-    }, [checkResult]);
+    }, [checkResult, parentSaggestions]);
 
     useEffect(() => {
         const validInn =
             inputCounterparty.length === 10 || inputCounterparty.length === 12;
-        if (withInn) {
+        if (withoutInn) {
             setDisabledBtn(false);
         } else {
             setDisabledBtn(!validInn || !checkResult);
         }
-    }, [inputCounterparty, withInn, checkResult]);
+    }, [inputCounterparty, withoutInn, checkResult]);
 
     const handleConfirm = async () => {
         try {
@@ -107,22 +112,38 @@ const AddCounterparty = () => {
     };
 
     const buttonText = useMemo(() => {
-        if (withInn || isNotFound) return 'Заполнить карточку вручную';
-        if (isAlreadyAdded) return 'Перейти в карточку контрагента';
-        return 'Подтвердить';
-    }, [withInn, isAlreadyAdded, isNotFound]);
+        if (withoutInn || isNotFound) return 'Заполнить карточку вручную';
+        if (isAlreadyAdded) return 'Подтвердить';
+        return 'Продолжить';
+    }, [withoutInn, isAlreadyAdded, isNotFound]);
 
     const btnIcon = useMemo(() => {
-        if (withInn || isNotFound) return IconBackForward;
+        if (withoutInn || isNotFound) return IconBackForward;
         if (isAlreadyAdded) return IconDoneWhite;
-        return IconDoneGrey;
-    }, [withInn, isAlreadyAdded, isNotFound]);
+        if (successCheck) return IconDoneWhite;
+        if (disabledBtn) return IconDoneGrey;
+        return IconDoneWhite;
+    }, [withoutInn, isAlreadyAdded, isNotFound, disabledBtn, successCheck]);
 
-    const handleButtonClick = useMemo(() => {
-        if (withInn || isNotFound) return handleOpenCreateCounterparty;
-        if (isAlreadyAdded) return handleOpenDetailsCounterparty;
-        return handleConfirm;
-    }, [withInn, isAlreadyAdded, isNotFound, checkResult]);
+    const handleButtonClick = () => {
+        if (
+            withoutInn ||
+            (checkResult?.message === 'Не найден в реестре' &&
+                parentSaggestions.length > 0)
+        ) {
+            return handleOpenCreateCounterparty();
+        }
+
+        if (checkResult?.message === 'Уже есть в твоей базе') {
+            return handleOpenDetailsCounterparty();
+        }
+
+        if (checkResult?.message === 'Проверен платформой Скилла Работа') {
+            return handleConfirm();
+        }
+
+        return handleOpenCreateCounterparty();
+    };
 
     return (
         <Modal isOpen={true} onClose={hideModal}>
@@ -143,21 +164,22 @@ const AddCounterparty = () => {
                         value={inputCounterparty}
                         setValue={setInputCounterparty}
                         setField={setDadataState}
-                        disabled={withInn && !inputCounterparty}
+                        disabled={withoutInn && !inputCounterparty}
                         form={dadataState}
                         checker={checkCounterparty}
                         setCheckResult={setCheckResult}
-                        withInn={withInn}
+                        withoutInn={withoutInn}
+                        setParentSaggestions={setParentSuggestions}
                     />
                 </Field>
 
                 <div className={s.content}>
                     <Switch
                         text="Без ИНН"
-                        switchState={withInn}
+                        switchState={withoutInn}
                         handleSwitch={() => {
                             setInputCounterparty('');
-                            setWithInn((prev) => !prev);
+                            setWithoutInn((prev) => !prev);
                         }}
                     />
                 </div>

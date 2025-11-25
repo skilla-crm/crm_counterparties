@@ -18,14 +18,14 @@ const CompanyMainInfo = ({
   setField,
   data,
   isEditMode,
-  isPercent,
+  // isPercent,
   isVerified,
 }) => {
-  const [showPercent, setShowPercent] = useState(false);
+  // const [showPercent, setShowPercent] = useState(false);
 
-  useEffect(() => {
-    setShowPercent(Boolean(isPercent));
-  }, [isPercent]);
+  // useEffect(() => {
+  //   setShowPercent(Boolean(isPercent));
+  // }, [isPercent]);
   return (
     <div className={s.block}>
       <h3>Основная информация</h3>
@@ -90,7 +90,7 @@ const CompanyMainInfo = ({
           />
         </Field>
       )}
-      <Switch
+      {/* <Switch
         text="Индивидуальный процент менеджера по персоналу"
         switchState={showPercent}
         setSwitchState={setShowPercent}
@@ -104,7 +104,7 @@ const CompanyMainInfo = ({
             setText={(v) => setField("is_percent", v)}
           />
         </Field>
-      </div>
+      </div> */}
     </div>
   );
 };

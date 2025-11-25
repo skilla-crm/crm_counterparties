@@ -47,21 +47,16 @@
     &:hover {
         background: #eaf0fa;
     }
-
-    // &:last-child {
-    //     border-bottom: none;
-    // }
-
-    // div {
-    //     overflow: hidden;
-    //     text-overflow: ellipsis;
-    //     white-space: nowrap;
-    // }
 }
+
 .gridRow > div:not(.progress) {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+.createHeaderRow {
+    display: grid;
+    grid-template-columns: 3fr 1fr 40px;
 }
 .empty {
     color: var(--Text-Secondary, #71869d);

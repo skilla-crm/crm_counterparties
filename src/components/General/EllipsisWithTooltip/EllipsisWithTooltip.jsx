@@ -29,9 +29,9 @@ const EllipsisWithTooltip = ({ text, className, textStyle, wrapperStyle }) => {
       onMouseLeave={() => setTooltipOpen(false)}
       style={wrapperStyle}
     >
-      <p ref={textRef} className={s.text} style={textStyle}>
+      <div ref={textRef} className={s.text} style={textStyle}>
         {text}
-      </p>
+      </div>
 
       {isOverflowed && (
         <Tooltip2

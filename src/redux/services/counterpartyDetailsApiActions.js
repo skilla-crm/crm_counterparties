@@ -12,7 +12,7 @@ export const counterpartyDetailsApiActions = createApi({
     baseUrl: process.env.REACT_APP_BASE_URL,
     prepareHeaders: (headers) => {
       if (token) headers.set("Authorization", token);
-
+      headers.set("Accept", "application/json");
       return headers;
     },
   }),
@@ -86,6 +86,15 @@ export const counterpartyDetailsApiActions = createApi({
         method: "PATCH",
       }),
       providesTags: ["counterparty"],
+    }),
+
+    updateNote: build.mutation({
+      query: ({ companyId, data }) => ({
+        url: `${COUNTERPARTIES_URL}/${companyId}/change_notes`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["counterparty"],
     }),
 
     //ВКЛАДКА РЕКВИЗИТЫ
@@ -220,6 +229,7 @@ export const {
   useSwitchCounterpartyStopListMutation,
   useSwitchCounterpartyHiddenMutation,
   useSwitchCounterpartyStatisticMutation,
+  useUpdateNoteMutation,
 
   // ВКЛАДКА РЕКВИЗИТЫ
   useGetCounterparyRequisitesQuery,
