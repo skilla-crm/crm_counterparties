@@ -20,7 +20,11 @@ const sortSlice = createSlice({
                 state.sortDir = dir;
             }
         },
-        resetSort: () => initialState,
+        resetSort: (state) => {
+            state.sortBy = 'share_of_partnership_revenue';
+            state.sortDir = 'desc';
+
+        },
     },
 });
 

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 //icons
 import { ReactComponent as IconCloseRed } from "assets/icons/iconCloseRed.svg";
 //slice
-import { deleteBaseRate, deletePriceRate } from "../../../redux/rates/slice";
+/* import { deleteBaseRate, deletePriceRate } from "../../../redux/rates/slice"; */
 
 //components
 import InputText from "components/General/InputText/InputText";
@@ -23,11 +23,11 @@ const empityBaseRate = {
 const Rate = ({ id, data, type, setValue, number }) => {
   const dispatch = useDispatch();
 
-  const handleDeleteRate = (e) => {
+  /* const handleDeleteRate = (e) => {
     const id = Number(e.currentTarget.id);
     type === "base" && dispatch(deleteBaseRate(id));
     type === "price" && dispatch(deletePriceRate(id));
-  };
+  }; */
 
   return (
     <div id={id} className={s.root}>
@@ -80,7 +80,7 @@ const Rate = ({ id, data, type, setValue, number }) => {
         amount={data.worker_bit}
         setAmount={(value) => setValue({ key: "worker_bit", value })}
       />
-      <button onClick={handleDeleteRate} id={id} className={s.button}>
+      <button /* onClick={handleDeleteRate} */ id={id} className={s.button}>
         <IconCloseRed />
       </button>
     </div>

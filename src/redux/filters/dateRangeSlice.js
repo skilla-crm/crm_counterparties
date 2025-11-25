@@ -4,9 +4,9 @@ const dateRangeSlice = createSlice({
     name: 'dateRange',
     initialState: {
         dateStartPicker:
-            JSON.parse(localStorage.getItem('dateStartPicker')) || null,
+            /* JSON.parse(localStorage.getItem('dateStartPicker')) || */ null,
         dateEndPicker:
-            JSON.parse(localStorage.getItem('dateEndPicker')) || null,
+          /*   JSON.parse(localStorage.getItem('dateEndPicker')) ||  */null,
     },
     reducers: {
         setDateStartPicker: (state, action) => {

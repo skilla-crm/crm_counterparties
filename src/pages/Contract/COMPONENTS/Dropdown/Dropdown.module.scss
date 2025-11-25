@@ -5,6 +5,10 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+
+  &_disabled {
+    pointer-events: none;
+  }
 }
 
 .sub {
@@ -200,10 +204,12 @@
   white-space: nowrap;
 }
 .optionType {
+  width: 100%;
+  margin-right: 20px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .label {
@@ -226,4 +232,8 @@
   font-style: normal;
   font-weight: 500;
   line-height: 24px;
+
+  &_disabled {
+    background-color: rgba(173, 191, 223, 0.40);
+  }
 }
