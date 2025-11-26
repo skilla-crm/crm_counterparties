@@ -17,6 +17,5 @@ const detailChangesSlice = createSlice({
     },
 });
 
-export const { setHasUnsavedChanges, resetHasUnsavedChanges } =
-    detailChangesSlice.actions;
+export const { setHasUnsavedChanges, resetHasUnsavedChanges } = detailChangesSlice.actions;
 export default detailChangesSlice.reducer;
