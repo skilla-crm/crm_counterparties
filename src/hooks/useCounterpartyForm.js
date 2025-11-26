@@ -11,7 +11,7 @@ export const useCounterpartyForm = () => {
     ogrn: "",
     logo: null,
     site: "",
-    is_percent: "",
+    // is_percent: "",
 
     // Адрес
     address: "",

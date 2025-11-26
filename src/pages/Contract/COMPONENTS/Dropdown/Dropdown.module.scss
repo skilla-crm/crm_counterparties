@@ -199,3 +199,31 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.optionType {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.label {
+  display: inline-flex;
+  width: max-content;
+  max-width: 150px;
+  min-width: 0;
+
+  padding: 0 8px;
+  align-items: center;
+  gap: 4px;
+  border-radius: 4px;
+  background: #f1f4f9;
+  color: #71869d;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+}

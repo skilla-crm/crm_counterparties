@@ -205,15 +205,17 @@ const ContractHeader = ({
 
   return (
     <div className={s.header}>
-      <h2>
-        {!isCreateMode
-          ? `Договор №${contract.number} от ${dayjs(contract.date).format(
-              "DD.MM.YYYY"
-            )}`
-          : `Договор №${settings?.prefix || ""}${settings?.contract_num || ""} от ${dayjs(
-              new Date()
-            ).format("DD.MM.YYYY")}`}
-      </h2>
+
+        <h2>
+          {!isCreateMode
+            ? `Договор №${contract.number} от ${dayjs(contract.date).format(
+                "DD.MM.YYYY"
+              )}`
+            : `Договор №${settings?.prefix || ""}${settings?.contract_num || ""} от ${dayjs(
+                new Date()
+              ).format("DD.MM.YYYY")}`}
+        </h2>
+
 
       {/* КНОПКИ В РЕЖИМE ПРОСМОТРА  */}
       {!isEditMode && !isCreateMode && (

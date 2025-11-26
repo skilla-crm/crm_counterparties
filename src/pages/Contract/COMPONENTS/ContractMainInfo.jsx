@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 //icons
 import { ReactComponent as IconPlusBlue } from 'assets/icons/iconPlusBlue.svg';
@@ -26,6 +26,7 @@ const ContractMainInfo = ({
     isEditMode,
     withoutExpiredDate,
     setWithoutExpiredDate,
+    contract,
     onBankAccountChange = () => {},
 }) => {
     const { showModal } = useModal();
@@ -46,9 +47,25 @@ const ContractMainInfo = ({
     //счета заказчика
     useEffect(() => {
         setCompanyAccounts(counterparty?.bank_accounts || []);
-        console.log(counterparty?.bank_accounts, 'counterparty?.bank_accounts');
+    
     }, [counterparty?.bank_accounts]);
+    //шаблоны договоров
+    const templates = useMemo(() => {
+        const list = [
+          ...(settings?.contract_templates || []),
+          contract?.contract_template,
+        ].filter(Boolean);
+      
+        const unique = new Map();
+        list.forEach((item) => {
+          if (!item?.id) return;
+          if (!unique.has(item.id)) unique.set(item.id, item);
+        });
+      
+        return Array.from(unique.values());
+      }, [settings?.contract_templates, contract?.contract_template]);
 
+    console.log(templates, 'templates');
     //подписанты заказчика
     const companySignPersons =
         settings?.company_signatories?.map((item) => ({
@@ -152,13 +169,13 @@ const ContractMainInfo = ({
                     value={
                         form.without_template
                             ? null
-                            : contract_templates.find(
+                            : templates.find(
                                   (t) => t.id === form.contract_template_id
                               )
                     }
                     disabled={!isEditMode || form.without_template}
                     onChange={(v) => setField('contract_template_id', v?.id)}
-                    options={contract_templates}
+                    options={templates}
                     type="type"
                 />{' '}
                 <div className={s.switch}>

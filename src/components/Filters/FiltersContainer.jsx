@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { isAnyFilterActive } from "../../redux/filters/selectors";
 
 // components
-
+import TypeFilter from "./TypeFilter/TypeFilters";
 import ResetFiltersBtn from "components/Filters/COMPONENTS/ResetFiltersAllBtn/ResetFiltersBtn";
 import DateFilter from "components/Filters/DateFilter/DateFilter";
 
@@ -27,6 +27,7 @@ const FiltersContainer = ({ type, isFetching }) => {
         name="sort"
         key="sort"
         isFetching={getFetching("sort")}
+        activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
         clearActiveFilter={clearActiveFilter}
       />,
@@ -37,6 +38,15 @@ const FiltersContainer = ({ type, isFetching }) => {
         name="sort"
         key="sort"
         isFetching={getFetching("sort")}
+        activeFilter={activeFilter}
+        setActiveFilter={setActiveFilter}
+        clearActiveFilter={clearActiveFilter}
+      />,
+      <TypeFilter
+        key="type"
+        name="type"
+        isFetching={getFetching("type")}
+        activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
         clearActiveFilter={clearActiveFilter}
       />,
