@@ -8,8 +8,8 @@ import { yandexApi } from "./services/yandexApi";
 
 import sortSlice from "./sorting/sortSlice";
 import filtersSlice from "./filters/filtersSlice";
-import modalReducer from "./modalManager/modalSlice";
-import detailTabReducer from "./slices/detailTabSlice";
+import modalSlice from "./modalManager/modalSlice";
+import detailTabSlice from "./slices/detailTabSlice";
 import detailChangesSlice from "./slices/detailChangesSlice";
 import otherDataSlice from "./slices/otherDataSlice";
 
@@ -17,8 +17,8 @@ export const store = configureStore({
   reducer: {
     sort: sortSlice,
     filters: filtersSlice,
-    modal: modalReducer,
-    detailTab: detailTabReducer,
+    modal: modalSlice,
+    detailTab: detailTabSlice,
     detailChanges: detailChangesSlice,
     otherData: otherDataSlice,
 
@@ -26,7 +26,7 @@ export const store = configureStore({
       counterpartyDetailsApiActions.reducer,
     [counterpartiesListApiActions.reducerPath]:
       counterpartiesListApiActions.reducer,
-    dadataApiActions: dadataApiActions.reducer,
+    [dadataApiActions.reducerPath]: dadataApiActions.reducer,
     [contractApiActions.reducerPath]: contractApiActions.reducer,
     [yandexApi.reducerPath]: yandexApi.reducer,
   },

@@ -1,4 +1,4 @@
-import { createSelector } from '@reduxjs/toolkit';
+/* import { createSelector } from '@reduxjs/toolkit';
 
 export const isAnyFilterActive = (state) => {
     const { sortBy, sortDir } = state.sort;
@@ -8,4 +8,4 @@ export const isAnyFilterActive = (state) => {
 
 export const selectSelectedActivity = createSelector(
     (selected) => selected || []
-);
+); */

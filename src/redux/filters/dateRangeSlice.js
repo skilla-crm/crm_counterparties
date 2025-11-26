@@ -4,30 +4,30 @@ const dateRangeSlice = createSlice({
     name: 'dateRange',
     initialState: {
         dateStartPicker:
-            /* JSON.parse(localStorage.getItem('dateStartPicker')) || */ null,
+            /* JSON.parse(localStorage.getItem('dateStartPicker')) || */ '',
         dateEndPicker:
-          /*   JSON.parse(localStorage.getItem('dateEndPicker')) ||  */null,
+          /*   JSON.parse(localStorage.getItem('dateEndPicker')) ||  */'',
     },
     reducers: {
         setDateStartPicker: (state, action) => {
             state.dateStartPicker = action.payload;
-            localStorage.setItem(
+          /*   localStorage.setItem(
                 'dateStartPicker',
                 JSON.stringify(action.payload)
-            );
+            ); */
         },
         setDateEndPicker: (state, action) => {
             state.dateEndPicker = action.payload;
-            localStorage.setItem(
+           /*  localStorage.setItem(
                 'dateEndPicker',
                 JSON.stringify(action.payload)
-            );
+            ); */
         },
         resetAllDates: (state) => {
-            state.dateStartPicker = null;
-            state.dateEndPicker = null;
-            localStorage.setItem('dateStartPicker', null);
-            localStorage.setItem('dateEndPicker', null);
+            state.dateStartPicker = '';
+            state.dateEndPicker = '';
+           /*  localStorage.setItem('dateStartPicker', null);
+            localStorage.setItem('dateEndPicker', null); */
         },
     },
 });

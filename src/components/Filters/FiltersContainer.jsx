@@ -1,7 +1,7 @@
 import { useState } from "react";
 // redux
 import { useSelector } from "react-redux";
-import { isAnyFilterActive } from "../../redux/filters/selectors";
+/* import { isAnyFilterActive } from "../../redux/filters/selectors"; */
 
 // components
 import TypeFilter from "./TypeFilter/TypeFilters";
@@ -14,7 +14,7 @@ import Sorting from "components/Sorting/Sorting";
 
 const FiltersContainer = ({ type, isFetching }) => {
   const [activeFilter, setActiveFilter] = useState(null);
-  const hasFilters = useSelector(isAnyFilterActive);
+ /*  const hasFilters = useSelector(isAnyFilterActive); */
 
   const clearActiveFilter = () => setActiveFilter(null);
 

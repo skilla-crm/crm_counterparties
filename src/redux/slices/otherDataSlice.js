@@ -38,9 +38,9 @@ const otherDataSlice = createSlice({
         },
 
         resetDrafts: (state) => {
-            state.draftDebt = state.debt_threshold;
-            state.draftMinSum = state.min_acc_sum;
-            state.draftActivity = state.only_repayment;
+            state.draftDebt = state?.debt_threshold;
+            state.draftMinSum = state?.min_acc_sum;
+            state.draftActivity = state?.only_repayment;
         },
     },
 });

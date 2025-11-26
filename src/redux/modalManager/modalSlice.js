@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  activeModal: null,
+  activeModal: false,
   modalProps: {},
 };
 
@@ -14,7 +14,7 @@ const modalSlice = createSlice({
       state.modalProps = action.payload.props || {};
     },
     closeModal: (state) => {
-      state.activeModal = null;
+      state.activeModal = false;
       state.modalProps = {};
     },
   },

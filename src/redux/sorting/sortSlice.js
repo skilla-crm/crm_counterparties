@@ -10,7 +10,7 @@ const sortSlice = createSlice({
     initialState,
     reducers: {
         setSort: (state, action) => {
-            const { type, dir } = action.payload;
+            const { type, dir } = action.payload ?? {};
 
             if (state.sortBy === type && state.sortDir === dir) {
                 state.sortBy = '';
