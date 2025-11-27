@@ -27,6 +27,7 @@ const ContractMainInfo = ({
     withoutExpiredDate,
     setWithoutExpiredDate,
     contract,
+    isCreateMode,
     onBankAccountChange = () => {},
 }) => {
     const { showModal } = useModal();
@@ -190,6 +191,7 @@ const ContractMainInfo = ({
                 </div>
             </div>
             <div className={s.row}>
+               {/* {!isCreateMode && (
                 <Field text="Номер">
                     <InputText
                         width={150}
@@ -198,7 +200,28 @@ const ContractMainInfo = ({
                         setText={(v) => setField('number', v)}
                     />
                 </Field>
+               )} */}
 
+                <Field text="Префикс">
+                    <InputText
+                        placeholder="Префикс"
+                        width={150}
+                        disabled={!isEditMode}
+                        text={form.prefix}
+                        setText={(v) => setField('prefix', v)}
+                    />
+                </Field>
+
+                <Field text="Номер">
+                    <InputText
+                        placeholder="Номер"
+                        width={150}
+                        disabled={!isEditMode}
+                        text={form.number}
+                        setText={(v) => setField('number', v)}
+                    />
+                </Field>
+       
                 {/* <Field
                     width={300}
                     text="Лимит по сумме"
