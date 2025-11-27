@@ -106,10 +106,10 @@ const Dropdown = ({
                 return (
                     <div className={s.optionType}>
                         {/*  <div className={s.optionTypeIcon}></div> */}
-                        {value?.type_name ?? ''}
+                        <p className={s.text}>{value?.type_name ?? ''}</p>
                         {value?.is_delete && <Label text="Архив" disabled={disabled} />}
                         {value?.default === 1 && <Label text="Стандартный" disabled={disabled} />}
-                        {String(value?.active) === '0' && <Label text="Не активный" disabled={disabled} />}
+                        {String(value?.active) == '0' && value?.default !== 1 && <Label text="Не активный" disabled={disabled} />}
                     </div>
                 );
 
@@ -162,10 +162,10 @@ const Dropdown = ({
                     case 'type':
                         content = (
                             <div key={option?.id} id={option?.id} className={s.optionType}>
-                                {option?.type_name ?? ''}
+                                <p className={s.text}>{option?.type_name ?? ''}</p>
                                 {option?.is_delete ? <Label text="Архив" /> : ''}
                                 {option?.default === 1 && <Label text="Стандартный" disabled={disabled} />}
-                                {String(option?.active) === '0' && <Label text="Не активный" disabled={disabled} />}
+                                {String(option?.active) === '0' && option?.default !== 1 && <Label text="Не активный" disabled={disabled} />}
                             </div>
                         );
                         break;

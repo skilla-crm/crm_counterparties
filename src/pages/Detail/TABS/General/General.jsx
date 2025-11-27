@@ -220,7 +220,7 @@ const General = ({ data = {} }) => {
             <Switch
               switchState={isHidden}
               handleSwitch={handleSwitchIsHidden}
-              text="Больше не работаем с эти контрагентом"
+              text="Больше не работаем с этим контрагентом"
             />
             <IconWithTooltip
               icon={<IconInfo />}

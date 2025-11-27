@@ -122,7 +122,8 @@ export const Contract = () => {
     const fields = {
       company_id: locationCounterparty?.general?.company_id || "",
       company_details_id: locationCounterparty?.bank_accounts?.[0]?.id || null,
-      number: buildNumber(),
+      number: scopedSettings?.contract_num ?? "",
+      prefix: scopedSettings?.prefix ?? "",
       // contract_template_id: scopedSettings?.contract_templates?.[0]?.id || "",
       contract_template_id: '',
       docs: [],
@@ -156,6 +157,7 @@ export const Contract = () => {
        contractData.contract_template?.id,
       without_template: contractData.without_template || 0,
       number: contractData.number || "",
+      prefix: contractData.prefix || "",
       date: normalizeDate(contractData.date),
       expired_date: contractData.expired_date || null,
       company_signature_id: contractData.company_signature_id || null,
@@ -248,6 +250,7 @@ export const Contract = () => {
             withoutExpiredDate={withoutExpiredDate}
             setWithoutExpiredDate={setWithoutExpiredDate}
             contract={contractData}
+            isCreateMode={isCreateMode}
           />
 
           <DocumentsList

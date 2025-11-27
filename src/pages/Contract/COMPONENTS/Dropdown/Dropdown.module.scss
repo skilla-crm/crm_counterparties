@@ -72,6 +72,7 @@
     background: #fff5f5;
   }
 }
+
 .chevron {
   margin-left: auto;
   flex-shrink: 0;
@@ -161,6 +162,7 @@
     height: 20px;
   }
 }
+
 //company options
 
 .optionCompany,
@@ -176,17 +178,20 @@
   font-weight: 400;
   line-height: 22px;
 }
+
 .companyDetails {
   color: #71869d;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .companyName {
   max-width: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .optionAccount {
   display: flex;
   flex-direction: row;
@@ -203,8 +208,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .optionType {
-  width: 100%;
+  width: calc(100% - 40px);
   margin-right: 20px;
   display: flex;
   flex-direction: row;
@@ -217,6 +223,7 @@
   width: max-content;
   max-width: 150px;
   min-width: 0;
+  flex-shrink: 0;
 
   padding: 0 8px;
   align-items: center;
@@ -236,4 +243,12 @@
   &_disabled {
     background-color: rgba(173, 191, 223, 0.40);
   }
+}
+
+
+.text {
+  text-wrap: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

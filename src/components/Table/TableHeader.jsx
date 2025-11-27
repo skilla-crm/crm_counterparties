@@ -13,7 +13,7 @@ const TableHeader = ({ type }) => {
           Наименование
         </div>
 
-        <div className={classNames(s.gridCell)}>Основной ОКВЕД </div>
+        <div className={classNames(s.gridCell)}>Основной ОКВЭД </div>
         <div className={classNames(s.gridCell)}>Доля от моей выручки, %</div>
         <div className={classNames(s.gridCell, s.right)}>Выручка ЕГРЮЛ</div>
         <div className={classNames(s.gridCell, s.right)}>ССЧ, чел</div>

@@ -63,13 +63,13 @@ const CreateCounterparty = () => {
 
   // const [isContractor, setIsContractor] = useState(false);
 
-  // useEffect(() => {
-  //     setIsAdditionalSignature(
-  //         counterparty?.signatory &&
-  //             Object.values(counterparty.signatory).length > 0
-  //     );
-  //     setIsPercent(!!counterparty?.is_percent);
-  // }, [counterparty]);
+  useEffect(() => {
+      setIsAdditionalSignature(
+          counterparty?.signatory &&
+              Object.values(counterparty.signatory).length > 0
+      );
+     
+  }, [counterparty]);
 
   useEffect(() => {
     !isLoading && setAnim(true);
@@ -171,7 +171,7 @@ const CreateCounterparty = () => {
       }
     } catch (err) {
       console.error(err);
-      showToast("Ошибка при добавлении контрагента", "error");
+      showToast(err.data.message, "error");
     }
   };
   const handleEdit = async () => {
