@@ -67,8 +67,8 @@ const InputCompanyName = ({
       setField("name", company?.name?.short_with_opf);
       setField("ur_address", company?.address?.unrestricted_value);
       setField("address", company?.address?.value);
-      setField("signature", company?.management?.name || "");
-      setField("signature_position", company?.management?.post || "");
+      setField("director", company?.management?.name || "");
+      setField("director_position", company?.management?.post || "");
 
       setOpenList(false);
     },

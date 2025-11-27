@@ -81,8 +81,8 @@ const CompanyMainInfo = ({
         <Field text="Логотип">
           <LogoUpload
             disabled={false}
-            width={317}
-            height={80}
+            width={250}
+            height={250}
             logo={form.logo}
             setLogo={(val) => {
               setField("logo", val);
