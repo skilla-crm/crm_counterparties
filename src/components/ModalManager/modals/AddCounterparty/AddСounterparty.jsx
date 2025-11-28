@@ -113,16 +113,15 @@ const AddCounterparty = () => {
 
     const buttonText = useMemo(() => {
         if (withoutInn || isNotFound) return 'Заполнить карточку вручную';
-        if (isAlreadyAdded) return 'Подтвердить';
+        if (isAlreadyAdded) return 'Перейти в карточку';
+        if(checkResult?.message === 'Проверен платформой Скилла Работа') return 'Подтвердить';
         return 'Продолжить';
     }, [withoutInn, isAlreadyAdded, isNotFound]);
 
     const btnIcon = useMemo(() => {
-        if (withoutInn || isNotFound) return IconBackForward;
-        if (isAlreadyAdded) return IconDoneWhite;
-        if (successCheck) return IconDoneWhite;
+        if (checkResult?.message === 'Проверен платформой Скилла Работа') return IconDoneWhite;
         if (disabledBtn) return IconDoneGrey;
-        return IconDoneWhite;
+        return IconBackForward;
     }, [withoutInn, isAlreadyAdded, isNotFound, disabledBtn, successCheck]);
 
     const handleButtonClick = () => {
