@@ -32,7 +32,7 @@ import s from "./UnsavedChanges.module.scss";
 import { handlePreparePriceData } from "utils/handlePreparePriceData";
 
 const UnsavedChanges = () => {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const { showToast } = useToast();
   const dispatch = useDispatch();
   const { modalProps, hideModal } = useModal();
@@ -86,7 +86,7 @@ const UnsavedChanges = () => {
           dispatch(resetRateChanged());
           navigate(`?block=${nextTab}`)
           hideModal();
-          showToast("Изменения сохранены", "success");
+          showToast("Изменения в ставках сохранены", "success");
         } else {
           showToast("Произошла ошибка", "error");
         }
@@ -132,7 +132,7 @@ const UnsavedChanges = () => {
           <UniButton
             text={"Сохранить"}
             onClick={handleUpdate}
-            isLoading={isLoading}
+            isLoading={currentTab === 'other' ? isLoading : isLoadingPrice}
             icon={IconDoneWhite}
             width={240}
           />

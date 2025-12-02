@@ -13,6 +13,7 @@ import useToast from "hooks/useToast";
 
 // Components
 import UniButton from "components/General/UniButton/UniButton";
+import { resetRateChanged } from "../../../../redux/rates/slice";
 
 // Icons
 import { ReactComponent as IconDelete } from "assets/icons/iconDeleteRed.svg";
@@ -99,8 +100,17 @@ const Header = ({
   //PRICE HANDLER
   const handleUpdatePrice = () => {
     const data = handlePreparePriceData(priceRates)
-    console.log(data)
+
     updatePriceList({ companyId: counterpartyId, data })
+      .then((res) => {
+        const success = res.data.success;
+        if (success) {
+          dispatch(resetRateChanged());
+          showToast("Изменения в ставках сохранены", "success");
+        } else {
+          showToast("Произошла ошибка", "error");
+        }
+      })
   }
 
   const renderBtns = (tab) => {
@@ -170,6 +180,7 @@ const Header = ({
         return (
           <div className={classNames(s.headerBtns)}>
             <UniButton
+              isLoading={isLoading}
               text="Сохранить изменения"
               icon={IconDone}
               onClick={handleUpdateOther}
@@ -182,6 +193,7 @@ const Header = ({
           <div className={classNames(s.headerBtns)}>
             <UniButton
               hidden={!rateChanged}
+              isLoading={isLoadingPrice}
               text="Сохранить изменения"
               icon={IconDone}
               onClick={handleUpdatePrice}

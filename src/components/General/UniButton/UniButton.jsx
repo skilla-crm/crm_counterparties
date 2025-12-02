@@ -28,10 +28,14 @@ const UniButton = ({
     const renderIcon = () => {
         if (isLoading) {
             return (
-                <LoaderButton
-                    color={loaderColor}
-                    className={classNames(s.icon, s.loader)}
-                />
+                <div className={classNames(s.icon, s.loader)}>
+                    <LoaderButton
+
+                        color={loaderColor}
+
+                    />
+                </div>
+
             );
         }
 

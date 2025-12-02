@@ -73,7 +73,7 @@ const Detail = () => {
     const { data: settings } = useGetSettingsQuery({
         companyId: id,
     });
-    const { data: counterparty, isLoading } = useGetCounterpartyInfoQuery({
+    const { data: counterparty, isLoading, isFetching } = useGetCounterpartyInfoQuery({
         counterpartyId: id,
     });
 

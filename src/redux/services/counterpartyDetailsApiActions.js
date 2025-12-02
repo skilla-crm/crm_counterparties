@@ -117,8 +117,8 @@ export const counterpartyDetailsApiActions = createApi({
     //ВКЛАДКА ПРАЙСЛИСТ
     updatePriceList: build.mutation({
       query: ({ companyId, data }) => ({
-        url: `${COUNTERPARTIES_URL}/${companyId}/price_list/update`,
-        method: "PUT",
+        url: `companies/${companyId}/price_list/update`,
+        method: "POST",
         body: data,
       }),
       invalidatesTags: ["counterparty"],
