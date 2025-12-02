@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import dayjs from 'dayjs';
+import printJS from "print-js";
 
 // Hooks
 import { useModal } from 'hooks/useModal';
@@ -143,6 +144,8 @@ const DocumentRow = ({
     } = doc;
     const [downloadAttachment] = useDownloadAttachmentMutation();
 
+    console.log(doc)
+
     const navigate = useNavigate();
     const hadleOpenContract = () => {
         // navigate(`/details/contract/${id}`, {
@@ -189,22 +192,12 @@ const DocumentRow = ({
         }
     };
     const handlePrint = async (id) => {
-        try {
-            const blob = await downloadAttachment({
-                attachmentId: id,
-            }).unwrap();
-            const url = window.URL.createObjectURL(blob);
-
-            const printWindow = window.open(url);
-
-            printWindow.onload = () => {
-                printWindow.focus();
-                printWindow.print();
-            };
-        } catch (e) {
-            showToast('Ошибка при подготовке печати', 'error');
-        }
+        const blob = await downloadAttachment({
+            attachmentId: id,
+        }).unwrap();
+        printJS(URL.createObjectURL(blob))
     };
+
     const handleDeleteFromform = () => {
         const newDocs = form.docs.filter((doc) => doc.name !== name);
         setField('docs', newDocs);
@@ -223,17 +216,39 @@ const DocumentRow = ({
             handler: () => handleDownload(id, name),
             icon: <IconDownload />,
         },
-        {
-            label: 'Печать',
-            handler: () => handlePrint(id),
-            icon: <IconPrint />,
-        },
+
         {
             label: 'Удалить',
             handler: () => handleDelete(),
             icon: <IconDelete />,
         },
     ];
+
+    const operationsPDF = [
+        {
+            label: 'Отправить по e-mail',
+            handler: () => handleSendEmail(),
+            icon: <IconEmail />,
+        },
+        {
+            label: 'Скачать',
+            handler: () => handleDownload(id, name),
+            icon: <IconDownload />,
+        },
+
+        {
+            label: 'Печать',
+            handler: () => handlePrint(id),
+            icon: <IconPrint />,
+        },
+
+        {
+            label: 'Удалить',
+            handler: () => handleDelete(),
+            icon: <IconDelete />,
+        },
+    ];
+
     const createOperation = [
         {
             label: 'Удалить',
@@ -266,7 +281,7 @@ const DocumentRow = ({
                                     className={classNames(
                                         s.dropDownItem,
                                         operation.label === 'Удалить' &&
-                                            s.delete
+                                        s.delete
                                     )}
                                     onClick={operation.handler}
                                 >
@@ -302,13 +317,13 @@ const DocumentRow = ({
                     <IconKebab />
                     {openMenu && (
                         <div className={s.dropDownMenu}>
-                            {operations.map((operation) => (
+                            {(doc?.name?.includes('.pdf') ? operationsPDF : operations)?.map((operation) => (
                                 <div
                                     key={operation.label}
                                     className={classNames(
                                         s.dropDownItem,
                                         operation.label === 'Удалить' &&
-                                            s.delete
+                                        s.delete
                                     )}
                                     onClick={operation.handler}
                                 >
@@ -324,14 +339,10 @@ const DocumentRow = ({
                     open={isOpenSender}
                     setOpen={setIsOpenSender}
                     contacts={contacts}
+                    isAttachments={true}
                     docs={[doc]}
                     theme={`Документ "${doc.name}" от ${dayjs(doc.date_add).format('DD.MM.YYYY')}`}
                     text={settings?.contract_mail_template?.value || ''}
-                    formats={[
-                        { id: 1, name: 'PDF с печатью' },
-                        { id: 2, name: 'Word с печатью' },
-                    ]}
-                    partnerEmail={settings?.partnership_email}
                     handleSendEmailSuccess={() =>
                         showToast('Сообщение отправлено', 'success')
                     }

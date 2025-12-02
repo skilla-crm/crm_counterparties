@@ -15,7 +15,7 @@ import {
 
 // Components
 import Field from 'components/General/Field/Field';
-import InputNum from 'components/General/InputNum/InputNum';
+import InputNumRub from 'components/General/InputNumRub/InputNumRub';
 import Switch from 'components/EmailSender/Switch/Switch';
 
 // Styles
@@ -58,14 +58,14 @@ const Other = ({ data }) => {
                     text="Порог задолженности"
                     info="Порог при котором заказы клиента не принимаются"
                 >
-                    <InputNum
+                    <InputNumRub
                         width={300}
                         num={draftDebt}
                         setNum={(val) => dispatch(setDraftDebt(val))}
                     />
                 </Field>
                 <Field text="Минимальная сумма на счете">
-                    <InputNum
+                    <InputNumRub
                         width={300}
                         num={draftMinSum}
                         setNum={(val) => dispatch(setDraftMinSum(val))}

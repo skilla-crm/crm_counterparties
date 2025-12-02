@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
 // Redux
-import { useUpdateOtherMutation } from "../../../../redux/services/counterpartyDetailsApiActions";
+import { useUpdateOtherMutation, useUpdatePriceListMutation } from "../../../../redux/services/counterpartyDetailsApiActions";
 import { useSelector, useDispatch } from "react-redux";
 import { resetHasUnsavedChanges } from "../../../../redux/slices/detailChangesSlice";
 
@@ -20,6 +20,9 @@ import { ReactComponent as IconEdit } from "assets/icons/iconEditWhite.svg";
 import { ReactComponent as IconPlus } from "assets/icons/iconPlus.svg";
 import { ReactComponent as IconDone } from "assets/icons/iconDoneWhite.svg";
 
+//utils
+import { handlePreparePriceData } from "utils/handlePreparePriceData";
+
 // Styles
 import s from "./Header.module.scss";
 
@@ -34,10 +37,11 @@ const Header = ({
   const { showModal } = useModal();
   const dispatch = useDispatch();
   const { showToast } = useToast();
-  const { draftDebt, draftMinSum, draftActivity } = useSelector(
-    (state) => state.otherData
-  );
+  const { draftDebt, draftMinSum, draftActivity } = useSelector((state) => state.otherData);
+  const { priceRates, rateChanged } = useSelector((state) => state.rates);
+
   const [updateOther, { isLoading }] = useUpdateOtherMutation();
+  const [updatePriceList, { isLoading: isLoadingPrice }] = useUpdatePriceListMutation();
 
   //GENERAL HANDLERS
   const handleOpenDeleteCounterparty = () => {
@@ -91,6 +95,14 @@ const Header = ({
       showToast("Произошла ошибка", "error");
     }
   };
+
+  //PRICE HANDLER
+  const handleUpdatePrice = () => {
+    const data = handlePreparePriceData(priceRates)
+    console.log(data)
+    updatePriceList({ companyId: counterpartyId, data })
+  }
+
   const renderBtns = (tab) => {
     switch (tab) {
       case "general":
@@ -164,6 +176,20 @@ const Header = ({
             />
           </div>
         );
+
+      case "price":
+        return (
+          <div className={classNames(s.headerBtns)}>
+            <UniButton
+              hidden={!rateChanged}
+              text="Сохранить изменения"
+              icon={IconDone}
+              onClick={handleUpdatePrice}
+            />
+          </div>
+        );
+
+
 
       default:
         return <div className={classNames(s.headerBtns)}></div>;

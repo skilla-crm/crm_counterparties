@@ -78,6 +78,10 @@
     &.button_loading {
         cursor: not-allowed;
     }
+
+    &.button_hidden {
+        opacity: 0;
+    }
 }
 
 .content {

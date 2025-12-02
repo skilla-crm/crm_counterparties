@@ -8,6 +8,7 @@ import detailTabSlice from './slices/detailTabSlice';
 import detailChangesSlice from './slices/detailChangesSlice';
 import otherDataSlice from './slices/otherDataSlice';
 import dateRangeSlice from './filters/dateRangeSlice';
+import ratesSlice from './rates/slice';
 
 import { counterpartyDetailsApiActions } from './services/counterpartyDetailsApiActions';
 import { dadataApiActions } from './services/dadataApiActions';
@@ -24,6 +25,7 @@ export const store = configureStore({
     detailChanges: detailChangesSlice,
     otherData: otherDataSlice,
     dateRange: dateRangeSlice,
+    rates: ratesSlice,
 
     [counterpartyDetailsApiActions.reducerPath]: counterpartyDetailsApiActions.reducer,
     [counterpartiesListApiActions.reducerPath]: counterpartiesListApiActions.reducer,

@@ -194,7 +194,7 @@ const CreateCounterparty = () => {
       }).unwrap();
       if (res.success) {
         showToast("Изменения сохранены", "success");
-        navigate(`/details/${res.data.id}`);
+        navigate(`/details/${res.data.id}?block=details`);
       }
     } catch (err) {
       console.error(err);

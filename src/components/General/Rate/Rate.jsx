@@ -3,11 +3,11 @@ import { useDispatch } from "react-redux";
 //icons
 import { ReactComponent as IconCloseRed } from "assets/icons/iconCloseRed.svg";
 //slice
-/* import { deleteBaseRate, deletePriceRate } from "../../../redux/rates/slice"; */
+import { deletePriceRate } from "../../../redux/rates/slice";
 
 //components
 import InputText from "components/General/InputText/InputText";
-import InputNum from "components/General/InputNum/InputNum";
+import InputNum from "../InputNum/InputNum";
 import InputFinancial from "components/General/InputFinancial/InputFinancial";
 
 const empityBaseRate = {
@@ -23,11 +23,10 @@ const empityBaseRate = {
 const Rate = ({ id, data, type, setValue, number }) => {
   const dispatch = useDispatch();
 
-  /* const handleDeleteRate = (e) => {
-    const id = Number(e.currentTarget.id);
-    type === "base" && dispatch(deleteBaseRate(id));
-    type === "price" && dispatch(deletePriceRate(id));
-  }; */
+  const handleDeleteRate = (e) => {
+    const id = e.currentTarget.id;
+    dispatch(deletePriceRate(id));
+  };
 
   return (
     <div id={id} className={s.root}>
@@ -37,37 +36,19 @@ const Rate = ({ id, data, type, setValue, number }) => {
         setText={(value) => setValue({ key: "name", value })}
       />
 
-      {type === "base" && (
-        <InputText
-          width={300}
-          text={data.label}
-          setText={(value) => setValue({ key: "label", value })}
-        />
-      )}
-
       <InputText
         width={100}
         text={data.unit}
         setText={(value) => setValue({ key: "unit", value })}
       />
 
-      {type === "base" && (
-        <InputNum
-          width={60}
-          maxLength={3}
-          num={data.okei}
-          setNum={(value) => setValue({ key: "okei", value })}
-        />
-      )}
+      <InputNum
+        width={120}
+        maxLength={3}
+        num={data.min_time}
+        setNum={(value) => setValue({ key: "min_time", value })}
+      />
 
-      {type === "price" && (
-        <InputNum
-          width={120}
-          maxLength={3}
-          num={data.min_time}
-          setNum={(value) => setValue({ key: "min_time", value })}
-        />
-      )}
 
       <InputFinancial
         width={120}
@@ -80,7 +61,7 @@ const Rate = ({ id, data, type, setValue, number }) => {
         amount={data.worker_bit}
         setAmount={(value) => setValue({ key: "worker_bit", value })}
       />
-      <button /* onClick={handleDeleteRate} */ id={id} className={s.button}>
+      <button onClick={handleDeleteRate} id={id} className={s.button}>
         <IconCloseRed />
       </button>
     </div>

@@ -40,7 +40,7 @@ const EmailSender = ({
     docs = [],
     partnerEmail,
     handleSendEmailSuccess,
-    detailState,
+    isAttachments,
 }) => {
     const [
         sendByEmailContract,
@@ -139,8 +139,8 @@ const EmailSender = ({
         const derivedFormatFromName = name?.includes('pdf')
             ? 'pdf'
             : name?.includes('word') || name?.includes('doc')
-              ? 'docx'
-              : undefined;
+                ? 'docx'
+                : undefined;
 
         const resolvedFormat =
             selectedFormat?.format ||
@@ -179,364 +179,367 @@ const EmailSender = ({
 
         const dataForSend = {
             emails: finalEmails,
-            // sendCopy: sendCopy ? 1 : 0,
+            text: textValue,
+            subject: themeValue,
+            doc_id: Number(id)
+        };
+
+        const dataForSendContract = {
+            emails: finalEmails,
+            sendCopy: sendCopy ? 1: 0,
             format,
             sign,
             text: textValue,
             subject: themeValue,
-            // contract_id: Number(id),
-            // doc_id: selectedDocs,
-            ...(theme.includes('Договор')
-                ? { contract_id: Number(id) }
-                : { doc_id: Number(id) }),
+            contract_id: Number(id)
         };
 
-        try {
-            const res = await sendEmail({
-                type: theme.includes('Договор') ? 'contract' : 'attachments',
-                data: dataForSend,
-            });
+    try {
+        const res = await sendEmail({
+            type: !isAttachments ? 'contract' : 'attachments',
+            data: !isAttachments ? dataForSendContract : dataForSend,
+        });
 
-            if (res.success) {
-                handleSendEmailSuccess?.();
-                setEmails(contacts?.filter((el) => el.e_mail !== ''));
-                setThemeValue(theme);
-                setTextValue(text);
-                setSendDetailing(false);
-                showToast('Сообщение отправлено', 'success');
-                setOpen(false);
-            }
-        } catch (err) {
-            showToast('Ошибка при отправке', 'error');
+        if (res.success) {
+            handleSendEmailSuccess?.();
+            setEmails(contacts?.filter((el) => el.e_mail !== ''));
+            setThemeValue(theme);
+            setTextValue(text);
+            setSendDetailing(false);
+            showToast('Сообщение отправлено', 'success');
+            setOpen(false);
         }
-    };
+    } catch (err) {
+        showToast('Ошибка при отправке', 'error');
+    }
+};
 
-    const handleUniqEmail = (email) => {
-        const result = emails?.find(
-            (el) => el.e_mail === email || el.email === email
-        );
+const handleUniqEmail = (email) => {
+    const result = emails?.find(
+        (el) => el.e_mail === email || el.email === email
+    );
 
-        if (result) {
-            return false;
-        } else {
-            return true;
-        }
-    };
+    if (result) {
+        return false;
+    } else {
+        return true;
+    }
+};
 
-    const handleValueEmail = () => {
-        const email = textAreaRef.current.textContent;
-        setEmailError(false);
-        setEmailValue(email.trim());
-    };
+const handleValueEmail = () => {
+    const email = textAreaRef.current.textContent;
+    setEmailError(false);
+    setEmailValue(email.trim());
+};
 
-    const handleWriteEmail = () => {
-        const email = textAreaRef.current.textContent.trim();
-        const valid = emailValidate(email);
-        const uniq = handleUniqEmail(email);
+const handleWriteEmail = () => {
+    const email = textAreaRef.current.textContent.trim();
+    const valid = emailValidate(email);
+    const uniq = handleUniqEmail(email);
 
-        if (email.length > 0) {
-            if (valid && uniq) {
-                const existingEmail = contacts.find(
-                    (el) => el.e_mail === email
-                );
-                setEmails((prevState) => [
-                    ...prevState,
-                    {
-                        e_mail: email,
-                        name: existingEmail ? existingEmail?.name : '',
-                        surname: existingEmail ? existingEmail?.surname : '',
-                    },
-                ]);
-                setEmailValue('');
-                textAreaRef.current.textContent = '';
-            } else {
-                setEmailError(true);
-
-                uniq
-                    ? setErrorText('Неверный эл.адрес')
-                    : setErrorText('Email уже выбран для отправки');
-            }
-            return;
-        }
-    };
-
-    const handleActiveEmail = (e) => {
-        if (e.code === 'Space' || e.code === 'Enter') {
-            textAreaRef.current.focus();
-            setEmailValue(emailValue.trim());
-            handleWriteEmail();
-        }
-    };
-
-    const handleFocusInput = () => {
-        textAreaRef.current.focus();
-        !emailError && setOpenContacts(true);
-    };
-
-    const handleThemeValue = (e) => {
-        const value = e.currentTarget.value;
-        setThemeValue(value);
-    };
-
-    const handleTextValue = (e) => {
-        const value = e.currentTarget.value;
-        setTextValue(value);
-    };
-
-    const handleSendDetailing = () => {
-        sendDetailing ? setSendDetailing(false) : setSendDetailing(true);
-    };
-
-    const handleSendCopy = () => {
-        sendCopy ? setSendCopy(false) : setSendCopy(true);
-    };
-
-    const handleSendInvoice = () => {
-        sendInvoice ? setSendInoice(false) : setSendInoice(true);
-    };
-
-    const handleSendAct = () => {
-        sendAct ? setSendAct(false) : setSendAct(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleCloseModal = (e) => {
-        e.stopPropagation();
-        if (modalRef.current && !modalRef.current.contains(e.target)) {
-            handleClose();
-            return;
-        }
-    };
-
-    const handleAddEmail = (el) => {
-        const uniq = handleUniqEmail(el?.e_mail);
-        uniq &&
+    if (email.length > 0) {
+        if (valid && uniq) {
+            const existingEmail = contacts.find(
+                (el) => el.e_mail === email
+            );
             setEmails((prevState) => [
                 ...prevState,
                 {
-                    e_mail: el?.e_mail,
-                    name: el?.name || '',
-                    surname: el?.surname || '',
+                    e_mail: email,
+                    name: existingEmail ? existingEmail?.name : '',
+                    surname: existingEmail ? existingEmail?.surname : '',
                 },
             ]);
-    };
+            setEmailValue('');
+            textAreaRef.current.textContent = '';
+        } else {
+            setEmailError(true);
 
-    const handleCloseContacts = () => {
-        setOpenContacts(false);
-    };
-
-    const handleCloseContact = (e) => {
-        e.stopPropagation();
-        if (
-            emailsRef.current &&
-            !emailsRef.current.contains(e.target) &&
-            !contactsRef.current.contains(e.target)
-        ) {
-            handleCloseContacts();
-            return;
+            uniq
+                ? setErrorText('Неверный эл.адрес')
+                : setErrorText('Email уже выбран для отправки');
         }
-    };
+        return;
+    }
+};
 
-    useEffect(() => {
-        document.addEventListener('mousedown', handleCloseModal);
-        return () =>
-            document.removeEventListener('mousedown', handleCloseModal);
-    }, []);
+const handleActiveEmail = (e) => {
+    if (e.code === 'Space' || e.code === 'Enter') {
+        textAreaRef.current.focus();
+        setEmailValue(emailValue.trim());
+        handleWriteEmail();
+    }
+};
 
-    useEffect(() => {
-        document.addEventListener('click', handleCloseContact);
-        return () => document.removeEventListener('click', handleCloseContact);
-    }, []);
+const handleFocusInput = () => {
+    textAreaRef.current.focus();
+    !emailError && setOpenContacts(true);
+};
 
-    return (
-        <div className={classNames(s.window, open && s.window_open)}>
-            <div
-                ref={modalRef}
-                className={classNames(s.modal, open && s.modal_open)}
-            >
-                <div className={s.header}>
-                    <div className={s.title}>
-                        <IconMailBlack />
-                        <p>Отправка по e-mail</p>
-                    </div>
-                    <div onClick={handleClose} className={s.close}>
-                        <IconClose />
-                    </div>
+const handleThemeValue = (e) => {
+    const value = e.currentTarget.value;
+    setThemeValue(value);
+};
+
+const handleTextValue = (e) => {
+    const value = e.currentTarget.value;
+    setTextValue(value);
+};
+
+const handleSendDetailing = () => {
+    sendDetailing ? setSendDetailing(false) : setSendDetailing(true);
+};
+
+const handleSendCopy = () => {
+    sendCopy ? setSendCopy(false) : setSendCopy(true);
+};
+
+const handleSendInvoice = () => {
+    sendInvoice ? setSendInoice(false) : setSendInoice(true);
+};
+
+const handleSendAct = () => {
+    sendAct ? setSendAct(false) : setSendAct(true);
+};
+
+const handleClose = () => {
+    setOpen(false);
+};
+
+const handleCloseModal = (e) => {
+    e.stopPropagation();
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+        handleClose();
+        return;
+    }
+};
+
+const handleAddEmail = (el) => {
+    const uniq = handleUniqEmail(el?.e_mail);
+    uniq &&
+        setEmails((prevState) => [
+            ...prevState,
+            {
+                e_mail: el?.e_mail,
+                name: el?.name || '',
+                surname: el?.surname || '',
+            },
+        ]);
+};
+
+const handleCloseContacts = () => {
+    setOpenContacts(false);
+};
+
+const handleCloseContact = (e) => {
+    e.stopPropagation();
+    if (
+        emailsRef.current &&
+        !emailsRef.current.contains(e.target) &&
+        !contactsRef.current.contains(e.target)
+    ) {
+        handleCloseContacts();
+        return;
+    }
+};
+
+useEffect(() => {
+    document.addEventListener('mousedown', handleCloseModal);
+    return () =>
+        document.removeEventListener('mousedown', handleCloseModal);
+}, []);
+
+useEffect(() => {
+    document.addEventListener('click', handleCloseContact);
+    return () => document.removeEventListener('click', handleCloseContact);
+}, []);
+
+return (
+    <div className={classNames(s.window, open && s.window_open)}>
+        <div
+            ref={modalRef}
+            className={classNames(s.modal, open && s.modal_open)}
+        >
+            <div className={s.header}>
+                <div className={s.title}>
+                    <IconMailBlack />
+                    <p>Отправка по e-mail</p>
                 </div>
-
-                <div className={s.container}>
-                    <div className={s.block}>
-                        <span>Кому</span>
-                        <div
-                            ref={emailsRef}
-                            onClick={handleFocusInput}
-                            className={s.emails}
-                        >
-                            {emails?.map((el, i) => {
-                                return (
-                                    <Email
-                                        key={el.e_mail || el.email || i}
-                                        el={el}
-                                        emails={emails}
-                                        setEmails={setEmails}
-                                    />
-                                );
-                            })}
-                            <div
-                                contentEditable="true"
-                                onBlur={handleWriteEmail}
-                                onKeyUp={handleActiveEmail}
-                                onKeyDown={handleValueEmail}
-                                ref={textAreaRef}
-                                rows={1}
-                                className={classNames(
-                                    s.emailArea,
-                                    emailError && s.emailArea_error
-                                )}
-                            ></div>
-                        </div>
-                        <div ref={contactsRef} className={s.container_contacts}>
-                            <ul
-                                className={classNames(
-                                    s.contacts,
-                                    openContacts && s.contacts_open
-                                )}
-                            >
-                                {filterContacts?.map((el) => {
-                                    return (
-                                        <li
-                                            onClick={() => handleAddEmail(el)}
-                                            key={el.id}
-                                        >
-                                            <p>{el.e_mail}</p>
-                                            <span>
-                                                {el.name} {el.surname}
-                                            </span>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-
-                        <span
-                            className={classNames(
-                                s.text,
-                                emailError && s.text_red
-                            )}
-                        >
-                            {errorText}
-                        </span>
-                    </div>
-
-                    <div className={s.block}>
-                        <span>Тема</span>
-                        <input
-                            className={s.input}
-                            type="text"
-                            value={themeValue || ''}
-                            onChange={handleThemeValue}
-                        ></input>
-                    </div>
-
-                    <div className={s.block}>
-                        <span>Текст письма</span>
-                        <textarea
-                            value={textValue || ''}
-                            onChange={handleTextValue}
-                            type="text"
-                            rows={8}
-                            maxLength={1000}
-                            className={s.textarea}
-                        ></textarea>
-                        <div className={s.count}>
-                            <p>
-                                {textValue?.length} / {1000}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className={s.block}>
-                        <span>Прикрепленные документы</span>
-                        <div className={s.switches}>
-                            {/* пока только один документ (основной) для выбора документов убрать slice */}
-                            {docs?.slice(0, 1).map((el) => (
-                                <Switch
-                                    text={el.name}
-                                    disabled
-                                    key={el.id}
-                                    switchState={selectedDocs.includes(el.id)}
-                                    handleSwitch={() => handleToggleDoc(el.id)}
-                                />
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className={s.block}>
-                        <span>Формат</span>
-                        <FormatList
-                            formats={formats}
-                            format={formatDoc}
-                            setFormat={setFormatDoc}
-                        />
-                    </div>
-
-                    {partnerEmail && (
-                        <Switch
-                            text={`Копию письма отправить на почту компании ${partnerEmail}`}
-                            switchState={sendCopy}
-                            handleSwitch={handleSendCopy}
-                            disabled={false}
-                        />
-                    )}
-                </div>
-
-                <div className={s.buttons}>
-                    <button
-                        onClick={handleClose}
-                        disabled={isSendingAttachments || isSendingContract}
-                        className={s.cancel}
-                    >
-                        Отмена
-                        <IconCloseBlue />
-                    </button>
-
-                    <button
-                        onClick={handleSendEmail}
-                        disabled={
-                            isSendingAttachments ||
-                            isSendingContract ||
-                            emails?.length === 0
-                        }
-                        className={s.button}
-                    >
-                        Отправить
-                        <div
-                            className={classNames(
-                                s.icon,
-                                isSendingAttachments ||
-                                    (isSendingContract && s.icon_load)
-                            )}
-                        >
-                            <IconPlane />
-
-                            <div
-                                className={classNames(
-                                    s.loader,
-                                    isSendingAttachments ||
-                                        (isSendingContract && s.loader_vis)
-                                )}
-                            >
-                                <LoaderButton color={'#fff'} />
-                            </div>
-                        </div>
-                    </button>
+                <div onClick={handleClose} className={s.close}>
+                    <IconClose />
                 </div>
             </div>
+
+            <div className={s.container}>
+                <div className={s.block}>
+                    <span>Кому</span>
+                    <div
+                        ref={emailsRef}
+                        onClick={handleFocusInput}
+                        className={s.emails}
+                    >
+                        {emails?.map((el, i) => {
+                            return (
+                                <Email
+                                    key={el.e_mail || el.email || i}
+                                    el={el}
+                                    emails={emails}
+                                    setEmails={setEmails}
+                                />
+                            );
+                        })}
+                        <div
+                            contentEditable="true"
+                            onBlur={handleWriteEmail}
+                            onKeyUp={handleActiveEmail}
+                            onKeyDown={handleValueEmail}
+                            ref={textAreaRef}
+                            rows={1}
+                            className={classNames(
+                                s.emailArea,
+                                emailError && s.emailArea_error
+                            )}
+                        ></div>
+                    </div>
+                    <div ref={contactsRef} className={s.container_contacts}>
+                        <ul
+                            className={classNames(
+                                s.contacts,
+                                openContacts && s.contacts_open
+                            )}
+                        >
+                            {filterContacts?.map((el) => {
+                                return (
+                                    <li
+                                        onClick={() => handleAddEmail(el)}
+                                        key={el.id}
+                                    >
+                                        <p>{el.e_mail}</p>
+                                        <span>
+                                            {el.name} {el.surname}
+                                        </span>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
+
+                    <span
+                        className={classNames(
+                            s.text,
+                            emailError && s.text_red
+                        )}
+                    >
+                        {errorText}
+                    </span>
+                </div>
+
+                <div className={s.block}>
+                    <span>Тема</span>
+                    <input
+                        className={s.input}
+                        type="text"
+                        value={themeValue || ''}
+                        onChange={handleThemeValue}
+                    ></input>
+                </div>
+
+                <div className={s.block}>
+                    <span>Текст письма</span>
+                    <textarea
+                        value={textValue || ''}
+                        onChange={handleTextValue}
+                        type="text"
+                        rows={8}
+                        maxLength={1000}
+                        className={s.textarea}
+                    ></textarea>
+                    <div className={s.count}>
+                        <p>
+                            {textValue?.length} / {1000}
+                        </p>
+                    </div>
+                </div>
+
+                <div className={s.block}>
+                    <span>Прикрепленные документы</span>
+                    <div className={s.switches}>
+                        {/* пока только один документ (основной) для выбора документов убрать slice */}
+                        {docs?.slice(0, 1).map((el) => (
+                            <Switch
+                                text={el.name}
+                                disabled
+                                key={el.id}
+                                switchState={selectedDocs.includes(el.id)}
+                                handleSwitch={() => handleToggleDoc(el.id)}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                {formats?.length > 0 && <div className={s.block}>
+                    <span>Формат</span>
+                    <FormatList
+                        formats={formats}
+                        format={formatDoc}
+                        setFormat={setFormatDoc}
+                    />
+                </div>}
+
+                {partnerEmail && (
+                    <Switch
+                        text={`Копию письма отправить на почту компании ${partnerEmail}`}
+                        switchState={sendCopy}
+                        handleSwitch={handleSendCopy}
+                        disabled={false}
+                    />
+                )}
+            </div>
+
+            <div className={s.buttons}>
+                <button
+                    onClick={handleClose}
+                    disabled={isSendingAttachments || isSendingContract}
+                    className={s.cancel}
+                >
+                    Отмена
+                    <IconCloseBlue />
+                </button>
+
+                <button
+                    onClick={handleSendEmail}
+                    disabled={
+                        isSendingAttachments ||
+                        isSendingContract ||
+                        emails?.length === 0
+                    }
+                    className={s.button}
+                >
+                    Отправить
+                    <div
+                        className={classNames(
+                            s.icon,
+                            isSendingAttachments ||
+                            (isSendingContract && s.icon_load)
+                        )}
+                    >
+                        <IconPlane />
+
+                        <div
+                            className={classNames(
+                                s.loader,
+                                isSendingAttachments ||
+                                (isSendingContract && s.loader_vis)
+                            )}
+                        >
+                            <LoaderButton color={'#fff'} />
+                        </div>
+                    </div>
+                </button>
+            </div>
         </div>
-    );
+    </div>
+);
 };
 
 const Email = ({ el, emails, setEmails }) => {

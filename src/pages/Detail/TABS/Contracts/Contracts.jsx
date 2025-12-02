@@ -28,7 +28,7 @@ const Contracts = ({ data }) => {
   return (
     <div className={s.root}>
       {/* <div className={s.infoTitle}></div> */}
-      {data.length > 0 ? (
+      {data?.length > 0 ? (
         <div className={s.objects}>
           <div className={classNames(s.gridRow, s.header)}>
             <div>Компания</div>

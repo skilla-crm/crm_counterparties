@@ -12,7 +12,7 @@ import Dropdown from './Dropdown/Dropdown';
 import Switch from 'components/General/Switch/Switch';
 import Field from 'components/General/Field/Field';
 import InputText from 'components/General/InputText/InputText';
-import InputNum from 'components/General/InputNum/InputNum';
+import InputNumRub from 'components/General/InputNumRub/InputNumRub';
 //styles
 import s from './ContractMainInfo.module.scss';
 import UniButton from 'components/General/UniButton/UniButton';

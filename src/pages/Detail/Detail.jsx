@@ -1,6 +1,7 @@
 // External
 import React, { act, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import classNames from 'classnames';
 
 // Redux API
@@ -9,6 +10,7 @@ import {
     resetActiveTab,
     setActiveTab,
 } from '../../redux/slices/detailTabSlice';
+import { setPriceRates, setAllDataRate } from '../../redux/rates/slice';
 import { useGetSettingsQuery } from '../../redux/services/contractApiActions';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -48,14 +50,17 @@ const TABS = [
 ];
 
 const Detail = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const block = searchParams.get('block');
     const [anim, setAnim] = useState(false);
     const dispatch = useDispatch();
     const { showModal } = useModal();
     const activeTab = useSelector((state) => state.detailTab.activeTab);
-    const hasUnsavedChanges = useSelector(
-        (state) => state.detailChanges.hasUnsavedChanges
-    );
+    const hasUnsavedChanges = useSelector((state) => state.detailChanges.hasUnsavedChanges);
+    const { rateChanged } = useSelector((state) => state.rates);
+
 
     const controlRef = useRef(null);
     const segmentRefs = useRef(TABS.map(() => React.createRef()));
@@ -83,8 +88,9 @@ const Detail = () => {
         price_list,
         bank_accounts,
         others,
-        enterprises,
+        enterprises
     } = counterparty || {};
+
     const isVisibleRightPanel =
         !!(
             last_documents?.length ||
@@ -102,32 +108,45 @@ const Detail = () => {
         }
     }, [isLoading]);
 
+
     useEffect(() => {
-        return () => {
-            dispatch(resetActiveTab());
-        };
-    }, [dispatch]);
+        block && performTabChange(block)
+    }, [block])
+
+    useEffect(() => {
+        if (price_list) {
+            dispatch(setAllDataRate({ price_list }))
+            dispatch(setPriceRates(price_list))
+        }
+    }, [price_list])
 
     const handleTabChange = (val) => {
         if (hasUnsavedChanges) {
             showModal('UNSAVED_CHANGES', {
                 nextTab: val,
-                currentTab: TABS.find((tab) => tab.value === activeTab).label,
+                currentTab: activeTab,
+                currentTabText: TABS.find((tab) => tab.value === activeTab).label,
                 companyId: id,
             });
-        } else {
-            performTabChange(val);
+            return
         }
+
+        if (rateChanged) {
+            showModal('UNSAVED_CHANGES', {
+                nextTab: val,
+                currentTab: activeTab,
+                currentTabText: TABS.find((tab) => tab.value === activeTab).label,
+                companyId: id,
+            });
+            return
+        }
+        navigate(`?block=${val}`)
+
     };
 
     const performTabChange = (val) => {
-        setAnim(false);
-        setTimeout(() => {
-            dispatch(setActiveTab(val));
-        }, 100);
-        setTimeout(() => {
-            setAnim(true);
-        }, 150);
+        dispatch(setActiveTab(val));
+
     };
 
     return (
@@ -194,7 +213,7 @@ const Detail = () => {
                             )}
                             {activeTab === 'price' && (
                                 <div className={s.tabPanel}>
-                                    <PriceList data={price_list} />
+                                    <PriceList />
                                 </div>
                             )}
 
