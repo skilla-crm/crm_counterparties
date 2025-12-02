@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
+import dayjs from 'dayjs';
 
 //icons
 import { ReactComponent as IconPlusBlue } from 'assets/icons/iconPlusBlue.svg';
 
 //hooks
 import { useModal } from 'hooks/useModal';
+import useToast from 'hooks/useToast';
 
 //components
 import InputData from 'components/General/InputData/InputData';
@@ -31,12 +33,26 @@ const ContractMainInfo = ({
     onBankAccountChange = () => {},
 }) => {
     const { showModal } = useModal();
+    const { showToast } = useToast();
     const { partnerships = [], contract_templates = [] } = settings || {};
     const [companyAccounts, setCompanyAccounts] = useState([]);
 
     useEffect(() => {
         setWithoutExpiredDate(form.expired_date === null);
     }, [form.expired_date]);
+
+    // Валидация: если дата договора изменилась и срок действия раньше новой даты, сбросить срок действия
+    useEffect(() => {
+        if (!form.date || !form.expired_date || withoutExpiredDate) return;
+        
+        const contractDate = dayjs(form.date);
+        const expiredDate = dayjs(form.expired_date);
+        
+        if (expiredDate.isBefore(contractDate, 'day')) {
+            showToast('Срок действия не может быть раньше даты договора. Срок действия сброшен.', 'error');
+            setField('expired_date', null);
+        }
+    }, [form.date]);
 
     //заказчик
     const company = {
@@ -100,6 +116,23 @@ const ContractMainInfo = ({
                 onBankAccountChange?.();
             },
         });
+    };
+
+    const handleExpiredDateChange = (date) => {
+        if (!date) {
+            setField('expired_date', null);
+            return;
+        }
+
+        const contractDate = form.date ? dayjs(form.date) : null;
+        const expiredDate = dayjs(date);
+
+        if (contractDate && expiredDate.isBefore(contractDate, 'day')) {
+            showToast('Срок действия не может быть раньше даты договора', 'error');
+            return;
+        }
+
+        setField('expired_date', date);
     };
 
     return (
@@ -244,9 +277,10 @@ const ContractMainInfo = ({
                 <InputData
                     sub={'Срок действия'}
                     nosub={true}
-                    setDate={(v) => setField('expired_date', v)}
+                    setDate={handleExpiredDateChange}
                     date={!withoutExpiredDate ? form.expired_date : null}
                     disabled={!isEditMode || withoutExpiredDate}
+                    minDate={form.date ? dayjs(form.date) : null}
                 />
                 <div className={s.switch}>
                     <Switch

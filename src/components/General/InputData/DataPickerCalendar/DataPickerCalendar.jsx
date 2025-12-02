@@ -8,7 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 
-const DataPickerCalendar = ({ value, setValue, setOpenCalendar, nosub }) => {
+const DataPickerCalendar = ({ value, setValue, setOpenCalendar, nosub, minDate }) => {
     const [anim, setAnim] = useState(false);
 
     const modalRef = useRef();
@@ -64,6 +64,7 @@ const DataPickerCalendar = ({ value, setValue, setOpenCalendar, nosub }) => {
                         onChange={onChange}
                         views={['day']}
                         showDaysOutsideCurrentMonth
+                        minDate={minDate}
                     />
                 </ThemeProvider>
             </LocalizationProvider>
