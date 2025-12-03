@@ -46,6 +46,7 @@ export const counterpartyDetailsApiActions = createApi({
         url: `${COUNTERPARTIES_URL}/${companyId}/hidden`,
         method: "PATCH",
       }),
+      invalidatesTags: ['counterparty']
     }),
 
     //ЗАГРУЗКА ЛОГОТИПА
@@ -55,6 +56,7 @@ export const counterpartyDetailsApiActions = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ['counterparty']
     }),
 
     //ВКЛАДКА GENERAL
@@ -71,21 +73,21 @@ export const counterpartyDetailsApiActions = createApi({
         url: `/companies/${companyId}/stop_list/change`,
         method: "PATCH",
       }),
-      providesTags: ["counterparty"],
+      invalidatesTags: ["counterparty"],
     }),
     switchCounterpartyHidden: build.mutation({
       query: (companyId) => ({
         url: `/companies/${companyId}/activity/change`,
         method: "PATCH",
       }),
-      providesTags: ["counterparty"],
+      invalidatesTags: ["counterparty"],
     }),
     switchCounterpartyStatistic: build.mutation({
       query: (companyId) => ({
         url: `/companies/${companyId}/statistic_exclusion`,
         method: "PATCH",
       }),
-      providesTags: ["counterparty"],
+      invalidatesTags: ["counterparty"],
     }),
 
     updateNote: build.mutation({
@@ -103,6 +105,7 @@ export const counterpartyDetailsApiActions = createApi({
         url: `${COUNTERPARTIES_URL}/${id}/requisites`,
         method: "GET",
       }),
+      providesTags: ['requisites'],
       transformResponse: (response) => response.data,
     }),
     updateCounterpartyRequisites: build.mutation({
@@ -111,7 +114,7 @@ export const counterpartyDetailsApiActions = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["counterparty"],
+      invalidatesTags: ["requisites"],
     }),
 
     //ВКЛАДКА ПРАЙСЛИСТ
@@ -130,6 +133,7 @@ export const counterpartyDetailsApiActions = createApi({
         url: `/companies/${companyId}/contacts/${contactId}/change-active`,
         method: "PATCH",
       }),
+      invalidatesTags: ['counterparty']
     }),
     createContact: build.mutation({
       query: ({ companyId, data }) => ({

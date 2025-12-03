@@ -60,7 +60,7 @@ const CounterpartySignatory = ({
           width={600}
           text={form.director_rod}
           setText={(v) => setField("director_rod", v)}
-          placeholder="например “генерального директора Иванова Ивана Ивановича”"
+          placeholder="например “в лице генерального директора Иванова Ивана Ивановича”"
         />
       </Field>
 

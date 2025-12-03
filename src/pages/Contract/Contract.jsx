@@ -32,7 +32,7 @@ import ContractSkeleton from "./ui/ContractSkeleton/ContractSkeleton";
 
 // Styles
 import s from "./Contract.module.scss";
-import { set } from "lodash";
+
 
 const normalizeDate = (value) => {
   if (!value) return null;

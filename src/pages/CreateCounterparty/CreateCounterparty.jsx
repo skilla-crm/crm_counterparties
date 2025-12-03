@@ -150,6 +150,8 @@ const CreateCounterparty = () => {
       showToast('Поля "ИНН" и "Наименование контрагента" обязательны', "error");
       return;
     }
+   
+
     try {
       const excludeKeys = [
         "otv_act",
@@ -198,7 +200,7 @@ const CreateCounterparty = () => {
       }
     } catch (err) {
       console.error(err);
-      showToast("Ошибка при сохранении изменений", "error");
+      showToast(`${err.data.message || "Ошибка при сохранении изменений"}`, "error");
     }
   };
 

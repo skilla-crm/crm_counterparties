@@ -89,6 +89,10 @@
         input {
             height: 100%;
             cursor: pointer;
+
+            &::placeholder {
+                color: #71869d;
+            }
         }
 
         svg path {
