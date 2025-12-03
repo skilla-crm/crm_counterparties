@@ -97,7 +97,7 @@ const BankAccountRow = ({ account, counterpartyId }) => {
 
   return (
     <div className={classNames(s.gridRow)} onClick={handleOpenAccount}>
-      <div>
+      <div className={s.bank}>
         <EllipsisWithTooltip text={account.bank || "-"} />
       </div>
       <div>{account.bik || "-"}</div>

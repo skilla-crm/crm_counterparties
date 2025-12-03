@@ -44,8 +44,9 @@
   line-height: 24px;
   cursor: pointer;
   column-gap: 20px;
+  transition: all 0.15s;
   &:hover {
-    background: #eaf0fa;
+    background: #f8fafd;
   }
 
   // &:last-child {

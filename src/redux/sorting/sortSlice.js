@@ -10,7 +10,8 @@ const sortSlice = createSlice({
     initialState,
     reducers: {
         setSort: (state, action) => {
-            const { type, dir } = action.payload;
+            const type = action?.payload?.type;
+            const dir = action?.payload?.dir;
 
             if (state.sortBy === type && state.sortDir === dir) {
                 state.sortBy = '';
@@ -20,7 +21,11 @@ const sortSlice = createSlice({
                 state.sortDir = dir;
             }
         },
-        resetSort: () => initialState,
+        resetSort: (state) => {
+            state.sortBy = 'share_of_partnership_revenue';
+            state.sortDir = 'desc';
+
+        },
     },
 });
 

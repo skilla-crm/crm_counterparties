@@ -4,6 +4,7 @@ import LoaderButton from 'components/General/UniButton/LoaderButton/LoaderButton
 import s from './UniButton.module.scss';
 
 const UniButton = ({
+    hidden,
     className = '',
     style = {},
     type = 'primary', // primary | outline | danger | primaryRed
@@ -27,10 +28,14 @@ const UniButton = ({
     const renderIcon = () => {
         if (isLoading) {
             return (
-                <LoaderButton
-                    color={loaderColor}
-                    className={classNames(s.icon, s.loader)}
-                />
+                <div className={classNames(s.icon, s.loader)}>
+                    <LoaderButton
+
+                        color={loaderColor}
+
+                    />
+                </div>
+
             );
         }
 
@@ -41,9 +46,11 @@ const UniButton = ({
         <button
             className={classNames(
                 s.button,
+
                 s[`button_${type}`],
                 { [s.button_disabled]: disabled },
                 { [s.button_loading]: isLoading },
+                { [s.button_hidden]: hidden },
                 className
             )}
             style={buttonStyle}

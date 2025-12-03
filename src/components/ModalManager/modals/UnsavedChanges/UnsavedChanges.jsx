@@ -1,13 +1,15 @@
 // External
 import { useEffect, useState } from "react";
 import "dayjs/locale/ru";
+import { useNavigate } from "react-router-dom";
 
 // Redux
-import { useUpdateOtherMutation } from "../../../../redux/services/counterpartyDetailsApiActions";
+import { useUpdateOtherMutation, useUpdatePriceListMutation } from "../../../../redux/services/counterpartyDetailsApiActions";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveTab } from "../../../../redux/slices/detailTabSlice";
 import { resetHasUnsavedChanges } from "../../../../redux/slices/detailChangesSlice";
 import { resetDrafts } from "../../../../redux/slices/otherDataSlice";
+import { resetRateChanged, resetRates } from "../../../../redux/rates/slice";
 
 // Hooks
 import { useModal } from "hooks/useModal";
@@ -26,15 +28,31 @@ import { ReactComponent as IconDoneWhite } from "assets/icons/iconDoneWhite.svg"
 // Styles
 import s from "./UnsavedChanges.module.scss";
 
+//utils
+import { handlePreparePriceData } from "utils/handlePreparePriceData";
+
 const UnsavedChanges = () => {
+  const navigate = useNavigate();
   const { showToast } = useToast();
   const dispatch = useDispatch();
   const { modalProps, hideModal } = useModal();
-  const { nextTab, currentTab, companyId } = modalProps;
-  const { draftDebt, draftMinSum, draftActivity } = useSelector(
-    (state) => state.otherData
-  );
+  const { nextTab, currentTab, currentTabText, companyId } = modalProps;
+  const { draftDebt, draftMinSum, draftActivity } = useSelector((state) => state.otherData);
+  const { priceRates, rateChanged } = useSelector((state) => state.rates);
   const [updateOther, { isLoading }] = useUpdateOtherMutation();
+  const [updatePriceList, { isLoading: isLoadingPrice }] = useUpdatePriceListMutation();
+
+  const handleUpdate = () => {
+    if (currentTab === 'other') {
+      handleUpdateOther()
+      return
+    }
+
+    if (currentTab === 'price') {
+      handleUpdatePrice()
+      return
+    }
+  }
 
   const handleUpdateOther = async () => {
     try {
@@ -49,7 +67,7 @@ const UnsavedChanges = () => {
 
       if (res?.success) {
         dispatch(resetHasUnsavedChanges());
-        dispatch(setActiveTab(nextTab));
+        navigate(`?block=${nextTab}`)
         hideModal();
         showToast("Изменения сохранены", "success");
       }
@@ -58,10 +76,29 @@ const UnsavedChanges = () => {
     }
   };
 
+  const handleUpdatePrice = () => {
+    const data = handlePreparePriceData(priceRates)
+
+    updatePriceList({ companyId, data })
+      .then((res) => {
+        const success = res.data.success;
+        if (success) {
+          dispatch(resetRateChanged());
+          navigate(`?block=${nextTab}`)
+          hideModal();
+          showToast("Изменения в ставках сохранены", "success");
+        } else {
+          showToast("Произошла ошибка", "error");
+        }
+      })
+  }
+
   const handleNotSave = () => {
     dispatch(resetDrafts());
     dispatch(resetHasUnsavedChanges());
-    dispatch(setActiveTab(nextTab));
+    dispatch(resetRateChanged());
+    dispatch(resetRates());
+    navigate(`?block=${nextTab}`)
     hideModal();
   };
 
@@ -81,7 +118,7 @@ const UnsavedChanges = () => {
 
         <div className={s.content}>
           <span className={s.textAreaTitle}>
-            {`В разделе "${currentTab}" есть несохраненные изменения.`}
+            {`В разделе "${currentTabText}" есть несохраненные изменения.`}
           </span>
         </div>
         <div className={s.btns}>
@@ -94,8 +131,8 @@ const UnsavedChanges = () => {
           />
           <UniButton
             text={"Сохранить"}
-            onClick={handleUpdateOther}
-            isLoading={isLoading}
+            onClick={handleUpdate}
+            isLoading={currentTab === 'other' ? isLoading : isLoadingPrice}
             icon={IconDoneWhite}
             width={240}
           />

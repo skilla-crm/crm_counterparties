@@ -11,7 +11,9 @@ const filtersSlice = createSlice({
     setCounterpartyInvalidKpp: (state, action) => {
       state.counterpartyInvalidKpp = action.payload;
     },
-    resetAllFilters: () => initialState,
+    resetAllFilters: (state) => {
+      state.counterpartyInvalidKpp = 0;
+    },
   },
 });
 

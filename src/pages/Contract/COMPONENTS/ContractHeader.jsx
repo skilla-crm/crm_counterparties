@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 
 // Libs
 import dayjs from "dayjs";
+import printJS from "print-js";
 
 // Hooks
 import useToast from "hooks/useToast";
@@ -55,6 +56,7 @@ const ContractHeader = ({
 }) => {
   const parameters = [];
   const [isPrinting, setIsPrinting] = useState(false);
+  const withoutTemplate = contract.without_template === 1;
 
   const params1 = {
     sign: 1,
@@ -169,35 +171,16 @@ const ContractHeader = ({
       showToast("Ошибка при скачивании документа", "error");
     }
   };
-
   const handlePrint = async (params) => {
-    setIsPrinting(true);
-    let url = null;
+    setIsPrinting(true)
+    const blob = await downloadContract({
+      contractId,
+      data: { ...params },
+    }).unwrap();
+    printJS(URL.createObjectURL(blob))
+    setIsPrinting(false)
+}
 
-    try {
-      const blob = await downloadContract({
-        contractId,
-        data: { ...params },
-      }).unwrap();
-
-      url = URL.createObjectURL(blob);
-      const win = window.open(url);
-
-      if (win) {
-        win.onload = () => {
-          win.focus();
-          win.print();
-        };
-      } else {
-        showToast("Разрешите всплывающие окна", "error");
-      }
-    } catch (e) {
-      showToast("Ошибка при подготовке печати", "error");
-    } finally {
-      setIsPrinting(false);
-      if (url) URL.revokeObjectURL(url);
-    }
-  };
 
   const handleGoBack = () => {
     navigate(-1);
@@ -218,14 +201,14 @@ const ContractHeader = ({
 
 
       {/* КНОПКИ В РЕЖИМE ПРОСМОТРА  */}
-      {!isEditMode && !isCreateMode && (
+      {!isEditMode && !isCreateMode && !withoutTemplate && (
         <div className={s.headerButtons}>
           {isDeletableContract && (
             <UniButton
+              width={40}
               type="danger"
               icon={IconDelete}
               onClick={handleDelete}
-              width={40}
             />
           )}
           <UniButton
@@ -234,6 +217,9 @@ const ContractHeader = ({
             icon={IconEdit}
             onClick={() => setIsEditMode(true)}
           />
+
+
+
           <ButtonOptions
             handler={() => handleDownload(params1)}
             buttonText={"Скачать"}
@@ -257,6 +243,25 @@ const ContractHeader = ({
             onClick={() => setIsOpenSender(true)}
             isLoading={isLoading}
           />
+        </div>
+      )}
+      {withoutTemplate && !isEditMode && !isCreateMode && (
+        <div className={s.headerButtons}>
+                              {isDeletableContract && (
+            <UniButton
+              width={40}
+              type="danger"
+              icon={IconDelete}
+              onClick={handleDelete}
+            />
+          )}
+          <UniButton
+            text="Редактировать"
+            type="outline"
+            icon={IconEdit}
+            onClick={() => setIsEditMode(true)}
+          />
+         
         </div>
       )}
 

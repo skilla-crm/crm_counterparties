@@ -20,7 +20,7 @@ const Dropdown = ({
     sub = '',
     options = [],
     value = null,
-    onChange = () => {},
+    onChange = () => { },
     placeholder = '',
     width,
     renderOption,
@@ -29,6 +29,7 @@ const Dropdown = ({
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const wrapperRef = useRef(null);
+    console.log(options)
 
     const hasOptions = options.length > 0;
     const hasSelectedValue = !!value?.id || !!value;
@@ -104,9 +105,11 @@ const Dropdown = ({
             case 'type':
                 return (
                     <div className={s.optionType}>
-                        <div className={s.optionTypeIcon}></div>
-                        {value?.type_name ?? ''}
-                        {value?.is_delete && <Label text="Архив" />}
+                        {/*  <div className={s.optionTypeIcon}></div> */}
+                        <p className={s.text}>{value?.type_name ?? ''}</p>
+                        {value?.is_delete && <Label text="Архив" disabled={disabled} />}
+                        {value?.default === 1 && <Label text="Стандартный" disabled={disabled} />}
+                        {String(value?.active) == '0' && value?.default !== 1 && <Label text="Не активный" disabled={disabled} />}
                     </div>
                 );
 
@@ -158,9 +161,11 @@ const Dropdown = ({
 
                     case 'type':
                         content = (
-                            <div className={s.optionType}>
-                                {option?.type_name ?? ''}
-                                {option?.is_delete && <Label text="Архив" />}
+                            <div key={option?.id} id={option?.id} className={s.optionType}>
+                                <p className={s.text}>{option?.type_name ?? ''}</p>
+                                {option?.is_delete ? <Label text="Архив" /> : ''}
+                                {option?.default === 1 && <Label text="Стандартный" disabled={disabled} />}
+                                {String(option?.active) === '0' && option?.default !== 1 && <Label text="Не активный" disabled={disabled} />}
                             </div>
                         );
                         break;
@@ -182,6 +187,7 @@ const Dropdown = ({
 
             return (
                 <div
+                    id={option.id}
                     key={option.id}
                     className={classNames(s.option, {
                         [s.selected]: isSelected,
@@ -194,7 +200,7 @@ const Dropdown = ({
         });
 
     return (
-        <div className={s.root} style={wrapperStyle} ref={wrapperRef}>
+        <div className={classNames(s.root, !canOpen && s.root_disabled)} style={wrapperStyle} ref={wrapperRef}>
             {sub && <div className={s.sub}>{sub}</div>}
 
             <div
@@ -229,9 +235,9 @@ const Dropdown = ({
 
 export default Dropdown;
 
-const Label = ({ text }) => {
+const Label = ({ text, disabled }) => {
     return (
-        <div className={s.label}>
+        <div className={classNames(s.label, disabled && s.label_disabled)}>
             {text}
         </div>
     );

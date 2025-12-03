@@ -1,5 +1,5 @@
 // External
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Routes, Route } from "react-router-dom";
 import { ToastContainer, Slide } from "react-toastify";
 
@@ -16,6 +16,12 @@ import Contract from "pages/Contract/Contract";
 
 const App = () => {
   const scrollRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem('activeTabCompany')
+    };
+  }, [])
   return (
     <div id="scrollableDiv" className={s.root} ref={scrollRef}>
       <Routes>

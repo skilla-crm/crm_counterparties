@@ -78,6 +78,10 @@
     &.button_loading {
         cursor: not-allowed;
     }
+
+    &.button_hidden {
+        opacity: 0;
+    }
 }
 
 .content {
@@ -95,6 +99,7 @@
 }
 
 .icon {
+    width: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -102,6 +107,5 @@
 }
 
 .loader {
-    width: 16px;
     height: 16px;
 }

@@ -1,12 +1,6 @@
 import { useState, useCallback } from "react";
 import dayjs from "dayjs";
-const fileToBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result.split(",")[1]);
-    reader.onerror = (err) => reject(err);
-  });
+
 export const useContractForm = () => {
   const [form, setForm] = useState({
     // Основная информация

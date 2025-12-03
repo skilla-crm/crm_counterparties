@@ -114,6 +114,16 @@ export const counterpartyDetailsApiActions = createApi({
       invalidatesTags: ["counterparty"],
     }),
 
+    //ВКЛАДКА ПРАЙСЛИСТ
+    updatePriceList: build.mutation({
+      query: ({ companyId, data }) => ({
+        url: `companies/${companyId}/price_list/update`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["counterparty"],
+    }),
+
     //ВКЛАДКА КОНТАКТЫ
     switchContactStatus: build.mutation({
       query: ({ companyId, contactId }) => ({
@@ -234,6 +244,9 @@ export const {
   // ВКЛАДКА РЕКВИЗИТЫ
   useGetCounterparyRequisitesQuery,
   useUpdateCounterpartyRequisitesMutation,
+
+  //ПРАЙСЛИСТ
+  useUpdatePriceListMutation,
 
   // ВКЛАДКА КОНТАКТЫ
   useSwitchContactStatusMutation,

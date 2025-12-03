@@ -6,7 +6,7 @@ import { ReactComponent as IconCalendar } from 'assets/icons/iconCalendar.svg';
 //components
 import DataPickerCalendar from './DataPickerCalendar/DataPickerCalendar';
 
-const InputData = ({ sub, nosub, setDate, date, disabled }) => {
+const InputData = ({ sub, nosub, setDate, date, disabled, minDate }) => {
     const [fieldFocus, setFieldFocus] = useState(false);
     const [openCalendar, setOpenCalendar] = useState(false);
     const [dateVis, setDateVis] = useState('');
@@ -107,6 +107,7 @@ const InputData = ({ sub, nosub, setDate, date, disabled }) => {
                     setValue={setDate}
                     setOpenCalendar={setOpenCalendar}
                     nosub={nosub}
+                    minDate={minDate}
                 />
             )}
         </div>

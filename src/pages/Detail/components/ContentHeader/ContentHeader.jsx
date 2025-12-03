@@ -40,6 +40,7 @@ const ContentHeader = ({ data, companyId }) => {
     verified_date,
     verified_id,
     logo,
+    to_correct_kpp
   } = data || {};
 
   const [counterparyLogo, setCounterparyLogo] = useState(null);
@@ -156,7 +157,8 @@ const ContentHeader = ({ data, companyId }) => {
           <div className={s.flexRow}>
             <div className={s.notVerified}>
               <IconAlert />
-              <div>Не найден в базах, не может быть проверен платформой</div>
+              {to_correct_kpp === 0 && <p>Не найден в базах, не может быть проверен платформой</p>}
+              {to_correct_kpp === 1 && <p>Не найден в базах, уточни КПП, возможно он был изменен</p>}
             </div>
           </div>
         )}

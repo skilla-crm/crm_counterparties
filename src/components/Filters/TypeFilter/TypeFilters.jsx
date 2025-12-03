@@ -25,7 +25,7 @@ const TypeFilter = ({
   name,
 }) => {
   const dispatch = useDispatch();
-  const { counterpartyInvalidKpp = 0 } = useSelector((state) => state.filters);
+  const { counterpartyInvalidKpp } = useSelector((state) => state.filters);
 
   const modalRef = useRef(null);
   const buttonRef = useRef(null);

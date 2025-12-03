@@ -1,4 +1,3 @@
-// redux/slices/otherDataSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -38,9 +37,9 @@ const otherDataSlice = createSlice({
         },
 
         resetDrafts: (state) => {
-            state.draftDebt = state.debt_threshold;
-            state.draftMinSum = state.min_acc_sum;
-            state.draftActivity = state.only_repayment;
+            state.draftDebt = state?.debt_threshold;
+            state.draftMinSum = state?.min_acc_sum;
+            state.draftActivity = state?.only_repayment;
         },
     },
 });

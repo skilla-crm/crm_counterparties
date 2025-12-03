@@ -1,12 +1,11 @@
 import { useState } from "react";
 // redux
 import { useSelector } from "react-redux";
-import { isAnyFilterActive } from "../../redux/filters/selectors";
+/* import { isAnyFilterActive } from "../../redux/filters/selectors"; */
 
 // components
 import TypeFilter from "./TypeFilter/TypeFilters";
 import ResetFiltersBtn from "components/Filters/COMPONENTS/ResetFiltersAllBtn/ResetFiltersBtn";
-import DateFilter from "components/Filters/DateFilter/DateFilter";
 
 // styles
 import s from "./FiltersContainer.module.scss";
@@ -14,7 +13,7 @@ import Sorting from "components/Sorting/Sorting";
 
 const FiltersContainer = ({ type, isFetching }) => {
   const [activeFilter, setActiveFilter] = useState(null);
-  const hasFilters = useSelector(isAnyFilterActive);
+ /*  const hasFilters = useSelector(isAnyFilterActive); */
 
   const clearActiveFilter = () => setActiveFilter(null);
 
@@ -46,16 +45,6 @@ const FiltersContainer = ({ type, isFetching }) => {
         key="type"
         name="type"
         isFetching={getFetching("type")}
-        activeFilter={activeFilter}
-        setActiveFilter={setActiveFilter}
-        clearActiveFilter={clearActiveFilter}
-      />,
-    ],
-    details: [
-      <DateFilter
-        key="date"
-        name="date"
-        isFetching={getFetching("date")}
         activeFilter={activeFilter}
         setActiveFilter={setActiveFilter}
         clearActiveFilter={clearActiveFilter}

@@ -5,6 +5,10 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+
+  &_disabled {
+    pointer-events: none;
+  }
 }
 
 .sub {
@@ -68,6 +72,7 @@
     background: #fff5f5;
   }
 }
+
 .chevron {
   margin-left: auto;
   flex-shrink: 0;
@@ -157,6 +162,7 @@
     height: 20px;
   }
 }
+
 //company options
 
 .optionCompany,
@@ -172,17 +178,20 @@
   font-weight: 400;
   line-height: 22px;
 }
+
 .companyDetails {
   color: #71869d;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .companyName {
   max-width: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .optionAccount {
   display: flex;
   flex-direction: row;
@@ -199,11 +208,14 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .optionType {
+  width: calc(100% - 40px);
+  margin-right: 20px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .label {
@@ -211,6 +223,7 @@
   width: max-content;
   max-width: 150px;
   min-width: 0;
+  flex-shrink: 0;
 
   padding: 0 8px;
   align-items: center;
@@ -226,4 +239,16 @@
   font-style: normal;
   font-weight: 500;
   line-height: 24px;
+
+  &_disabled {
+    background-color: rgba(173, 191, 223, 0.40);
+  }
+}
+
+
+.text {
+  text-wrap: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
