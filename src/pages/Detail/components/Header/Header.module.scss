@@ -4,7 +4,23 @@
   align-items: center;
   min-height: 40px;
 }
+
 .headerBtns {
   display: flex;
   gap: 10px;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.back {
+  transition: all 0.15s;
+   cursor: pointer;
+
+  &:hover {
+    opacity: 0.6;
+  }
 }

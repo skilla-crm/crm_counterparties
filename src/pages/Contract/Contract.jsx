@@ -57,7 +57,7 @@ export const Contract = () => {
   const { form, setField, getFormData, getJsonData } = useContractForm();
 
   //данные контракта
-  const { data: contractData, refetch: refetchContract } = useGetContractQuery(
+  const { data: contractData, refetch: refetchContract, isLoading: isLoadingContract } = useGetContractQuery(
     { contractId: id },
     { skip: !id }
   );
@@ -227,6 +227,7 @@ export const Contract = () => {
         // refetch={refetchCounterparty}
 
         settings={isCreateMode ? locationSettings : settings}
+        isLoadingContract={isLoadingContract}
         isLoading={isCreateLoading || isUpdateLoading}
         contract={contractData}
         contractId={id}

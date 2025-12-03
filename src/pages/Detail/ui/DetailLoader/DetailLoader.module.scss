@@ -20,6 +20,7 @@
     z-index: 10;
   }
 }
+
 .mainContent {
   padding: 20px 24px;
   border-radius: 8px;
@@ -30,11 +31,13 @@
   flex-direction: column;
   height: 726px;
 }
+
 .rightPanel {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
+
 .rightBlock {
   padding: 20px 24px;
   width: 500px;
@@ -48,45 +51,53 @@
 
 .contentWrapper {
   display: flex;
-  gap: 20px;
+  gap: 12px;
   flex-direction: row;
 }
+
 .rowWrapper {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
+
 .row {
   height: 22px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
+
 .links {
   display: flex;
   flex-direction: row;
   gap: 20px;
 }
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-bottom: 20px;
+  background: #f1f4f9;
 }
+
 .btns {
   display: flex;
   flex-direction: row;
   gap: 6px;
 }
+
 .tabsWrapper {
   display: flex;
   flex-direction: row;
   gap: 20px;
 }
+
 .contentHeader {
   border-radius: 8px;
   padding: 20px 24px;
-  background: var(--My-hover, #f8fafd);
+  background: #f8fafd;
   display: flex;
   flex-direction: row;
   gap: 20px;

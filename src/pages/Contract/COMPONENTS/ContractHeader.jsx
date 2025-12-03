@@ -39,11 +39,13 @@ import { ReactComponent as IconDoneWhite } from "assets/icons/iconDoneWhite.svg"
 
 // Styles
 import s from "./ContractHeader.module.scss";
+import classNames from "classnames";
 
 const ContractHeader = ({
   settings,
   handleSave,
   handleCreate,
+  isLoadingContract,
   isLoading,
   isEditMode = false,
   isCreateMode = false,
@@ -118,6 +120,7 @@ const ContractHeader = ({
   const navigate = useNavigate();
   const [isOpenSender, setIsOpenSender] = useState(false);
 
+
   const [deleteContract, { isLoading: isLoadingDelete }] =
     useDeleteContractMutation();
 
@@ -179,7 +182,7 @@ const ContractHeader = ({
     }).unwrap();
     printJS(URL.createObjectURL(blob))
     setIsPrinting(false)
-}
+  }
 
 
   const handleGoBack = () => {
@@ -187,17 +190,17 @@ const ContractHeader = ({
   };
 
   return (
-    <div className={s.header}>
+    <div className={classNames(s.header, !isLoadingContract && s.header_vis)}>
 
-        <h2>
-          {!isCreateMode
-            ? `Договор №${contract.number} от ${dayjs(contract.date).format(
-                "DD.MM.YYYY"
-              )}`
-            : `Договор №${settings?.prefix || ""}${settings?.contract_num || ""} от ${dayjs(
-                new Date()
-              ).format("DD.MM.YYYY")}`}
-        </h2>
+      <h2 >
+        {!isCreateMode
+          ? `Договор №${contract.number} от ${dayjs(contract.date).format(
+            "DD.MM.YYYY"
+          )}`
+          : `Договор №${settings?.prefix || ""}${settings?.contract_num || ""} от ${dayjs(
+            new Date()
+          ).format("DD.MM.YYYY")}`}
+      </h2>
 
 
       {/* КНОПКИ В РЕЖИМE ПРОСМОТРА  */}
@@ -247,7 +250,7 @@ const ContractHeader = ({
       )}
       {withoutTemplate && !isEditMode && !isCreateMode && (
         <div className={s.headerButtons}>
-                              {isDeletableContract && (
+          {isDeletableContract && (
             <UniButton
               width={40}
               type="danger"
@@ -261,7 +264,7 @@ const ContractHeader = ({
             icon={IconEdit}
             onClick={() => setIsEditMode(true)}
           />
-         
+
         </div>
       )}
 

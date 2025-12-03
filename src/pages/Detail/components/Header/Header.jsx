@@ -20,6 +20,7 @@ import { ReactComponent as IconDelete } from "assets/icons/iconDeleteRed.svg";
 import { ReactComponent as IconEdit } from "assets/icons/iconEditWhite.svg";
 import { ReactComponent as IconPlus } from "assets/icons/iconPlus.svg";
 import { ReactComponent as IconDone } from "assets/icons/iconDoneWhite.svg";
+import { ReactComponent as IconBackForwardBlack } from "assets/icons/iconBackForwardBlack.svg";
 
 //utils
 import { handlePreparePriceData } from "utils/handlePreparePriceData";
@@ -111,6 +112,9 @@ const Header = ({
           showToast("Произошла ошибка", "error");
         }
       })
+  }
+  const handleReturnList = () => {
+    navigate('/')
   }
 
   const renderBtns = (tab) => {
@@ -209,9 +213,13 @@ const Header = ({
   };
   return (
     <div className={classNames(s.header)}>
-      <h2 style={{ fontSize: "22px" }}>
-        {isChecked ? "Контрагент" : "Непроверенный контрагент"}
-      </h2>
+      <div className={s.title}>
+        <IconBackForwardBlack onClick={handleReturnList} className={s.back}/>
+        <h2 style={{ fontSize: "22px" }}>
+          {isChecked ? "Контрагент" : "Непроверенный контрагент"}
+        </h2>
+      </div>
+
 
       {renderBtns(tab)}
     </div>

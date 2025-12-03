@@ -47,13 +47,13 @@ const Other = ({ data }) => {
     return (
         <div className={s.root}>
             <div className={s.content}>
-                <Switch
+               {/*  <Switch
                     text="Заказы только по предоплате"
                     switchState={draftActivity}
                     handleSwitch={() =>
                         dispatch(setDraftActivity(!draftActivity))
                     }
-                />
+                /> */}
                 <Field
                     text="Порог задолженности"
                     info="Порог при котором заказы клиента не принимаются"
@@ -64,13 +64,13 @@ const Other = ({ data }) => {
                         setNum={(val) => dispatch(setDraftDebt(val))}
                     />
                 </Field>
-                <Field text="Минимальная сумма на счете">
+              {/*   <Field text="Минимальная сумма на счете">
                     <InputNumRub
                         width={300}
                         num={draftMinSum}
                         setNum={(val) => dispatch(setDraftMinSum(val))}
                     />
-                </Field>
+                </Field> */}
             </div>
         </div>
     );
