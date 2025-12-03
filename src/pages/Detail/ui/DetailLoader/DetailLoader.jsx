@@ -15,7 +15,7 @@ const DetailLoader = ({ isLoading }) => {
       <div className={classNames(s.contentWrapper)}>
         <div className={classNames(s.mainContent)}>
           <div className={s.contentHeader}>
-            <Loader height={168} width={200} />
+            {/* <Loader height={168} width={200} /> */}
             <div className={s.headerRight}></div>
           </div>
           <div className={classNames(s.tabsWrapper)}>
