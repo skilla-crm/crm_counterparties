@@ -140,7 +140,7 @@ const Detail = () => {
             });
             return
         }
-        navigate(`?block=${val}`)
+        dispatch(setActiveTab(val));
 
     };
 
@@ -148,6 +148,8 @@ const Detail = () => {
         dispatch(setActiveTab(val));
 
     };
+
+    console.log(activeTab)
 
     return (
         <div className={s.overlay}>
