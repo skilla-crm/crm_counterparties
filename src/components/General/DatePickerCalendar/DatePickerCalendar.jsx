@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import dayjs from 'dayjs';
 
 import { ThemeProvider } from '@emotion/react';
@@ -25,6 +25,17 @@ const DatePickerCalendar = ({ value, setValue, setOpenCalendar, nosub }) => {
             setAnim(true);
         });
     }, []);
+
+    
+    const normalizedValue = useMemo(() => {
+        if (!value || value === '') return null;
+       
+        if (value && typeof value.isValid === 'function') {
+            return value.isValid() ? value : null;
+        }
+        const dayjsValue = dayjs(value);
+        return dayjsValue.isValid() ? dayjsValue : null;
+    }, [value]);
 
     function onChange(newValue) {
         console.log(newValue, 'newValue');
@@ -64,7 +75,7 @@ const DatePickerCalendar = ({ value, setValue, setOpenCalendar, nosub }) => {
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
                 <ThemeProvider theme={theme}>
                     <DateCalendar
-                        value={value}
+                        value={normalizedValue}
                         onChange={onChange}
                         views={['day']}
                         showDaysOutsideCurrentMonth

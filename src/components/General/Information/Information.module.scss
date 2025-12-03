@@ -4,10 +4,12 @@
   overflow: hidden;
   transition: all 0.2s ease-in-out;
   opacity: 0;
+  // width: 100%;
 
   &_open {
     opacity: 1;
     height: 64px;
+    
   }
 }
 

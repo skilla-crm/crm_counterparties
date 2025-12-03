@@ -70,8 +70,21 @@ const UploadDoc = () => {
         }
     }, []);
 
-    const onDropRejected = useCallback(() => {
-        setValidationError('Размер файла не должен превышать 20 МБ');
+    const onDropRejected = useCallback((fileRejections) => {
+        if (!fileRejections || fileRejections.length === 0) {
+            setValidationError('Файл не может быть загружен');
+            setFile(null);
+            return;
+        }
+        
+        const rejection = fileRejections[0];
+        if (rejection?.errors?.some(error => error.code === 'file-invalid-type')) {
+            setValidationError('Формат файла не поддерживается. Разрешены: PDF, DOC, DOCX, TXT');
+        } else if (rejection?.errors?.some(error => error.code === 'file-too-large')) {
+            setValidationError('Размер файла не должен превышать 20 МБ');
+        } else {
+            setValidationError('Файл не может быть загружен');
+        }
         setFile(null);
     }, []);
 

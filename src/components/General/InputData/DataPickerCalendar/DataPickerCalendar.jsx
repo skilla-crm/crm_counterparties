@@ -1,5 +1,5 @@
 import './DataPickerCalendar.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { ThemeProvider } from '@emotion/react';
@@ -23,6 +23,30 @@ const DataPickerCalendar = ({ value, setValue, setOpenCalendar, nosub, minDate }
             setAnim(true);
         });
     }, []);
+
+    // Нормализация value: убеждаемся, что это dayjs объект или null
+    const normalizedValue = useMemo(() => {
+        if (!value || value === '') return null;
+        // Проверяем, является ли значение уже dayjs объектом (имеет метод isValid)
+        if (value && typeof value.isValid === 'function') {
+            return value.isValid() ? value : null;
+        }
+        // Если нет, пытаемся преобразовать в dayjs
+        const dayjsValue = dayjs(value);
+        return dayjsValue.isValid() ? dayjsValue : null;
+    }, [value]);
+
+    // Нормализация minDate: убеждаемся, что это dayjs объект или null
+    const normalizedMinDate = useMemo(() => {
+        if (!minDate || minDate === '') return null;
+        // Проверяем, является ли значение уже dayjs объектом (имеет метод isValid)
+        if (minDate && typeof minDate.isValid === 'function') {
+            return minDate.isValid() ? minDate : null;
+        }
+        // Если нет, пытаемся преобразовать в dayjs
+        const dayjsMinDate = dayjs(minDate);
+        return dayjsMinDate.isValid() ? dayjsMinDate : null;
+    }, [minDate]);
 
     function onChange(newValue) {
         setValue(dayjs(newValue).locale('ru'));
@@ -60,11 +84,11 @@ const DataPickerCalendar = ({ value, setValue, setOpenCalendar, nosub, minDate }
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
                 <ThemeProvider theme={theme}>
                     <DateCalendar
-                        value={value}
+                        value={normalizedValue}
                         onChange={onChange}
                         views={['day']}
                         showDaysOutsideCurrentMonth
-                        minDate={minDate}
+                        minDate={normalizedMinDate}
                     />
                 </ThemeProvider>
             </LocalizationProvider>
