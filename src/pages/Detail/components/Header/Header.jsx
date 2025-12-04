@@ -57,7 +57,7 @@ const Header = ({
 
   //CONTRACTS HANDLERS
   const handleCreateContract = () => {
-    navigate(`/details/contract/create`, {
+    navigate(`/details/contract/create?counterparty_id=${counterpartyId}`, {
       state: { counterparty, settings },
     });
   };

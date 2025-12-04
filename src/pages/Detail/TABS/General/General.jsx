@@ -11,6 +11,7 @@ import {
   useSwitchCounterpartyStatisticMutation,
   useSwitchCounterpartyStopListMutation,
   useUpdateNoteMutation,
+  useUpdateLabelMutation
 } from "../../../../redux/services/counterpartyDetailsApiActions";
 
 // Utils
@@ -53,6 +54,7 @@ const General = ({ data = {} }) => {
     is_black,
     is_hidden,
     statistic_hidden,
+    label,
     notes,
     person_add,
     edo_enabled,
@@ -64,8 +66,10 @@ const General = ({ data = {} }) => {
   const [isHidden, setIiHidden] = useState(false); // больше не работаем c контрагентом
   const [isBlack, setIsBlack] = useState(false); //стоп лист
   const [isStatisticHidden, setIsStatisticHidden] = useState(false); // не учитывать в статистике
+  const [labelValue, setLabelValue] = useState('')
   const [comment, setComment] = useState("");
   const [updateNote] = useUpdateNoteMutation();
+  const [updateLabel] = useUpdateLabelMutation();
 
   const [switchCounterpartyStatistic] =
     useSwitchCounterpartyStatisticMutation();
@@ -75,6 +79,10 @@ const General = ({ data = {} }) => {
   useEffect(() => {
     setComment(notes ?? "");
   }, [notes]);
+
+  useEffect(() => {
+    setLabelValue(label ?? "");
+  }, [label]);
 
   useEffect(() => {
     setIiHidden(Boolean(is_hidden));
@@ -124,17 +132,43 @@ const General = ({ data = {} }) => {
       });
   };
 
+  const handleUpdateLabel = () => {
+    if (label !== labelValue) {
+      updateLabel({ data: { label: labelValue }, companyId: company_id })
+        .unwrap()
+        .then((res) => {
+          if (res.success) {
+            showToast("Ярлык обновлен", "success");
+          }
+        })
+        .catch((e) => {
+          showToast("Произошла ошибка", "error");
+        });
+      return
+    }
+  };
+
   const handleUpdateNote = () => {
-    updateNote({ data: { notes: comment }, companyId: company_id })
-      .unwrap()
-      .then((res) => {
-        if (res.success) {
-          showToast("Заметка обновлена", "success");
-        }
-      })
-      .catch((e) => {
-        showToast("Произошла ошибка", "error");
-      });
+    if (notes !== comment) {
+      updateNote({ data: { notes: comment }, companyId: company_id })
+        .unwrap()
+        .then((res) => {
+          if (res.success) {
+            showToast("Заметка обновлена", "success");
+          }
+        })
+        .catch((e) => {
+          showToast("Произошла ошибка", "error");
+        });
+      return
+    }
+  };
+
+  const handleKeyDownLabel = (e) => {
+    if (e.key === "Enter" && e.shiftKey) {
+      e.preventDefault();
+      handleUpdateLabel();
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -189,6 +223,19 @@ const General = ({ data = {} }) => {
         <div className={s.row}>
           <p>Сайт</p>
           {hasValue(site) ? <div>{site}</div> : <Unknown />}
+        </div>
+        <div className={s.row}>
+          <p>Ярлык</p>
+          <div>
+            <TextArea
+              value={labelValue}
+              setValue={setLabelValue}
+              rows={1}
+              onBlur={handleUpdateLabel}
+              onKeyDown={handleKeyDownLabel}
+              width={200}
+            />
+          </div>
         </div>
         <div className={s.row}>
           <p>Комментарий</p>

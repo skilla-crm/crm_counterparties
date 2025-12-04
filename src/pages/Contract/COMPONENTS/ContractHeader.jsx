@@ -55,6 +55,9 @@ const ContractHeader = ({
   contacts = [],
   // refetch,
   isDeletableContract,
+  contractPrefix,
+  contractNumber,
+  contractDate
 }) => {
   const parameters = [];
   const [isPrinting, setIsPrinting] = useState(false);
@@ -193,13 +196,7 @@ const ContractHeader = ({
     <div className={classNames(s.header, !isLoadingContract && s.header_vis)}>
 
       <h2 >
-        {!isCreateMode
-          ? `Договор №${contract.number} от ${dayjs(contract.date).format(
-            "DD.MM.YYYY"
-          )}`
-          : `Договор №${settings?.prefix || ""}${settings?.contract_num || ""} от ${dayjs(
-            new Date()
-          ).format("DD.MM.YYYY")}`}
+        {`Договор №${contractPrefix|| ""}${contractNumber || ""} от  ${contractDate ? dayjs(contractDate).format("DD.MM.YYYY") : ''}`}
       </h2>
 
 

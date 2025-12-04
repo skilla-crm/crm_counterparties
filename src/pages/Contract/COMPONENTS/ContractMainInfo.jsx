@@ -30,7 +30,7 @@ const ContractMainInfo = ({
     setWithoutExpiredDate,
     contract,
     isCreateMode,
-    onBankAccountChange = () => {},
+    onBankAccountChange = () => { },
 }) => {
     const { showModal } = useModal();
     const { showToast } = useToast();
@@ -44,10 +44,10 @@ const ContractMainInfo = ({
     // Валидация: если дата договора изменилась и срок действия раньше новой даты, сбросить срок действия
     useEffect(() => {
         if (!form.date || !form.expired_date || withoutExpiredDate) return;
-        
+
         const contractDate = dayjs(form.date);
         const expiredDate = dayjs(form.expired_date);
-        
+
         if (expiredDate.isBefore(contractDate, 'day')) {
             showToast('Срок действия не может быть раньше даты договора. Срок действия сброшен.', 'error');
             setField('expired_date', null);
@@ -64,23 +64,23 @@ const ContractMainInfo = ({
     //счета заказчика
     useEffect(() => {
         setCompanyAccounts(counterparty?.bank_accounts || []);
-    
+
     }, [counterparty?.bank_accounts]);
     //шаблоны договоров
     const templates = useMemo(() => {
         const list = [
-          ...(settings?.contract_templates || []),
-          contract?.contract_template,
+            ...(settings?.contract_templates || []),
+            contract?.contract_template,
         ].filter(Boolean);
-      
+
         const unique = new Map();
         list.forEach((item) => {
-          if (!item?.id) return;
-          if (!unique.has(item.id)) unique.set(item.id, item);
+            if (!item?.id) return;
+            if (!unique.has(item.id)) unique.set(item.id, item);
         });
-      
+
         return Array.from(unique.values());
-      }, [settings?.contract_templates, contract?.contract_template]);
+    }, [settings?.contract_templates, contract?.contract_template]);
 
     console.log(templates, 'templates');
     //подписанты заказчика
@@ -177,7 +177,12 @@ const ContractMainInfo = ({
                     width={600}
                     value={selectedPartnership}
                     disabled={!isEditMode}
-                    onChange={(v) => setField('partnership_id', v?.id)}
+                    onChange={(v) => {
+                        console.log(v)
+                        setField('partnership_id', v?.id)
+                        setField('number', v?.contract_num)
+                        setField('partnership_details_id', v?.details?.[0]?.id)
+                    }}
                     options={notArchivedPartnerships}
                 />
                 <Dropdown
@@ -204,8 +209,8 @@ const ContractMainInfo = ({
                         form.without_template
                             ? null
                             : templates.find(
-                                  (t) => t.id === form.contract_template_id
-                              )
+                                (t) => t.id === form.contract_template_id
+                            )
                     }
                     disabled={!isEditMode || form.without_template}
                     onChange={(v) => setField('contract_template_id', v?.id)}
@@ -224,7 +229,7 @@ const ContractMainInfo = ({
                 </div>
             </div>
             <div className={s.row}>
-               {/* {!isCreateMode && (
+                {/* {!isCreateMode && (
                 <Field text="Номер">
                     <InputText
                         width={150}
@@ -254,7 +259,7 @@ const ContractMainInfo = ({
                         setText={(v) => setField('number', v)}
                     />
                 </Field>
-       
+
                 {/* <Field
                     width={300}
                     text="Лимит по сумме"

@@ -3,6 +3,7 @@ import { useContractForm } from "hooks/useContractForm";
 import { use, useEffect, useState } from "react";
 import classNames from "classnames";
 import { useDispatch } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
 // Hooks
 import useToast from "hooks/useToast";
@@ -43,6 +44,8 @@ const normalizeDate = (value) => {
 };
 
 export const Contract = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const counterpartyIdUrl = searchParams.get('counterparty_id');
   const { id } = useParams();
   const navigate = useNavigate();
   const { showToast } = useToast();
@@ -55,7 +58,7 @@ export const Contract = () => {
   const [withoutExpiredDate, setWithoutExpiredDate] = useState(false);
   const isCreateMode = !id;
   const { form, setField, getFormData, getJsonData } = useContractForm();
-
+  //параметры 
   //данные контракта
   const { data: contractData, refetch: refetchContract, isLoading: isLoadingContract } = useGetContractQuery(
     { contractId: id },
@@ -63,7 +66,8 @@ export const Contract = () => {
   );
   const counterpartyIdForQuery =
     contractData?.company_id?.toString() ||
-    locationCounterparty?.general?.company_id?.toString();
+    locationCounterparty?.general?.company_id?.toString() ||
+    counterpartyIdUrl;
   //данные контрагента
   const {
     data: counterparty,
@@ -75,10 +79,10 @@ export const Contract = () => {
   );
   //данные настроек
   const { data: settings, isLoading: isLoadingSettings } = useGetSettingsQuery(
-    { companyId: contractData?.company_id?.toString() },
-    { skip: !contractData?.company_id }
+    { companyId: contractData?.company_id?.toString() || locationCounterparty?.general?.company_id?.toString() || counterpartyIdUrl }
   );
 
+  console.log(form)
   useEffect(() => {
     if (id) return;
     setIsEditMode(isCreateMode);
@@ -86,15 +90,15 @@ export const Contract = () => {
 
   const CONTACTS_MAILS = Array.isArray(settings?.company_contacts)
     ? settings?.company_contacts
-        .map((item) => ({
-          e_mail: item.e_mail,
-          name: `${item.name || ""} ${item.surname || ""}`,
-        }))
-        .filter((email) => email)
-        .map((email) => ({
-          e_mail: email.e_mail,
-          name: `${email.name || ""} ${email.surname || ""}`,
-        }))
+      .map((item) => ({
+        e_mail: item.e_mail,
+        name: `${item.name || ""} ${item.surname || ""}`,
+      }))
+      .filter((email) => email)
+      .map((email) => ({
+        e_mail: email.e_mail,
+        name: `${email.name || ""} ${email.surname || ""}`,
+      }))
     : [];
 
   const [createContract, { isLoading: isCreateLoading }] =
@@ -105,10 +109,11 @@ export const Contract = () => {
 
   //заполнение формы при создании
   useEffect(() => {
+    console.log('настройки', settings)
     if (contractData || !isCreateMode) return;
-    if (!locationCounterparty && !locationSettings) return;
+    /* if (!locationCounterparty && !locationSettings) return; */
 
-    const scopedSettings = locationSettings || settings || {};
+    const scopedSettings = settings || locationSettings || {};
 
     const buildNumber = () => {
       const parts = [
@@ -119,10 +124,14 @@ export const Contract = () => {
       return parts.join("");
     };
 
+
     const fields = {
-      company_id: locationCounterparty?.general?.company_id || "",
-      company_details_id: locationCounterparty?.bank_accounts?.[0]?.id || null,
-      number: scopedSettings?.contract_num ?? "",
+      company_id: locationCounterparty?.general?.company_id || Number(counterpartyIdUrl) || "",
+      company_details_id: locationCounterparty?.bank_accounts?.[0]?.id || settings?.bank_accounts?.[0]?.id || null,
+      partnership_id: scopedSettings?.partnerships?.find(el => el.is_main)?.id || "",
+      partnership_details_id: scopedSettings?.partnerships?.find(el => el.is_main)?.details?.[0]?.id || null,
+      /*  company_details_id: scopedSettings?.bank_accounts?.[0]?.id || null, */
+      number: scopedSettings?.partnerships?.find(el => el.is_main)?.contract_num ?? "",
       prefix: scopedSettings?.prefix ?? "",
       // contract_template_id: scopedSettings?.contract_templates?.[0]?.id || "",
       contract_template_id: '',
@@ -154,7 +163,7 @@ export const Contract = () => {
       partnership_details_id: contractData.partnership_details_id || null,
       // contract_template_id: contractData.contract_template_id || "",
       contract_template_id:
-       contractData.contract_template?.id,
+        contractData.contract_template?.id,
       without_template: contractData.without_template || 0,
       number: contractData.number || "",
       prefix: contractData.prefix || "",
@@ -219,69 +228,73 @@ export const Contract = () => {
     (!isCreateMode && (!contractData || isLoadingCounterparty || isLoadingSettings)) ||
     (isCreateMode && (isLoadingCounterparty || isLoadingSettings));
 
+
+  console.log(settings)
+
   return (
     <div className={s.wrapper}>
       {/* <ContractSkeleton isLoading={true} /> */}
       <div className={classNames(s.root, isContractLoading && s.rootLoading)}>
-      <ContractHeader
-        // refetch={refetchCounterparty}
+        <ContractHeader
+          // refetch={refetchCounterparty}
 
-        settings={isCreateMode ? locationSettings : settings}
-        isLoadingContract={isLoadingContract}
-        isLoading={isCreateLoading || isUpdateLoading}
-        contract={contractData}
-        contractId={id}
-        isEditMode={isEditMode}
-        isCreateMode={isCreateMode}
-        setIsEditMode={setIsEditMode}
-        handleSave={handleSaveChanges}
-        handleCreate={handleCreateContract}
-        contacts={CONTACTS_MAILS}
-        isDeletableContract={counterparty?.contracts?.length > 1 ? true : false}
-      />
-      <div className={s.content}>
-        <div className={s.leftCol}>
-          <ContractMainInfo
-            form={form}
-            setField={setField}
-            counterparty={counterparty || locationCounterparty}
-            settings={isCreateMode ? locationSettings : settings}
-            isEditMode={isEditMode}
-            onBankAccountChange={refetchCounterparty}
-            withoutExpiredDate={withoutExpiredDate}
-            setWithoutExpiredDate={setWithoutExpiredDate}
-            contract={contractData}
-            isCreateMode={isCreateMode}
-          />
+          settings={settings}
+          isLoadingContract={isLoadingContract}
+          isLoading={isCreateLoading || isUpdateLoading}
+          contract={contractData}
+          contractNumber={form?.number}
+          contractDate={form?.date}
+          contractPrefix={form?.prefix}
+          contractId={id}
+          isEditMode={isEditMode}
+          isCreateMode={isCreateMode}
+          setIsEditMode={setIsEditMode}
+          handleSave={handleSaveChanges}
+          handleCreate={handleCreateContract}
+          contacts={CONTACTS_MAILS}
+          isDeletableContract={counterparty?.contracts?.length > 1 ? true : false}
+        />
+        <div className={s.content}>
+          <div className={s.leftCol}>
+            <ContractMainInfo
+              form={form}
+              setField={setField}
+              counterparty={counterparty || locationCounterparty}
+              settings={settings}
+              isEditMode={isEditMode}
+              onBankAccountChange={refetchCounterparty}
+              withoutExpiredDate={withoutExpiredDate}
+              setWithoutExpiredDate={setWithoutExpiredDate}
+              contract={contractData}
+              isCreateMode={isCreateMode}
+            />
 
-          <DocumentsList
-            settings={isCreateMode ? locationSettings : settings}
-            form={form}
-            setField={setField}
-            isCreateMode={isCreateMode}
-            data={contractData?.docs}
-            contractId={id}
-            contract={contractData}
-            docTypes={
-              isCreateMode ? locationSettings?.doc_types : settings?.doc_types
-            }
-            contacts={CONTACTS_MAILS}
-          />
-        </div>
+            <DocumentsList
+              settings={settings}
+              form={form}
+              setField={setField}
+              isCreateMode={isCreateMode}
+              data={contractData?.docs}
+              contractId={id}
+              contract={contractData}
+              docTypes={settings?.doc_types}
+              contacts={CONTACTS_MAILS}
+            />
+          </div>
 
-        <div
-          className={classNames(
-            s.rightCol,
-            (isCreateMode || isEditMode) && s.rightColHidden
-          )}
-        >
-          <DocumentFlow id={id} exchange={contractData?.exchange} />
-          {contractData?.history?.length > 0 && (
-            <History history={contractData?.history} />
-          )}
+          <div
+            className={classNames(
+              s.rightCol,
+              (isCreateMode || isEditMode) && s.rightColHidden
+            )}
+          >
+            <DocumentFlow id={id} exchange={contractData?.exchange} />
+            {contractData?.history?.length > 0 && (
+              <History history={contractData?.history} />
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };

@@ -26,7 +26,7 @@ const List = () => {
   const containerRef = useRef();
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState(localStorage.getItem('activeTabCompany')|| "approved");
+  const [activeTab, setActiveTab] = useState(localStorage.getItem('activeTabCompany') || "approved");
   const [counterpartiesType, setCounterpartiesType] = useState(0);
   //активные 0
 
@@ -77,6 +77,7 @@ const List = () => {
   const { data: invalidKppList } = useGetCounterpartiesInfiniteQuery({
     "sort[type]": sortBy,
     "sort[dir]": sortDir,
+    "filter[verified]": 0,
     "filter[to_correct_kpp]": 1,
   });
 

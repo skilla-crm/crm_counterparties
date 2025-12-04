@@ -38,6 +38,7 @@ export const contractApiActions = createApi({
         body: data,
         // body: JSON.stringify(data),
       }),
+      invalidatesTags: ["contract"],
     }),
 
     //РЕДАКТИРОВАНИЕ ДОГОВОРА
@@ -147,6 +148,7 @@ export const contractApiActions = createApi({
       }),
       keepUnusedDataFor: 300,
       transformResponse: (response) => response.data,
+      providesTags: ["contract"]
     }),
   }),
 });

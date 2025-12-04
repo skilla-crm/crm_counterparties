@@ -99,6 +99,15 @@ export const counterpartyDetailsApiActions = createApi({
       invalidatesTags: ["counterparty"],
     }),
 
+    updateLabel: build.mutation({
+      query: ({ companyId, data }) => ({
+        url: `${COUNTERPARTIES_URL}/${companyId}/change_label`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["counterparty"],
+    }),
+
     //ВКЛАДКА РЕКВИЗИТЫ
     getCounterparyRequisites: build.query({
       query: (id) => ({
@@ -244,6 +253,7 @@ export const {
   useSwitchCounterpartyHiddenMutation,
   useSwitchCounterpartyStatisticMutation,
   useUpdateNoteMutation,
+  useUpdateLabelMutation,
 
   // ВКЛАДКА РЕКВИЗИТЫ
   useGetCounterparyRequisitesQuery,
