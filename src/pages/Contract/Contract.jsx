@@ -46,6 +46,7 @@ const normalizeDate = (value) => {
 export const Contract = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const counterpartyIdUrl = searchParams.get('counterparty_id');
+  const fromOrder = searchParams.get('order');
   const { id } = useParams();
   const navigate = useNavigate();
   const { showToast } = useToast();
@@ -193,8 +194,9 @@ export const Contract = () => {
         dispatch(
           counterpartyDetailsApiActions.util.invalidateTags(["counterparty"])
         );
-        navigate(-1);
+        fromOrder ? navigate(`/details/contract/${counterpartyIdUrl}`, { replace: true }) : navigate(-1);
         showToast("Договор создан", "success");
+        setIsEditMode(false)
       }
     } catch (err) {
       showToast("Ошибка при создании договора", "error");
@@ -228,8 +230,6 @@ export const Contract = () => {
     (!isCreateMode && (!contractData || isLoadingCounterparty || isLoadingSettings)) ||
     (isCreateMode && (isLoadingCounterparty || isLoadingSettings));
 
-
-  console.log(settings)
 
   return (
     <div className={s.wrapper}>
