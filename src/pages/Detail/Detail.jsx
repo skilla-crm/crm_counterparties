@@ -45,7 +45,7 @@ const TABS = [
     { value: 'price', label: 'Прайс-лист' },
     { value: 'contacts', label: 'Представители' },
     { value: 'bank', label: 'Банковские счета' },
-    { value: 'objects', label: 'Объекты' },
+   /*  { value: 'objects', label: 'Объекты' }, */
     { value: 'other', label: 'Другое' },
 ];
 

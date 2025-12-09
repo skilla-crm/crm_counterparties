@@ -11,6 +11,9 @@ import { resetHasUnsavedChanges } from "../../../../redux/slices/detailChangesSl
 import { useModal } from "hooks/useModal";
 import useToast from "hooks/useToast";
 
+//slice
+import { addEmpityPriceRate } from "../../../../redux/rates/slice";
+
 // Components
 import UniButton from "components/General/UniButton/UniButton";
 import { resetRateChanged } from "../../../../redux/rates/slice";
@@ -44,6 +47,11 @@ const Header = ({
 
   const [updateOther, { isLoading }] = useUpdateOtherMutation();
   const [updatePriceList, { isLoading: isLoadingPrice }] = useUpdatePriceListMutation();
+
+  const handleAddRate = () => {
+    dispatch(addEmpityPriceRate())
+    return
+  }
 
   //GENERAL HANDLERS
   const handleOpenDeleteCounterparty = () => {
@@ -196,11 +204,11 @@ const Header = ({
         return (
           <div className={classNames(s.headerBtns)}>
             <UniButton
-              hidden={!rateChanged}
+              hidden={priceRates?.length > 0 ? !rateChanged : false}
               isLoading={isLoadingPrice}
-              text="Сохранить изменения"
-              icon={IconDone}
-              onClick={handleUpdatePrice}
+              text={priceRates?.length === 0 ? "Добавить прайс-лист" : "Сохранить изменения"}
+              icon={priceRates?.length === 0 ? IconPlus : IconDone}
+              onClick={priceRates?.length === 0 ? handleAddRate : handleUpdatePrice}
             />
           </div>
         );
@@ -214,7 +222,7 @@ const Header = ({
   return (
     <div className={classNames(s.header)}>
       <div className={s.title}>
-        <IconBackForwardBlack onClick={handleReturnList} className={s.back}/>
+        <IconBackForwardBlack onClick={handleReturnList} className={s.back} />
         <h2 style={{ fontSize: "22px" }}>
           {isChecked ? "Контрагент" : "Непроверенный контрагент"}
         </h2>

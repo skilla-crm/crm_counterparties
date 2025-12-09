@@ -12,12 +12,11 @@ const PriceList = ({ data = [] }) => {
   const dispatch = useDispatch();
   const { priceRates, rateChanged, allDataRate } = useSelector((state) => state.rates);
 
-  console.log(priceRates, rateChanged, allDataRate)
-
   const handleAddRate = () => {
       dispatch(addEmpityPriceRate())
       return  
   }
+
   return (
     <div className={s.root}>
       {priceRates.length > 0 && (
