@@ -40,7 +40,7 @@ const RightPanelBlock = ({ list = [], title, counterpartyId }) => {
             target="_blank"
             rel="noopener noreferrer"
             className={s.link}
-            to={`https://lk.skilla.ru/new/bills?counterparty_id=${counterpartyId}`}
+            to={`https://lk.skilla.ru/new/test/bills?counterparty_id=${counterpartyId}`}
           >
             <IconArrowRight />
             Все счета
@@ -49,7 +49,7 @@ const RightPanelBlock = ({ list = [], title, counterpartyId }) => {
             target="_blank"
             rel="noopener noreferrer"
             className={s.link}
-            to={`https://lk.skilla.ru/new/upd?counterparty_id=${counterpartyId}`}
+            to={`https://lk.skilla.ru/new/test/upd?counterparty_id=${counterpartyId}`}
           >
             <IconArrowRight />
             Все упд
@@ -58,7 +58,7 @@ const RightPanelBlock = ({ list = [], title, counterpartyId }) => {
             target="_blank"
             rel="noopener noreferrer"
             className={s.link}
-            to={`https://lk.skilla.ru/new/act?counterparty_id=${counterpartyId}`}
+            to={`https://lk.skilla.ru/new/test/act?counterparty_id=${counterpartyId}`}
           >
             <IconArrowRight />
             Все акты
@@ -71,7 +71,7 @@ const RightPanelBlock = ({ list = [], title, counterpartyId }) => {
             target="_blank"
             rel="noopener noreferrer"
             className={s.link}
-            to={`https://lk.skilla.ru/new/orders?counterparty_id=${counterpartyId}`}
+            to={`https://lk.skilla.ru/new/test/orders?counterparty_id=${counterpartyId}`}
           >
             <IconArrowRight />
             Посмотреть все
@@ -84,7 +84,7 @@ const RightPanelBlock = ({ list = [], title, counterpartyId }) => {
             target="_blank"
             rel="noopener noreferrer"
             className={s.link}
-            to={`https://lk.skilla.ru/new/bank?counterparty_id=${counterpartyId}`}
+            to={`https://lk.skilla.ru/new/test/bank?counterparty_id=${counterpartyId}`}
           >
             <IconArrowRight />
             Посмотреть все
