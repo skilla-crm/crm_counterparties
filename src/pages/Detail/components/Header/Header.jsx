@@ -206,7 +206,7 @@ const Header = ({
             <UniButton
               hidden={priceRates?.length > 0 ? !rateChanged : false}
               isLoading={isLoadingPrice}
-              text={priceRates?.length === 0 ? "Добавить прайс-лист" : "Сохранить изменения"}
+              text={priceRates?.length === 0 ? "Добавить услугу" : "Сохранить изменения"}
               icon={priceRates?.length === 0 ? IconPlus : IconDone}
               onClick={priceRates?.length === 0 ? handleAddRate : handleUpdatePrice}
             />

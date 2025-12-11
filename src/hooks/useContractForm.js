@@ -17,6 +17,7 @@ export const useContractForm = () => {
     company_signature_id: null, // подписант заказчика
     partnership_signature_id: null, // подписант поставщика
     docs: [], //документы в режиме создания
+    label: ''
   });
 
   const setField = useCallback((key, value) => {

@@ -16,7 +16,7 @@ const CounterpartyHeader = ({ handler, isLoading, buttonText, isEditMode }) => {
         <UniButton
           text={buttonText}
           icon={IconDoneWhite}
-          width={200}
+          width={220}
           onClick={handler}
           isLoading={isLoading}
         />
