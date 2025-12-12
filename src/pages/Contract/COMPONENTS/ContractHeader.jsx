@@ -154,7 +154,7 @@ const ContractHeader = ({
       name: "Прайс-лист",
       icon: IconDoc,
       default: false,
-      handler: () => handleDownload(params4),
+      handler: () => handlePrint(params4),
     },
   ];
   const dispatch = useDispatch();
@@ -208,7 +208,11 @@ const ContractHeader = ({
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `Договор №${contract.number} от ${dayjs(contract.date).format("DD.MM.YYYY")}.${params.format}`;
+      link.download = params.prices === 1
+        ?
+        `Приложение №1 к договору №${contract.number} от ${dayjs(contract.date).format("DD.MM.YYYY")}.${params.format}`
+        :
+        `Договор №${contract.number} от ${dayjs(contract.date).format("DD.MM.YYYY")}.${params.format}`
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

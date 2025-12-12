@@ -37,7 +37,7 @@ const TableRow = ({ row, type }) => {
     okved,
     to_correct_kpp,
     revenue,
-    share_of_partnership_revenue,
+    share_revenue_percent,
   } = row;
 
   const renderApproved = () => (
@@ -58,10 +58,11 @@ const TableRow = ({ row, type }) => {
       <div className={classNames(s.gridCell)}>{okved || ""}</div>
 
       <div className={classNames(s.gridCell, s.right)}>
-        {share_of_partnership_revenue || ""}
+        {share_revenue_percent || ""}
       </div>
       <div className={classNames(s.gridCell, s.right)}>
-        {formatNumWithSpace(revenue || "")}
+        {revenue !== 9999999999.99 && formatNumWithSpace(revenue || "")}
+          {revenue === 9999999999.99 && '> 10 млрд'}
       </div>
       <div className={classNames(s.gridCell, s.right)}>
         {formatNumWithSpace(employee_count || "")}
