@@ -83,7 +83,7 @@ export const Contract = () => {
     { companyId: contractData?.company_id?.toString() || locationCounterparty?.general?.company_id?.toString() || counterpartyIdUrl }
   );
 
-  console.log(form)
+  console.log(form, settings)
   useEffect(() => {
     if (id) return;
     setIsEditMode(isCreateMode);
@@ -110,34 +110,36 @@ export const Contract = () => {
 
   //заполнение формы при создании
   useEffect(() => {
-    console.log('настройки', settings)
     if (contractData || !isCreateMode) return;
     /* if (!locationCounterparty && !locationSettings) return; */
 
     const scopedSettings = settings || locationSettings || {};
 
-    const buildNumber = () => {
-      const parts = [
-        scopedSettings?.prefix ?? "",
-        scopedSettings?.contract_num ?? "",
-      ].filter((part) => part !== "");
-
-      return parts.join("");
-    };
+    /*  const buildNumber = () => {
+       const parts = [
+         scopedSettings?.prefix ?? "",
+         scopedSettings?.contract_num ?? "",
+       ].filter((part) => part !== "");
+ 
+       return parts.join("");
+     };
+  */
 
 
     const fields = {
       company_id: locationCounterparty?.general?.company_id || Number(counterpartyIdUrl) || "",
       company_details_id: locationCounterparty?.bank_accounts?.[0]?.id || settings?.bank_accounts?.[0]?.id || null,
-      partnership_id: scopedSettings?.partnerships?.find(el => el.is_main)?.id || "",
-      partnership_details_id: scopedSettings?.partnerships?.find(el => el.is_main)?.details?.[0]?.id || null,
+      partnership_id: scopedSettings?.partnerships?.find(el => el.is_main)?.id || scopedSettings?.partnerships?.[0]?.id || "",
+      partnership_details_id: scopedSettings?.partnerships?.find(el => el.is_main)?.details?.[0]?.id || scopedSettings?.partnerships?.[0]?.details?.[0]?.id || null,
       /*  company_details_id: scopedSettings?.bank_accounts?.[0]?.id || null, */
-      number: scopedSettings?.partnerships?.find(el => el.is_main)?.contract_num ?? "",
+      number: scopedSettings?.partnerships?.find(el => el.is_main)?.contract_num || scopedSettings?.partnerships?.[0]?.contract_num || "",
       prefix: scopedSettings?.prefix ?? "",
       // contract_template_id: scopedSettings?.contract_templates?.[0]?.id || "",
       contract_template_id: '',
       docs: [],
     };
+
+    console.log('заполняем данные', fields, scopedSettings)
 
     Object.entries(fields).forEach(([key, value]) => {
       if (value !== undefined) {

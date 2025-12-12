@@ -15,19 +15,16 @@ const LogoUploadInstruction = ({
     setOpenModal,
 }) => {
     const [file, setFile] = useState(null);
-    console.log(' file', file);
 
     useEffect(() => {
         setFile(logo);
     }, [logo]);
 
     const handleSetLogo = () => {
-        console.log('logo upload', file);
+
         setLogo(file);
         setOpenModal(false);
     };
-
-    console.log(' width', width);
 
     return (
         <div className={s.root}>

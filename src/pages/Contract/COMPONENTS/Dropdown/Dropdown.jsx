@@ -29,7 +29,6 @@ const Dropdown = ({
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const wrapperRef = useRef(null);
-    console.log(options)
 
     const hasOptions = options.length > 0;
     const hasSelectedValue = !!value?.id || !!value;

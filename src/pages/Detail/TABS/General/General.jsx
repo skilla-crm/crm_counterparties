@@ -122,7 +122,6 @@ const General = ({ data = {} }) => {
     switchCounterpartyStatistic(company_id)
       .unwrap()
       .then((res) => {
-        console.log(res);
         if (res.message === "Request processed successfully") {
           setIsStatisticHidden(!isStatisticHidden);
         }

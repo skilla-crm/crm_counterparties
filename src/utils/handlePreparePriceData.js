@@ -1,5 +1,4 @@
 export const handlePreparePriceData = (data) => {
-    console.log(data)
     const formData = new FormData();
     data.forEach((el, index) => {
         if (!String(el?.id)?.includes('new')) {

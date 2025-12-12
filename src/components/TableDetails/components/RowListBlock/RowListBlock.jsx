@@ -100,10 +100,8 @@ const UpdBlock = ({ item = {}, orders = [], companyId }) => {
       return arr;
     }
   }, [item.orders, isEmptyUdps, selectedOrders]);
-  console.log(ordersIds);
 
   const handleShowAttachModal = (type) => {
-    console.log('sdfsdfsdfsdfsdf', type, ordersIds);
     showModal('ATTACH_UPD', {
       ordersIds,
       companyId: companyId,

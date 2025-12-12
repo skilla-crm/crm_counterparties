@@ -38,7 +38,6 @@ const DatePickerCalendar = ({ value, setValue, setOpenCalendar, nosub }) => {
     }, [value]);
 
     function onChange(newValue) {
-        console.log(newValue, 'newValue');
         setValue(dayjs(newValue));
         setTimeout(() => {
             setAnim(false);

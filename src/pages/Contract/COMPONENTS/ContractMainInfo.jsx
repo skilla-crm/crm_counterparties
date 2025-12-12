@@ -82,7 +82,6 @@ const ContractMainInfo = ({
         return Array.from(unique.values());
     }, [settings?.contract_templates, contract?.contract_template]);
 
-    console.log(templates, 'templates');
     //подписанты заказчика
     const companySignPersons =
         settings?.company_signatories?.map((item) => ({
@@ -178,7 +177,6 @@ const ContractMainInfo = ({
                     value={selectedPartnership}
                     disabled={!isEditMode}
                     onChange={(v) => {
-                        console.log(v)
                         setField('partnership_id', v?.id)
                         setField('number', v?.contract_num)
                         setField('partnership_details_id', v?.details?.[0]?.id)

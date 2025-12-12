@@ -144,8 +144,6 @@ const DocumentRow = ({
     } = doc;
     const [downloadAttachment] = useDownloadAttachmentMutation();
 
-    console.log(doc)
-
     const navigate = useNavigate();
     const hadleOpenContract = () => {
         // navigate(`/details/contract/${id}`, {

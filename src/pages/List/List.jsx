@@ -35,9 +35,6 @@ const List = () => {
   const { sortBy, sortDir } = useSelector((state) => state.sort);
   const { counterpartyInvalidKpp } = useSelector((state) => state.filters);
 
-  console.log(counterpartyInvalidKpp)
-
-
   const {
     data: approvedData,
     fetchNextPage: fetchNextPageApproved,

@@ -149,8 +149,6 @@ const Detail = () => {
 
     };
 
-    console.log(activeTab)
-
     return (
         <div className={s.overlay}>
             <DetailLoader isLoading={isLoading} />

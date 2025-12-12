@@ -26,6 +26,8 @@ const RightPanelBlock = ({ list = [], title, counterpartyId }) => {
       Документы: ListRowDocs,
     }[title] || ListRowDocs;
 
+    const lastDateOrder = list?.[0]?.date;
+
   return (
     <div className={s.rightPanelBlock}>
       <h3 className={s.title}>{title}</h3>
@@ -71,7 +73,7 @@ const RightPanelBlock = ({ list = [], title, counterpartyId }) => {
             target="_blank"
             rel="noopener noreferrer"
             className={s.link}
-            to={`https://lk.skilla.ru/new/test/orders?counterparty_id=${counterpartyId}`}
+            to={`https://lk.skilla.ru/new/test/orders?counterparty_id=${counterpartyId}&lastdate=${lastDateOrder}`}
           >
             <IconArrowRight />
             Посмотреть все

@@ -112,7 +112,6 @@ const CounterpartySignatory = ({
                       : null
                   }
                   setValue={(v) => {
-                    console.log("Выбрана дата:", v.format("YYYY-MM-DD"));
                     setAdditionalField(
                       "doc_validity_period",
                       v.format("YYYY-MM-DD")

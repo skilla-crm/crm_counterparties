@@ -67,7 +67,6 @@ const DropZone = ({
         const binaryStr = reader.result;
       };
       reader.readAsArrayBuffer(file);
-      console.log(file);
       setFile(file);
     });
   }, []);
