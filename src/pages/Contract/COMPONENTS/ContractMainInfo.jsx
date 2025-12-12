@@ -226,6 +226,7 @@ const ContractMainInfo = ({
                     />
                 </div>
             </div>
+
             <div className={s.row}>
                 {/* {!isCreateMode && (
                 <Field text="Номер">
@@ -338,7 +339,20 @@ const ContractMainInfo = ({
                         ? 'Не указан. Добавь подписанта в реквизитах контрагента'
                         : 'Не выбран'
                 }
+
             />{' '}
+
+            <div className={s.row}>
+                <Field text="Ярлык договора">
+                    <InputText
+                        placeholder="Ярлык договора"
+                        width={500}
+                        disabled={!isEditMode}
+                        text={form.label}
+                        setText={(v) => setField('label', v)}
+                    />
+                </Field>
+            </div>
         </div>
     );
 };

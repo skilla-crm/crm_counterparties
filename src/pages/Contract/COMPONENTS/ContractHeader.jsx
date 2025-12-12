@@ -66,14 +66,29 @@ const ContractHeader = ({
   const params1 = {
     sign: 1,
     format: "pdf",
+    prices: 0,
   };
   const params2 = {
     sign: 0,
     format: "pdf",
+    prices: 0,
   };
   const params3 = {
     sign: 0,
     format: "docx",
+    prices: 0,
+  };
+
+  const params4 = {
+    sign: 1,
+    format: "pdf",
+    prices: 1,
+  };
+
+  const params5 = {
+    sign: 1,
+    format: "docx",
+    prices: 1,
   };
 
   const downloadOptions = [
@@ -100,6 +115,22 @@ const ContractHeader = ({
       default: false,
       handler: () => handleDownload(params3),
     },
+
+    {
+      id: 4,
+      name: "PDF прайс-лист",
+      icon: IconDocPdf,
+      default: false,
+      handler: () => handleDownload(params4),
+    },
+
+    {
+      id: 5,
+      name: "WORD прайс-лист",
+      icon: IconDocDoc,
+      default: false,
+      handler: () => handleDownload(params5),
+    },
   ];
   const printOptions = [
     {
@@ -116,6 +147,14 @@ const ContractHeader = ({
       icon: IconDoc,
       default: false,
       handler: () => handlePrint(params2),
+    },
+
+    {
+      id: 3,
+      name: "Прайс-лист",
+      icon: IconDoc,
+      default: false,
+      handler: () => handleDownload(params4),
     },
   ];
   const dispatch = useDispatch();
@@ -196,7 +235,7 @@ const ContractHeader = ({
     <div className={classNames(s.header, !isLoadingContract && s.header_vis)}>
 
       <h2 >
-        {`Договор №${contractPrefix|| ""}${contractNumber || ""} от  ${contractDate ? dayjs(contractDate).format("DD.MM.YYYY") : ''}`}
+        {`Договор №${contractPrefix || ""}${contractNumber || ""} от  ${contractDate ? dayjs(contractDate).format("DD.MM.YYYY") : ''}`}
       </h2>
 
 

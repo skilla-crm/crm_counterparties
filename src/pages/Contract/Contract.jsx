@@ -133,9 +133,9 @@ export const Contract = () => {
       partnership_details_id: scopedSettings?.partnerships?.find(el => el.is_main)?.details?.[0]?.id || scopedSettings?.partnerships?.[0]?.details?.[0]?.id || null,
       /*  company_details_id: scopedSettings?.bank_accounts?.[0]?.id || null, */
       number: scopedSettings?.partnerships?.find(el => el.is_main)?.contract_num || scopedSettings?.partnerships?.[0]?.contract_num || "",
+      number: scopedSettings?.partnerships?.find(el => el.is_main)?.contract_num || scopedSettings?.partnerships?.[0]?.contract_num || "",
       prefix: scopedSettings?.prefix ?? "",
-      // contract_template_id: scopedSettings?.contract_templates?.[0]?.id || "",
-      contract_template_id: '',
+      contract_template_id: scopedSettings?.contract_templates?.[0]?.id || null,
       docs: [],
     };
 
@@ -174,10 +174,12 @@ export const Contract = () => {
       expired_date: contractData.expired_date || null,
       company_signature_id: contractData.company_signature_id || null,
       partnership_signature_id: contractData.partnership_signature_id || null,
-      // label: data.label || "",
+      label: contractData.label || "",
     };
     Object.entries(fields).forEach(([key, value]) => setField(key, value));
   }, [contractData, isEditMode]);
+
+  console.log(form)
 
   const handleCreateContract = async () => {
     if (!form.number) return showToast("Введите номер договора", "error");
@@ -222,6 +224,9 @@ export const Contract = () => {
       if (res.success) {
         showToast("Договор сохранен", "success");
         setIsEditMode(false);
+        dispatch(
+          counterpartyDetailsApiActions.util.invalidateTags(["counterparty"])
+        );
       }
     } catch (err) {
       showToast("Ошибка при сохранении изменений", "error");
