@@ -58,7 +58,7 @@ const TableRow = ({ row, type }) => {
       <div className={classNames(s.gridCell)}>{okved || ""}</div>
 
       <div className={classNames(s.gridCell, s.right)}>
-        {share_revenue_percent || ""}
+      {/*   {share_revenue_percent || ""} */}
       </div>
       <div className={classNames(s.gridCell, s.right)}>
         {revenue !== 9999999999.99 && formatNumWithSpace(revenue || "")}

@@ -83,7 +83,12 @@ export const Contract = () => {
     { companyId: contractData?.company_id?.toString() || locationCounterparty?.general?.company_id?.toString() || counterpartyIdUrl }
   );
 
-  console.log(form, settings)
+  useEffect(() => {
+    if (form) {
+      document.title = `Договор ${form?.prefix || form?.number ? `№` : ''} ${form?.prefix ? `${form?.prefix}` : ''}${form?.number ? `${form?.number}` : ''}`;
+    }
+  }, [form]);
+
   useEffect(() => {
     if (id) return;
     setIsEditMode(isCreateMode);

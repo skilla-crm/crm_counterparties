@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename="new/counterpartiesnew">
+    <BrowserRouter basename="new/counterparties">
       <Provider store={store}>
         <App />
       </Provider>

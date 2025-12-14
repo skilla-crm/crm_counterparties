@@ -14,7 +14,7 @@ const TableHeader = ({ type }) => {
         </div>
 
         <div className={classNames(s.gridCell)}>Основной ОКВЭД </div>
-        <div className={classNames(s.gridCell)}>Доля от моей выручки, %</div>
+        <div className={classNames(s.gridCell)}>{/* Доля от моей выручки, % */}</div>
         <div className={classNames(s.gridCell, s.right)}>Выручка ЕГРЮЛ</div>
         <div className={classNames(s.gridCell, s.right)}>ССЧ, чел</div>
         <div className={classNames(s.gridCell)}>Статус ЕГРЮЛ </div>

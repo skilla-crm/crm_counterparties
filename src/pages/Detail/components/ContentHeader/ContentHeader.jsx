@@ -48,6 +48,12 @@ const ContentHeader = ({ data, companyId }) => {
   const [uploadLogo, { isLoading }] = useUploadLogoMutation();
 
   useEffect(() => {
+    if (name) {
+      document.title = name;
+    }
+  }, [name]);
+
+  useEffect(() => {
     if (logo) {
       setCounterparyLogo(logo);
     }

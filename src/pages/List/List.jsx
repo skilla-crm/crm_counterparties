@@ -19,6 +19,7 @@ import ListHeader from "./ListHeader";
 import s from "./List.module.scss";
 
 const List = () => {
+  document.title = 'Контрагенты';
   const COUNTERPARTIES_SUB_TYPES = [
     { value: 0, label: "Активные", ref: useRef() },
     { value: 1, label: "Стоп-лист", ref: useRef() },
