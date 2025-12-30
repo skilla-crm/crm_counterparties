@@ -45,7 +45,7 @@ const TABS = [
     { value: 'price', label: 'Прайс-лист' },
     { value: 'contacts', label: 'Представители' },
     { value: 'bank', label: 'Банковские счета' },
-   /*  { value: 'objects', label: 'Объекты' }, */
+    /*  { value: 'objects', label: 'Объекты' }, */
     { value: 'other', label: 'Другое' },
 ];
 
@@ -90,6 +90,8 @@ const Detail = () => {
         others,
         enterprises
     } = counterparty || {};
+
+    const contractsPartnerships = Array.from(new Map(contracts?.map(item => [item.partnership_id, item])).values());
 
     const isVisibleRightPanel =
         !!(
@@ -259,6 +261,12 @@ const Detail = () => {
                         <RightPanelBlock
                             title="Документы"
                             list={last_documents}
+                            counterpartyId={id}
+                        />
+
+                        <RightPanelBlock
+                            title="Взаиморасчеты"
+                            list={contractsPartnerships}
                             counterpartyId={id}
                         />
                         {/* <HistoryBlock /> */}

@@ -24,16 +24,17 @@ const RightPanelBlock = ({ list = [], title, counterpartyId }) => {
       Заказы: ListRowOrders,
       Транзакции: ListRowTransaction,
       Документы: ListRowDocs,
+      Взаиморасчеты: ListRowPartnerships,
     }[title] || ListRowDocs;
 
-    const lastDateOrder = list?.[0]?.date;
+  const lastDateOrder = list?.[0]?.date;
 
   return (
     <div className={s.rightPanelBlock}>
       <h3 className={s.title}>{title}</h3>
       <div className={s.list}>
         {list.map((elem) => (
-          <RowComponent key={elem.id} elem={elem} />
+          <RowComponent key={elem.id} elem={elem} counterpartyId={counterpartyId} />
         ))}
       </div>
       {title === "Документы" && (
@@ -156,4 +157,30 @@ const ListRowDocs = ({ elem }) => {
     </div>
   );
 };
+
+const ListRowPartnerships = ({ elem, counterpartyId }) => {
+  const { id, partnership_id, name } = elem;
+  return (
+    <div className={s.listRow} key={id}>
+      <div className={s.leftColumn}>
+        {name}
+      </div>
+      <div className={classNames(s.rightColumn)}>
+        <div className={s.links}>
+          <Link
+            target="_blank"
+            rel="noopener noreferrer"
+            className={s.link}
+            to={`https://lk.skilla.ru/new/debts/${counterpartyId}?partner=${partnership_id}`}
+          >
+            <IconArrowRight />
+            Перейти
+          </Link>
+        </div>
+      </div>
+
+    </div>
+  );
+};
+
 export default RightPanelBlock;
