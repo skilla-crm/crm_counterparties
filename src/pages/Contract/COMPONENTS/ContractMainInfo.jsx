@@ -30,7 +30,7 @@ const ContractMainInfo = ({
     setWithoutExpiredDate,
     contract,
     isCreateMode,
-    onBankAccountChange = () => { },
+    onBankAccountChange = () => {},
 }) => {
     const { showModal } = useModal();
     const { showToast } = useToast();
@@ -49,7 +49,10 @@ const ContractMainInfo = ({
         const expiredDate = dayjs(form.expired_date);
 
         if (expiredDate.isBefore(contractDate, 'day')) {
-            showToast('Срок действия не может быть раньше даты договора. Срок действия сброшен.', 'error');
+            showToast(
+                'Срок действия не может быть раньше даты договора. Срок действия сброшен.',
+                'error'
+            );
             setField('expired_date', null);
         }
     }, [form.date]);
@@ -64,7 +67,6 @@ const ContractMainInfo = ({
     //счета заказчика
     useEffect(() => {
         setCompanyAccounts(counterparty?.bank_accounts || []);
-
     }, [counterparty?.bank_accounts]);
     //шаблоны договоров
     const templates = useMemo(() => {
@@ -127,7 +129,10 @@ const ContractMainInfo = ({
         const expiredDate = dayjs(date);
 
         if (contractDate && expiredDate.isBefore(contractDate, 'day')) {
-            showToast('Срок действия не может быть раньше даты договора', 'error');
+            showToast(
+                'Срок действия не может быть раньше даты договора',
+                'error'
+            );
             return;
         }
 
@@ -177,9 +182,9 @@ const ContractMainInfo = ({
                     value={selectedPartnership}
                     disabled={!isEditMode}
                     onChange={(v) => {
-                        setField('partnership_id', v?.id)
-                        setField('number', v?.contract_num)
-                        setField('partnership_details_id', v?.details?.[0]?.id)
+                        setField('partnership_id', v?.id);
+                        setField('number', v?.contract_num);
+                        setField('partnership_details_id', v?.details?.[0]?.id);
                     }}
                     options={notArchivedPartnerships}
                 />
@@ -207,8 +212,8 @@ const ContractMainInfo = ({
                         form.without_template
                             ? null
                             : templates.find(
-                                (t) => t.id === form.contract_template_id
-                            )
+                                  (t) => t.id === form.contract_template_id
+                              )
                     }
                     disabled={!isEditMode || form.without_template}
                     onChange={(v) => setField('contract_template_id', v?.id)}
@@ -226,7 +231,6 @@ const ContractMainInfo = ({
                     />
                 </div>
             </div>
-
             <div className={s.row}>
                 {/* {!isCreateMode && (
                 <Field text="Номер">
@@ -339,9 +343,7 @@ const ContractMainInfo = ({
                         ? 'Не указан. Добавь подписанта в реквизитах контрагента'
                         : 'Не выбран'
                 }
-
             />{' '}
-
             <div className={s.row}>
                 <Field text="Ярлык договора">
                     <InputText
@@ -353,6 +355,21 @@ const ContractMainInfo = ({
                     />
                 </Field>
             </div>
+            {!isCreateMode && (
+                <div className={s.switch}>
+                    <Switch
+                        text="Индивидуальный прайс-лист"
+                        switchState={form.individual_pricelist === 1}
+                        setSwitchState={() =>
+                            setField(
+                                'individual_pricelist',
+                                form.individual_pricelist === 1 ? 0 : 1
+                            )
+                        }
+                        disabled={!isEditMode}
+                    />
+                </div>
+            )}
         </div>
     );
 };

@@ -1,0 +1,21 @@
+.root {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 40px;
+}
+
+.number {
+    min-width: 25px;
+    text-align: center;
+    margin-right: -6px;
+}
+
+.button {
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover {
+        opacity: 0.8;
+    }
+}

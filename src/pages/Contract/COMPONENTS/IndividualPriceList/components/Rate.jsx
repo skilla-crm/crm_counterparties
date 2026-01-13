@@ -3,11 +3,11 @@ import { useDispatch } from 'react-redux';
 //icons
 import { ReactComponent as IconCloseRed } from 'assets/icons/iconCloseRed.svg';
 //slice
-import { deletePriceRate } from '../../../redux/rates/slice';
+import { deletePriceRate } from '../../../../../redux/ratesContract/slice';
 
 //components
 import InputText from 'components/General/InputText/InputText';
-import InputNum from '../InputNum/InputNum';
+import InputNum from 'components/General/InputNum/InputNum';
 import InputFinancial from 'components/General/InputFinancial/InputFinancial';
 
 const empityBaseRate = {

@@ -1,0 +1,165 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 24px;
+    width: 100%;
+    border-radius: 8px;
+    background: #fff;
+    gap: 20px;
+}
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.infoTitle {
+    color: var(--Text-Secondary, #71869d);
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 150% */
+}
+
+.arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    &_open {
+        transform: rotate(0.5turn);
+    }
+}
+
+.tableHeader {
+    &:hover {
+        background: inherit !important;
+        cursor: default !important;
+    }
+    div {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #71869d;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+    }
+}
+
+.gridRow {
+    height: 50px;
+    display: grid;
+    grid-template-columns: 1fr 150px 80px 1fr 40px;
+    column-gap: 20px;
+    align-items: center;
+    padding-left: 20px;
+    border-bottom: 1px solid #eaf0fa;
+    position: relative;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    column-gap: 20px;
+    transition: all 0.15s;
+    &:hover {
+        background: #f8fafd;
+    }
+}
+
+.container {
+    padding: 20px 24px;
+    border-radius: 8px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.block {
+    display: flex;
+    // gap: 20px;
+    justify-content: space-between;
+}
+
+.list {
+    max-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition:
+        max-height 0.25s ease,
+        opacity 0.3s ease;
+    opacity: 0;
+    &_open {
+        max-height: 1000px;
+        opacity: 1;
+    }
+}
+
+.add {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 16px;
+    color: #002cfb;
+    user-select: none;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    svg path {
+        transition: all 0.15s;
+    }
+
+    &:hover {
+        color: #0024cb;
+
+        svg path {
+            fill: #0024cb;
+        }
+    }
+
+    &_hidden {
+        visibility: visible;
+    }
+}
+
+.span {
+    color: #71869d;
+}
+
+.subs {
+    color: #71869d;
+    display: flex;
+    gap: 12px;
+    margin: 0 28px 0 31px;
+
+    span {
+        flex-shrink: 0;
+    }
+
+    span:first-child {
+        flex-shrink: 10;
+    }
+}
+.empty {
+    color: #71869d;
+    padding-left: 20px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
