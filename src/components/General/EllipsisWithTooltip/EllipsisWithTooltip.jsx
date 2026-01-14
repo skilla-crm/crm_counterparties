@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import Tooltip2 from "components/General/Tooltip2/Tooltip2";
+import Tooltip2 from "./Tooltip2/Tooltip2";
 import s from "./EllipsisWithTooltip.module.scss";
 import { wrap } from "lodash";
 
