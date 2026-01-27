@@ -1,0 +1,16 @@
+.root {
+  display: inline-block;
+/*   width: 100%; */
+  align-items: center;
+  min-width: 0;
+}
+.text {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  cursor: default;
+  color: inherit;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

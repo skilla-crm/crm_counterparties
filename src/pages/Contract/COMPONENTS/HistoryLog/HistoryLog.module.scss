@@ -1,0 +1,93 @@
+.history {
+  box-sizing: border-box;
+  min-width: 308px;
+  max-width: 500px;
+  width: 100%;
+  padding: 20px 16px;
+  border-radius: 8px;
+  background: #fff;
+  display: flex;
+  gap:12px;
+  flex-direction: column;
+  align-items: flex-start;
+  
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.logsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-height: 1000px;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  box-sizing: border-box;
+  
+  &.collapsed {
+    max-height: 400px;
+  }
+  
+  &.scrollable {
+    max-height: 600px;
+    overflow-y: auto;
+    padding-right: 8px;
+    
+    &::-webkit-scrollbar {
+      width: 6px;
+      transition: all 0.15s ease-in-out;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background-color: rgba(212, 223, 243, 0.17);
+      border-radius: 3px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(212, 223, 243, 0.17);
+      border-radius: 3px;
+      transition: all 0.15s ease-in-out;
+      cursor: pointer;
+    }
+    
+    &:hover {
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+    }
+  }
+}
+
+.toggleButton {
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--UI-Blue-Accent, #002CFB);
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0.056px;
+  transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+
+  &:hover {
+    color: #0024cb;
+    
+  }
+
+  
+}
+
+.small {
+  .toggleButton {
+    font-size: 14px;
+  }
+}
+  

@@ -35,6 +35,7 @@ import ContractSkeleton from "./ui/ContractSkeleton/ContractSkeleton";
 // Styles
 import s from "./Contract.module.scss";
 import IndividualPriceList from "./COMPONENTS/IndividualPriceList/IndividualPriceList";
+import { HistoryLog } from "./COMPONENTS/HistoryLog/HistoryLog";
 
 const normalizeDate = (value) => {
   if (!value) return null;
@@ -322,7 +323,7 @@ export const Contract = () => {
     (!isCreateMode &&
       (!contractData || isLoadingCounterparty || isLoadingSettings)) ||
     (isCreateMode && (isLoadingCounterparty || isLoadingSettings));
-
+console.log(contractData?.history)
   return (
     <div className={s.wrapper}>
       {/* <ContractSkeleton isLoading={true} /> */}
@@ -388,7 +389,7 @@ export const Contract = () => {
           >
             <DocumentFlow id={id} exchange={contractData?.exchange} />
             {contractData?.history?.length > 0 && (
-              <History history={contractData?.history} />
+              <HistoryLog logs={contractData?.history} />
             )}
           </div>
         </div>

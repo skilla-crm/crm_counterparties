@@ -1,0 +1,46 @@
+.dateGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dateHeader {
+  margin: 0 !important;
+  color: var(--Text-Primary, #121922);
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.small {
+  .dateHeader {
+    font-size: 14px;
+  }
+}
+
+.personsList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  padding-left: 15px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    height: var(--timeline-height, 0);
+    width: 2px;
+    background-color: var(--Text-Secondary, #71869D);
+    opacity: 0.2;
+    z-index: 0;
+  }
+
+  &.singlePerson::before {
+    display: none;
+  }
+}
+
