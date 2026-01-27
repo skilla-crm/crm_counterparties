@@ -193,7 +193,7 @@ export const Contract = () => {
       individual_pricelist: contractData.individual_pricelist || 0,
     };
     Object.entries(fields).forEach(([key, value]) => setField(key, value));
-  }, [contractData, isEditMode]);
+  }, [contractData]);
 
   // Инициализация прайс листа договора при редактировании
   useEffect(() => {
