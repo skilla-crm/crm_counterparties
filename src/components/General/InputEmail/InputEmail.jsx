@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { useState } from "react";
 
 const emailValidate = (value) => {
-  const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+  const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,10}$/g;
   if (value.match(isValidEmail)) {
     return true;
   } else {
