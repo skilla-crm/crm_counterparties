@@ -85,16 +85,17 @@ const IndividualPriceList = ({ data = [], disabled }) => {
                 })}
               </>
             )}
-            {!disabled && (
-              <button
-                className={classNames(s.add, s.add_hidden)}
-                onClick={handleAddRate}
-              >
-                <IconPlusBlue />
-                Добавить
-              </button>
-            )}
+
           </div>
+          {!disabled && (
+            <button
+              className={classNames(s.add, s.add_hidden)}
+              onClick={handleAddRate}
+            >
+              <IconPlusBlue />
+              Добавить
+            </button>
+          )}
         </div>
       </div>
     </div>
