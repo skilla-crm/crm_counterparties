@@ -14,6 +14,7 @@ export const counterpartiesListApiActions = createApi({
     prepareHeaders: (headers) => {
       if (token) headers.set("Authorization", token);
       headers.set("Accept", "application/json");
+      headers.set("Content-Type", "application/json");
       return headers;
     },
   }),

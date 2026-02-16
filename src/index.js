@@ -5,13 +5,14 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import "./index.css";
 import App from "./App";
+const baseName = process.env.REACT_APP_BASE_NAME;
 
 const root = ReactDOM.createRoot(
   document.getElementById("root_counterparties")
 );
 root.render(
   <React.StrictMode>
-    <BrowserRouter basename="new/counterparties">
+    <BrowserRouter basename={baseName}>
       <Provider store={store}>
         <App />
       </Provider>
