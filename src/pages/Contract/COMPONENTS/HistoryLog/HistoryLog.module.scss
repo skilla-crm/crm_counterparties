@@ -3,14 +3,14 @@
   min-width: 308px;
   max-width: 500px;
   width: 100%;
-  padding: 20px 16px;
+  padding: 20px 0 20px 16px;
   border-radius: 8px;
   background: #fff;
   display: flex;
-  gap:12px;
+  gap: 12px;
   flex-direction: column;
   align-items: flex-start;
-  
+
 }
 
 .title {
@@ -23,38 +23,50 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: fit-content;
   max-height: 1000px;
   overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: max-height 0.3s ease-in-out;
   width: 100%;
   box-sizing: border-box;
-  
-  &.collapsed {
-    max-height: 400px;
+  scroll-behavior: smooth;
+
+  &_hidden {
+    position: absolute;
+    z-index: -2;
+    visibility: hidden;
   }
-  
+
+  &_preload {
+    transition: none;
+  }
+
+  &.collapsed {
+   /*  max-height: 400px; */
+  }
+
   &.scrollable {
     max-height: 600px;
     overflow-y: auto;
-    padding-right: 8px;
-    
+    padding-right: 16px;
+
     &::-webkit-scrollbar {
       width: 6px;
       transition: all 0.15s ease-in-out;
     }
-    
+
     &::-webkit-scrollbar-track {
       background-color: rgba(212, 223, 243, 0.17);
       border-radius: 3px;
     }
-    
+
     &::-webkit-scrollbar-thumb {
       background-color: rgba(212, 223, 243, 0.17);
       border-radius: 3px;
       transition: all 0.15s ease-in-out;
       cursor: pointer;
     }
-    
+
     &:hover {
       &::-webkit-scrollbar {
         width: 6px;
@@ -79,10 +91,10 @@
 
   &:hover {
     color: #0024cb;
-    
+
   }
 
-  
+
 }
 
 .small {
@@ -90,4 +102,3 @@
     font-size: 14px;
   }
 }
-  

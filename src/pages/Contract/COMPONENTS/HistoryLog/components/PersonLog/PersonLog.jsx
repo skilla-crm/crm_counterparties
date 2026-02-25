@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect } from 'react';
 import s from './PersonLog.module.scss';
-import NullAvatar from '../../icons/NullAvatar.svg';
 import { ActionItem } from '../ActionItem/ActionItem';
 import { formatTime, getLogDate } from '../../helpers';
 import EllipsisWithTooltip from '../../ui/EllipsisWithTooltip/EllipsisWithTooltip';
+
+import { ReactComponent as DefaultAvatar } from "../../icons/DefaultAvatar.svg";
 
 const POSITION_LABELS = {
   director: 'Директор',
@@ -18,23 +19,10 @@ const getPersonDisplayName = (person) =>
 
 export const PersonLog = ({ log, isLast, avatarRef, fontSize = 'medium' }) => {
   const { person, actions } = log;
-
-  const avatarSources = useMemo(
-    () => [person.avatar, person.avatar_mini].filter((src) => src?.trim()).concat(NullAvatar),
-    [person.avatar, person.avatar_mini]
-  );
-
-  const [currentSourceIndex, setCurrentSourceIndex] = useState(0);
-  const currentAvatarSrc = avatarSources[currentSourceIndex];
-
-  useEffect(() => {
-    setCurrentSourceIndex(0);
-  }, [person.id, person.avatar, person.avatar_mini]);
+  const [avatar, setAvatar] = useState(person?.avatar || null)
 
   const handleImageError = () => {
-    if (currentSourceIndex < avatarSources.length - 1) {
-      setCurrentSourceIndex(prev => prev + 1);
-    }
+    setAvatar(null)
   };
 
   if (!actions || actions.length === 0) {
@@ -45,12 +33,15 @@ export const PersonLog = ({ log, isLast, avatarRef, fontSize = 'medium' }) => {
     <div className={`${s.personLog} ${s[fontSize]}`} data-last={isLast}>
       <div className={s.personHeader}>
         <div ref={avatarRef} className={s.avatarContainer}>
-          <img
-            src={currentAvatarSrc}
+          {avatar ? <img
+            src={avatar}
             alt=""
             className={s.avatar}
             onError={handleImageError}
           />
+            :
+            <DefaultAvatar />
+          }
         </div>
         <div className={s.personInfo}>
           <EllipsisWithTooltip text={getPersonDisplayName(person)} wrapperStyle={{ width: '100%' }} />
